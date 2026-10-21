@@ -1,0 +1,23 @@
+﻿services:
+  # Entorno de desarrollo interactivo
+  cad-dev:
+    build:
+      context: .
+      target: dev
+    container_name: axon-cad-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
+  # Entorno espejo del Servidor Ubuntu (Nginx)
+  cad-prod:
+    build:
+      context: .
+      target: prod
+    container_name: axon-cad-prod
+    ports:
+      - "8088:80"
