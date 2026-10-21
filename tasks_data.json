@@ -1,0 +1,353 @@
+[
+  {
+    "id": "DOC-01",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Inicialización del Repositorio Git y Enlace GitHub",
+    "desc": "Configuración de rama main, enlace con https://github.com/epinocl/Diagrama-HTML y estructura estándar davichuder."
+  },
+  {
+    "id": "DOC-02",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Línea Base 'origen/' v3.0 Inmutable",
+    "desc": "Copia verificada de los 108 archivos de la versión final probada (colores, DXF 1:1, contraste impresión, símbolos)."
+  },
+  {
+    "id": "DOC-03",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Especificación de Arquitectura del Sistema (ARCHITECTURE.md)",
+    "desc": "Modelo C4, diseño bivalente (AutoCAD/Impresión), especificación de módulos y despliegue en Ubuntu Server."
+  },
+  {
+    "id": "DOC-04",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Requerimientos de Usuario GAMP 5 & ALCOA+ (REQUIREMENTS.md)",
+    "desc": "14 requerimientos funcionales y 5 no funcionales, trazabilidad inmutable y clasificación de software GAMP Categoría 4."
+  },
+  {
+    "id": "DOC-05",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Media",
+    "title": "Inventario de Dependencias y Políticas Zero-Bloat (DEPENDENCIES.md)",
+    "desc": "Reglas de dependencias frontend nativo, utilidades offline en Python (PyMuPDF, ezdxf) y stack Ubuntu (Nginx, Node.js)."
+  },
+  {
+    "id": "DOC-06",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Media",
+    "title": "Planes Maestros de Implementación (PLANS.md)",
+    "desc": "Estrategia de 5 fases, mitigación de riesgos de rendimiento y matriz de contingencias."
+  },
+  {
+    "id": "DOC-07",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Roadmap Estratégico y Criterios DoD (ROADMAP.md)",
+    "desc": "Cronograma por fases, desglose de tareas y Definition of Done para cada etapa."
+  },
+  {
+    "id": "DOC-08",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Media",
+    "title": "Checklist de Calidad para Producción (PRODUCTION_CHECKLIST.md)",
+    "desc": "Protocolo de 5 compuertas (Gates) previas al despliegue en servidores productivos."
+  },
+  {
+    "id": "DOC-09",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Estudio Técnico y Plan de Mejoras CAD (ESTUDIO_Y_PLAN_MEJORAS_CAD.md)",
+    "desc": "Ingeniería detallada para corte/extensión de líneas, puertos magnéticos IEC, geometrías libres, agrupación y evaluación de frameworks."
+  },
+  {
+    "id": "CAD-01",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Crítica",
+    "title": "Independización de Conductores: Modelo Topológico WireNet y WireSegment",
+    "desc": "Desacoplar las líneas de etiquetas SVG estáticas hacia entidades de red lógica con potencial eléctrico (Fase, Neutro, 24VDC, Señal) y calibre."
+  },
+  {
+    "id": "CAD-02",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Crítica",
+    "title": "Herramienta Dibujar Cable con Ruteo Ortogonal (90° Snap)",
+    "desc": "Trazador interactivo de conductores en ángulos rectos (Manhattan routing) con magnetismo automático a rejilla métrica de 4mm y 8mm."
+  },
+  {
+    "id": "CAD-03",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Herramienta Cortar / Split Interactivo de Conductores",
+    "desc": "Partición de cualquier cable en 2 segmentos independientes mediante clic, o al insertar un componente intermedio con auto-inserción de nodos."
+  },
+  {
+    "id": "CAD-04",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Herramienta Extender Conductores (Trim / Extend)",
+    "desc": "Extensión de segmentos hasta la colisión con otro conductor colineal o puerto magnético más próximo mediante proyección geométrica."
+  },
+  {
+    "id": "CAD-05",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Media",
+    "title": "Detección de Cruces y Auto-Nodos de Derivación en 'T'",
+    "desc": "Inserción automática de punto de conexión normalizado (círculo relleno de unión) en derivaciones en T y puentes visuales en cruces neutros."
+  },
+  {
+    "id": "CAD-06",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "iec",
+    "priority": "Crítica",
+    "title": "Definición de Puertos Magnéticos (Snap Ports) en Simbología IEC 60617",
+    "desc": "Añadir metadatos normalizados de bornas (A1, A2, 13, 14, L1, etc.), coordenadas locales y orientación de acometida a cada símbolo vectorial."
+  },
+  {
+    "id": "CAD-07",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "iec",
+    "priority": "Alta",
+    "title": "Algoritmo de Auto-Conexión Magnética (Snap to Pin)",
+    "desc": "Atracción magnética del puntero a puertos de conexión de componentes IEC a menos de 6 px de proximidad con feedback visual de anclaje."
+  },
+  {
+    "id": "CAD-08",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Adaptación Elástica de Cables (Rubber-Banding) al Mover Símbolos",
+    "desc": "Al arrastrar un componente por el plano, los conductores conectados recalculan sus codos en 90° automáticamente sin romperse."
+  },
+  {
+    "id": "CAD-09",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Media",
+    "title": "Geometrías y Primitivas Gráficas Independientes",
+    "desc": "Soporte de entidades autónomas (Rectángulo, Círculo, Polilínea, Trayectoria SVG, Cota de acotación y Texto libre) con UUID propio."
+  },
+  {
+    "id": "CAD-10",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Motor de Agrupación y Desagrupación (Group / Ungroup)",
+    "desc": "Jerarquía de grupos con preservación estricta de coordenadas relativas/absolutas mediante matrices de transformación DOMMatrix."
+  },
+  {
+    "id": "CAD-11",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "ui",
+    "priority": "Alta",
+    "title": "Inspector de Propiedades Modal / Emergente Desacoplado",
+    "desc": "Ventana flotante / panel desacoplable para editar Designador (Tag), Función, Bornas, Capas, Colores y atributos técnicos de cualquier objeto."
+  },
+  {
+    "id": "CAD-12",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Pila de Operaciones Deshacer / Rehacer (Undo / Redo Command Pattern)",
+    "desc": "Gestión transaccional de comandos de dibujo, borrado, movimiento y agrupamiento con historial navegable (Ctrl+Z / Ctrl+Y)."
+  },
+  {
+    "id": "MOD-01",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Crítica",
+    "title": "Scaffolding de Aplicación Web en React 19 + TypeScript + Vite",
+    "desc": "Estructuración del proyecto frontend moderno con tipado estricto para modelos geométricos y empaquetado ultra-rápido."
+  },
+  {
+    "id": "MOD-02",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Alta",
+    "title": "Store de Estado Reactivo de Alto Rendimiento (Zustand)",
+    "desc": "Gestión del Scene Graph, selección múltiple y coordenadas sin re-renderizados masivos, garantizando 60-120 FPS en el canvas."
+  },
+  {
+    "id": "MOD-03",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Media",
+    "title": "Desacoplar Módulos del Visor (Pan-Zoom, Layout A3 y Presentador)",
+    "desc": "Modularización limpia de la navegación de láminas, miniaturas laterales y zoom infinito vectorial."
+  },
+  {
+    "id": "MOD-04",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Media",
+    "title": "Integración del Configurador Dinámico de Colores con Presets",
+    "desc": "Componente interactivo para ajuste de los 7 canales cromáticos con soporte de modo oscuro/claro y guardado por proyecto."
+  },
+  {
+    "id": "MOD-05",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Exportador DXF 1:1 Métrico Desacoplado en TypeScript",
+    "desc": "Generador de archivos AutoCAD R12 DXF modular con cálculo de capas, textos y geometrías exportables tanto en cliente como en servidor."
+  },
+  {
+    "id": "MOD-06",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "iec",
+    "priority": "Media",
+    "title": "Paleta Visual de Simbología IEC con Drag & Drop al Canvas",
+    "desc": "Barra lateral organizada por categorías (Fuerza, Control, Sensores, Bornas) con arrastre directo y colocación asistida por rejilla."
+  },
+  {
+    "id": "MOD-07",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Media",
+    "title": "Editor Visual de Cajetines y Generador de Listado de Materiales (BOM)",
+    "desc": "Edición en línea de metadatos de lámina (Título, Proyecto, Diseñador, Revisión) y extracción automática de tabla de componentes a CSV."
+  },
+  {
+    "id": "SRV-01",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Alta",
+    "title": "Aprovisionamiento en Servidor Ubuntu AXON (/opt/axon/diagrama-html)",
+    "desc": "Creación de estructura de directorios, permisos de usuario del servicio y entorno de despliegue en la red corporativa."
+  },
+  {
+    "id": "SRV-02",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Crítica",
+    "title": "API REST en Node.js para Gestión Multi-Proyecto y Carpetas de Clientes",
+    "desc": "Endpoints para listar proyectos, guardar planos (.axon.json), versionar emisiones y gestionar biblioteca central de símbolos."
+  },
+  {
+    "id": "SRV-03",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Alta",
+    "title": "Microservicio Python para Conversión y Extracción de PDFs (PyMuPDF/ezdxf)",
+    "desc": "Worker asíncrono para generar PDFs vectoriales A3 de alta resolución y procesar planos heredados recibidos de clientes."
+  },
+  {
+    "id": "SRV-04",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Media",
+    "title": "Configuración de Nginx como Reverse Proxy y SSL",
+    "desc": "Enrutamiento de tráfico web, compresión gzip/brotli, cabeceras de seguridad y terminación HTTPS en la intranet de AXON."
+  },
+  {
+    "id": "SRV-05",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Media",
+    "title": "Supervisión de Procesos con PM2 y Demonio Systemd",
+    "desc": "Arranque automático al iniciar el servidor, reinicio ante fallos y registro centralizado de logs."
+  },
+  {
+    "id": "SRV-06",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Registro Inmutable de Auditoría (Audit Trail) según ALCOA+",
+    "desc": "Trazabilidad criptográfica de quién modificó cada lámina, fecha, hora y hash SHA-256 de las emisiones aprobadas."
+  },
+  {
+    "id": "QA-01",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "qa",
+    "priority": "Alta",
+    "title": "Suite de Pruebas Unitarias Automatizadas (Vitest)",
+    "desc": "Cobertura >= 80% en motores de cálculo topológico de cables, matrices de transformación geométrica y exportación DXF."
+  },
+  {
+    "id": "QA-02",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "qa",
+    "priority": "Crítica",
+    "title": "Suite de Pruebas E2E en Navegador Real (Playwright)",
+    "desc": "Automatización de pruebas completas de dibujo ortogonal, corte de conductores, arrastre elástico, zoom e impresión A3."
+  },
+  {
+    "id": "QA-03",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "qa",
+    "priority": "Media",
+    "title": "Pipeline CI/CD en GitHub Actions",
+    "desc": "Validación continua de linting, tipos de TypeScript, ejecución de tests y despliegue automatizado a servidor ante tags de versión."
+  },
+  {
+    "id": "QA-04",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Protocolo de Calificación IQ / OQ según Guía GAMP 5",
+    "desc": "Documentación formal de Calificación de Instalación y Operación para validación ante clientes farmacéuticos e industriales."
+  },
+  {
+    "id": "QA-05",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "qa",
+    "priority": "Crítica",
+    "title": "Puesta en Marcha Productiva en Red AXON y Manual de Operación",
+    "desc": "Publicación oficial del sistema en la intranet, migración de proyectos activos y capacitación a ingenieros de diseño."
+  }
+]

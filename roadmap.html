@@ -1,0 +1,1264 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070c18">
+  <title>AXON CAD — Mapa Vivo de Desarrollo & Roadmap</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070c18;
+      --bg-surface: #0c1424;
+      --panel: #111c33;
+      --panel-hover: #162442;
+      --line: #1e2f50;
+      --line-active: #3b5998;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --dim: #64748b;
+      --cyan: #38bdf8;
+      --cyan-glow: rgba(56, 189, 248, 0.25);
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.25);
+      --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.25);
+      --purple: #818cf8;
+      --purple-glow: rgba(129, 140, 248, 0.25);
+      --rose: #f43f5e;
+      --rose-glow: rgba(244, 63, 94, 0.25);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at 10% 0%, #152342 0%, transparent 45%),
+                  radial-gradient(ellipse at 90% 90%, #0d2238 0%, transparent 45%),
+                  var(--bg);
+      color: var(--text);
+      font: 14px/1.5 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 2px;
+    }
+    .wrap {
+      max-width: 1680px;
+      margin: auto;
+      padding: 24px clamp(14px, 3vw, 40px) 60px;
+    }
+    .top {
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .kicker {
+      color: var(--amber);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .kicker::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--amber);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--amber);
+    }
+    h1 {
+      font-size: clamp(24px, 3.2vw, 36px);
+      margin: 6px 0 8px;
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, #ffffff, #c7d9f3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lead {
+      max-width: 960px;
+      color: var(--muted);
+      margin: 0 0 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .specs-strip {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .specs-strip span {
+      background: rgba(18, 30, 56, 0.5);
+      border: 1px solid var(--line);
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .specs-strip strong { color: #ffffff; }
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn {
+      border: 1px solid var(--line);
+      background: #14223d;
+      color: #e2eeff;
+      border-radius: 10px;
+      padding: 9px 15px;
+      font-weight: 600;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      background: #1f345c;
+      border-color: var(--line-active);
+      transform: translateY(-1px);
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      border-color: var(--cyan);
+      box-shadow: 0 0 15px rgba(2, 132, 199, 0.35);
+    }
+    .btn.ghost { background: transparent; border-color: var(--line); }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .metric {
+      background: linear-gradient(145deg, #101a2e, #0a1120);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .metric:hover { transform: translateY(-2px); border-color: #2b4573; }
+    .metric::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 3px;
+      background: var(--line);
+    }
+    .metric.m-progress::before { background: var(--cyan); }
+    .metric.m-done::before { background: var(--green); }
+    .metric.m-pending::before { background: var(--amber); }
+    .metric.m-total::before { background: #38bdf8; }
+    .metric.m-phase::before { background: var(--purple); }
+    .metric.m-next::before { background: var(--rose); }
+    .metric strong {
+      display: block;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .metric small {
+      display: block;
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+    .progress-bar-wrap {
+      margin-top: 10px;
+      height: 6px;
+      background: #192742;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      width: 23%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(420px, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+    .panel {
+      background: linear-gradient(145deg, #0e172a, #090e1a);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .panelhead {
+      padding: 16px 20px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(14, 23, 42, 0.6);
+    }
+    .panelhead h2 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+    .hint { font-size: 11px; color: var(--muted); font-weight: 600; }
+    .mapscroll { padding: 16px; overflow-x: auto; }
+    .map { width: 100%; min-width: 680px; height: 640px; display: block; }
+    .map .pipe-link {
+      fill: none; stroke: #223758; stroke-width: 3; stroke-dasharray: 6 5;
+      animation: flowLine 25s linear infinite;
+    }
+    .map .pipe-link.active {
+      stroke: var(--cyan); stroke-width: 3.5; stroke-dasharray: none;
+      filter: drop-shadow(0 0 6px var(--cyan-glow));
+    }
+    @keyframes flowLine { to { stroke-dashoffset: -100; } }
+    .map .node { cursor: pointer; transition: all 0.25s ease; }
+    .map .node:hover rect {
+      filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.45));
+      stroke: var(--cyan) !important;
+    }
+    .map .node.selected rect {
+      stroke: #ffffff !important; stroke-width: 3 !important;
+      filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.5));
+    }
+    .toolbox {
+      display: flex; gap: 10px; padding: 16px 20px 12px;
+      background: rgba(10, 16, 28, 0.5); border-bottom: 1px solid var(--line);
+    }
+    .toolbox input, .toolbox select {
+      background: #090e1a; color: var(--text); border: 1px solid var(--line);
+      border-radius: 9px; padding: 9px 12px; font-size: 13px; outline: none;
+    }
+    .toolbox input:focus, .toolbox select:focus { border-color: var(--cyan); }
+    .toolbox input { flex: 1.5; }
+    .toolbox select { flex: 1; }
+    .pills {
+      display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 20px;
+      background: rgba(8, 13, 24, 0.35); border-bottom: 1px solid var(--line);
+    }
+    .pill {
+      font-size: 11px; padding: 5px 11px; border-radius: 20px; background: #111d33;
+      border: 1px solid var(--line); color: var(--muted); cursor: pointer; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .pill:hover, .pill.active { background: #1b2f54; color: #ffffff; border-color: var(--cyan); }
+    .tasks { padding: 16px 20px; max-height: 620px; overflow-y: auto; }
+    .task {
+      border: 1px solid var(--line); border-radius: 12px; background: #0f192c;
+      padding: 12px 14px; margin-bottom: 10px; transition: all 0.2s ease;
+    }
+    .task:hover { border-color: #2b4573; background: var(--panel-hover); }
+    .task.done { border-color: #1a3830; background: #0a1715; opacity: 0.88; }
+    .tasktop { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; }
+    .task label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; flex: 1; }
+    .task input[type=checkbox] { margin-top: 3px; width: 17px; height: 17px; accent-color: var(--green); cursor: pointer; flex: none; }
+    .task-meta { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; flex-wrap: wrap; }
+    .taskid { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: var(--cyan); background: rgba(56, 189, 248, 0.1); padding: 2px 6px; border-radius: 6px; }
+    .task.done .taskid { color: var(--green); background: rgba(16, 185, 129, 0.1); }
+    .taskphase { font-size: 10px; font-weight: 700; color: var(--muted); background: #16243d; padding: 2px 6px; border-radius: 4px; }
+    .prio-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+    .prio-critica { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+    .prio-alta { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .prio-media { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
+    .tasktitle { font-weight: 700; font-size: 13px; line-height: 1.4; display: block; color: #f8fafc; }
+    .task.done .tasktitle { text-decoration: line-through; color: #8da2bb; }
+    .detail { color: var(--muted); font-size: 12px; margin-top: 6px; line-height: 1.45; padding-left: 27px; }
+    .tag { font-size: 10px; font-weight: 700; border-radius: 20px; padding: 3px 9px; white-space: nowrap; text-transform: uppercase; }
+    .tag.done { color: var(--green); background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tag.pending { color: var(--amber); background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .footer-bar {
+      margin-top: 24px; padding: 16px 20px; background: linear-gradient(145deg, #0e172a, #080d17);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;
+      font-size: 12px; color: var(--muted);
+    }
+    #toast {
+      position: fixed; bottom: 24px; right: 24px; background: #14223d; border: 1px solid var(--cyan);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); color: #ffffff; padding: 12px 20px;
+      border-radius: 10px; font-size: 13px; font-weight: 600; display: none; align-items: center; gap: 8px; z-index: 1000;
+    }
+    @media (max-width: 1180px) { .layout { grid-template-columns: 1fr; } .metrics { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 640px) { .metrics { grid-template-columns: repeat(2, 1fr); } .wrap { padding: 14px 10px 40px; } .toolbox { flex-direction: column; } }
+  </style>
+</head>
+<body>
+
+﻿<div class="wrap">
+
+  <header class="top">
+    <div>
+      <div class="kicker">AXON INGENIERÍA ELÉCTRICA — CAD ESQUEMÁTICO INDUSTRIAL</div>
+      <h1>Mapa Vivo de Desarrollo: Diagrama-HTML (AXON CAD Web)</h1>
+      <p class="lead">
+        Evolución integral del CAD esquemático para planos eléctricos A3: motor topológico de conductores (cortar, extender, ruteo ortogonal), 
+        bornas magnéticas para simbología IEC 60617, edición en inspector modal, empaquetado moderno en React 19 / Vite y despliegue corporativo en Servidor Ubuntu AXON.
+      </p>
+      <div class="specs-strip">
+        <span>📐 <strong>Norma:</strong> IEC 60617 / DIN ISO 5457 (A3)</span>
+        <span>🛡️ <strong>Gobernanza:</strong> GAMP 5 & ALCOA+</span>
+        <span>⚡ <strong>Línea Base:</strong> v3.0 Operativa (<code>origen/</code>)</span>
+        <span>🐧 <strong>Destino:</strong> Ubuntu Server (<code>:8080 Nginx</code>)</span>
+        <span>🚀 <strong>Frontend:</strong> React 19 + TypeScript + Vite</span>
+      </div>
+    </div>
+    <div class="toolbar">
+      <a class="btn" href="https://github.com/epinocl/Diagrama-HTML" target="_blank" rel="noopener">
+        🐙 Ver en GitHub ↗
+      </a>
+      <button class="btn ghost" id="btnReset">↺ Restablecer</button>
+      <button class="btn ghost" id="btnExportJson">📦 Exportar JSON</button>
+      <button class="btn ghost" id="btnImportJson">📥 Importar JSON</button>
+      <input type="file" id="fileImportInput" accept=".json" style="display:none;">
+      <button class="btn primary" id="btnExport">📄 Exportar ROADMAP.md</button>
+    </div>
+  </header>
+
+  <section class="metrics" aria-label="Métricas del proyecto">
+    <div class="metric m-progress">
+      <strong id="mProgress">23%</strong>
+      <small>Progreso Global</small>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+    <div class="metric m-done">
+      <strong style="color: var(--green);" id="mDone">9</strong>
+      <small>Tareas Completadas</small>
+    </div>
+    <div class="metric m-pending">
+      <strong style="color: var(--amber);" id="mPending">30</strong>
+      <small>Tareas Pendientes</small>
+    </div>
+    <div class="metric m-total">
+      <strong id="mTotal" style="color: var(--cyan);">39</strong>
+      <small>Total Tareas (5 Fases)</small>
+    </div>
+    <div class="metric m-phase">
+      <strong style="color: var(--purple);" id="mPhasesClosed">1 / 5</strong>
+      <small>Fases Cerradas</small>
+    </div>
+    <div class="metric m-next">
+      <strong style="color: var(--rose); font-size: 20px; padding-top: 4px;" id="mNextMilestone">FASE 2</strong>
+      <small>Hito en Curso (Motor CAD)</small>
+    </div>
+  </section>
+
+  <div class="layout">
+    
+    <section class="panel">
+      <div class="panelhead">
+        <div>
+          <div class="kicker" style="color: var(--cyan);">ARQUITECTURA DE FASES & PIPELINE</div>
+          <h2>Mapa Topológico de Módulos</h2>
+        </div>
+        <button class="btn ghost" id="btnShowAllNodes" style="padding: 5px 10px;">Ver Todas las Fases</button>
+      </div>
+
+      <div class="mapscroll">
+        <svg class="map" viewBox="0 0 740 620" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="nodeGradDone" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#122c26"/>
+              <stop offset="100%" stop-color="#0a1a17"/>
+            </linearGradient>
+            <linearGradient id="nodeGradProg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2d2212"/>
+              <stop offset="100%" stop-color="#17120a"/>
+            </linearGradient>
+            <linearGradient id="nodeGradPending" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#15213b"/>
+              <stop offset="100%" stop-color="#0b1324"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Tuberías de Conexión Animadas -->
+          <path class="pipe-link active" d="M 180 85 L 280 85"/>
+          <path class="pipe-link active" d="M 520 85 L 610 85 L 610 220 L 520 220"/>
+          <path class="pipe-link" d="M 280 220 L 180 220 L 180 360 L 280 360"/>
+          <path class="pipe-link" d="M 520 360 L 610 360 L 610 500 L 520 500"/>
+
+          <!-- FASE 1: Gobernanza & Doc -->
+          <g class="node selected" data-phase="FASE 1" transform="translate(20, 45)">
+            <rect width="160" height="80" rx="12" fill="url(#nodeGradDone)" stroke="#10b981" stroke-width="2.5"/>
+            <text x="80" y="28" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">FASE 1: GOBERNANZA</text>
+            <text x="80" y="44" fill="#94a3b8" font-size="10" text-anchor="middle">Docs, URS & Línea Base v3</text>
+            <rect x="20" y="52" width="120" height="5" rx="2" fill="#1e2f50"/>
+            <rect id="nodeBar_FASE 1" x="20" y="52" width="120" height="5" rx="2" fill="#10b981"/>
+            <text id="nodeStatus_FASE 1" x="80" y="71" fill="#10b981" font-size="10" font-weight="bold" text-anchor="middle">✓ 100% COMPLETADA</text>
+          </g>
+
+          <!-- FASE 2: Motor Topológico CAD -->
+          <g class="node" data-phase="FASE 2" transform="translate(280, 45)">
+            <rect width="240" height="80" rx="12" fill="url(#nodeGradProg)" stroke="#f59e0b" stroke-width="2"/>
+            <text x="120" y="28" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">FASE 2: MOTOR CAD TOPOLÓGICO</text>
+            <text x="120" y="44" fill="#94a3b8" font-size="10" text-anchor="middle">Líneas, Bornas IEC, Snap & Modal</text>
+            <rect x="25" y="52" width="190" height="5" rx="2" fill="#1e2f50"/>
+            <rect id="nodeBar_FASE 2" x="25" y="52" width="0" height="5" rx="2" fill="#f59e0b"/>
+            <text id="nodeStatus_FASE 2" x="120" y="71" fill="#f59e0b" font-size="10" font-weight="bold" text-anchor="middle">⚡ PRIORIDAD ACTUAL</text>
+          </g>
+
+          <!-- FASE 3: Frontend Moderno Vite -->
+          <g class="node" data-phase="FASE 3" transform="translate(280, 180)">
+            <rect width="240" height="80" rx="12" fill="url(#nodeGradPending)" stroke="#38bdf8" stroke-width="2"/>
+            <text x="120" y="28" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">FASE 3: FRONTEND REACT & VITE</text>
+            <text x="120" y="44" fill="#94a3b8" font-size="10" text-anchor="middle">Store Zustand 60 FPS, DXF & Colores</text>
+            <rect x="25" y="52" width="190" height="5" rx="2" fill="#1e2f50"/>
+            <rect id="nodeBar_FASE 3" x="25" y="52" width="0" height="5" rx="2" fill="#38bdf8"/>
+            <text id="nodeStatus_FASE 3" x="120" y="71" fill="#94a3b8" font-size="10" text-anchor="middle">⏳ PLANIFICADA</text>
+          </g>
+
+          <!-- FASE 4: Backend Ubuntu Server -->
+          <g class="node" data-phase="FASE 4" transform="translate(280, 320)">
+            <rect width="240" height="80" rx="12" fill="url(#nodeGradPending)" stroke="#818cf8" stroke-width="2"/>
+            <text x="120" y="28" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">FASE 4: SERVIDOR UBUNTU AXON</text>
+            <text x="120" y="44" fill="#94a3b8" font-size="10" text-anchor="middle">API Node, Python Workers & Nginx</text>
+            <rect x="25" y="52" width="190" height="5" rx="2" fill="#1e2f50"/>
+            <rect id="nodeBar_FASE 4" x="25" y="52" width="0" height="5" rx="2" fill="#818cf8"/>
+            <text id="nodeStatus_FASE 4" x="120" y="71" fill="#94a3b8" font-size="10" text-anchor="middle">⏳ PLANIFICADA</text>
+          </g>
+
+          <!-- FASE 5: QA GAMP 5 & Despliegue -->
+          <g class="node" data-phase="FASE 5" transform="translate(280, 460)">
+            <rect width="240" height="80" rx="12" fill="url(#nodeGradPending)" stroke="#f43f5e" stroke-width="2"/>
+            <text x="120" y="28" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">FASE 5: QA GAMP 5 & DESPLIEGUE</text>
+            <text x="120" y="44" fill="#94a3b8" font-size="10" text-anchor="middle">Playwright E2E, CI/CD & Calificación</text>
+            <rect x="25" y="52" width="190" height="5" rx="2" fill="#1e2f50"/>
+            <rect id="nodeBar_FASE 5" x="25" y="52" width="0" height="5" rx="2" fill="#f43f5e"/>
+            <text id="nodeStatus_FASE 5" x="120" y="71" fill="#94a3b8" font-size="10" text-anchor="middle">⏳ PLANIFICADA</text>
+          </g>
+
+          <!-- Contexto Periférico -->
+          <g transform="translate(20, 200)">
+            <rect width="180" height="95" rx="10" fill="#091222" stroke="#1e2f50" stroke-dasharray="4 3"/>
+            <text x="90" y="26" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">SIMBOLOGÍA & NORMATIVA</text>
+            <text x="90" y="44" fill="#94a3b8" font-size="10" text-anchor="middle">Biblioteca IEC 60617</text>
+            <text x="90" y="60" fill="#64748b" font-size="10" text-anchor="middle">Terminales Magnéticos (px, py)</text>
+            <text x="90" y="76" fill="#64748b" font-size="10" text-anchor="middle">Cajetines DIN ISO 5457 A3</text>
+          </g>
+
+          <g transform="translate(20, 360)">
+            <rect width="180" height="95" rx="10" fill="#091222" stroke="#1e2f50" stroke-dasharray="4 3"/>
+            <text x="90" y="26" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">INFRAESTRUCTURA AXON</text>
+            <text x="90" y="44" fill="#94a3b8" font-size="10" text-anchor="middle">Ubuntu Server 24.04 LTS</text>
+            <text x="90" y="60" fill="#64748b" font-size="10" text-anchor="middle">Reverse Proxy Nginx :8080</text>
+            <text x="90" y="76" fill="#64748b" font-size="10" text-anchor="middle">Audit Trail ALCOA+ Inmutable</text>
+          </g>
+
+          <g transform="translate(20, 500)">
+            <rect width="180" height="85" rx="10" fill="#091222" stroke="#1e2f50" stroke-dasharray="4 3"/>
+            <text x="90" y="26" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">INTEROPERABILIDAD CAD</text>
+            <text x="90" y="44" fill="#94a3b8" font-size="10" text-anchor="middle">AutoCAD DXF R12 Métrico 1:1</text>
+            <text x="90" y="60" fill="#64748b" font-size="10" text-anchor="middle">Vectorial SVG A3 Multilámina</text>
+          </g>
+        </svg>
+      </div>
+
+      <div style="padding: 12px 20px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--line); display: flex; justify-content: space-between;">
+        <span>💡 <em>Haz clic en cualquier fase para filtrar sus tareas en el checklist</em></span>
+        <span id="activeFilterLabel">Mostrando: Todas las fases</span>
+      </div>
+    </section>
+
+    <!-- Panel Derecho: Checklist Interactivo -->
+    <section class="panel">
+      <div class="panelhead">
+        <div>
+          <div class="kicker" id="taskPanelKicker">CHECKLIST DE TAREAS</div>
+          <h2 id="taskPanelTitle">Todas las Tareas del Proyecto</h2>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button class="btn ghost" id="btnMarkPhaseDone" style="padding: 4px 8px; font-size: 11px;">✓ Completar Fase</button>
+          <div class="hint" id="taskCounterHint">39 tareas</div>
+        </div>
+      </div>
+
+      <div class="toolbox">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar por ID, título, etiqueta o descripción...">
+        <select id="phaseSelect">
+          <option value="ALL">Todas las Fases (1 a 5)</option>
+          <option value="FASE 1">Fase 1: Gobernanza & Doc (100% ✓)</option>
+          <option value="FASE 2">Fase 2: Motor Topológico CAD (En Curso)</option>
+          <option value="FASE 3">Fase 3: Frontend React 19 & Vite</option>
+          <option value="FASE 4">Fase 4: Servidor Ubuntu AXON</option>
+          <option value="FASE 5">Fase 5: QA GAMP 5 & Despliegue</option>
+        </select>
+      </div>
+
+      <div class="pills">
+        <span class="pill active" data-filter="all">Todas</span>
+        <span class="pill" data-filter="open">Solo Pendientes</span>
+        <span class="pill" data-filter="done">Solo Completadas</span>
+        <span class="pill" data-filter="cad">Motor CAD</span>
+        <span class="pill" data-filter="iec">Símbolos IEC</span>
+        <span class="pill" data-filter="ui">Frontend UI</span>
+        <span class="pill" data-filter="server">Ubuntu Server</span>
+        <span class="pill" data-filter="doc">Doc / GAMP 5</span>
+        <span class="pill" data-filter="qa">Testing QA</span>
+      </div>
+
+      <div class="tasks" id="taskListContainer" aria-live="polite">
+        <!-- Generado dinámicamente -->
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="footer-bar">
+    <div>
+      <strong>AXON Ingeniería Eléctrica</strong> — Sistema GAMP 5 / ALCOA+ — Repositorio: <code>Diagrama-HTML</code>
+    </div>
+    <div id="footerStatusText">
+      Estado: <strong>Fase 1 Cerrada (100%)</strong> — Listo para ejecutar <strong>Fase 2: Motor Topológico CAD</strong>
+    </div>
+  </footer>
+
+</div>
+
+<div id="toast">💾 Progreso guardado automáticamente</div>
+
+<script id="taskSeedData" type="application/json">
+[
+  {
+    "id": "DOC-01",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Inicialización del Repositorio Git y Enlace GitHub",
+    "desc": "Configuración de rama main, enlace con https://github.com/epinocl/Diagrama-HTML y estructura estándar davichuder."
+  },
+  {
+    "id": "DOC-02",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Línea Base 'origen/' v3.0 Inmutable",
+    "desc": "Copia verificada de los 108 archivos de la versión final probada (colores, DXF 1:1, contraste impresión, símbolos)."
+  },
+  {
+    "id": "DOC-03",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Especificación de Arquitectura del Sistema (ARCHITECTURE.md)",
+    "desc": "Modelo C4, diseño bivalente (AutoCAD/Impresión), especificación de módulos y despliegue en Ubuntu Server."
+  },
+  {
+    "id": "DOC-04",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Requerimientos de Usuario GAMP 5 & ALCOA+ (REQUIREMENTS.md)",
+    "desc": "14 requerimientos funcionales y 5 no funcionales, trazabilidad inmutable y clasificación de software GAMP Categoría 4."
+  },
+  {
+    "id": "DOC-05",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Media",
+    "title": "Inventario de Dependencias y Políticas Zero-Bloat (DEPENDENCIES.md)",
+    "desc": "Reglas de dependencias frontend nativo, utilidades offline en Python (PyMuPDF, ezdxf) y stack Ubuntu (Nginx, Node.js)."
+  },
+  {
+    "id": "DOC-06",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Media",
+    "title": "Planes Maestros de Implementación (PLANS.md)",
+    "desc": "Estrategia de 5 fases, mitigación de riesgos de rendimiento y matriz de contingencias."
+  },
+  {
+    "id": "DOC-07",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Roadmap Estratégico y Criterios DoD (ROADMAP.md)",
+    "desc": "Cronograma por fases, desglose de tareas y Definition of Done para cada etapa."
+  },
+  {
+    "id": "DOC-08",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Media",
+    "title": "Checklist de Calidad para Producción (PRODUCTION_CHECKLIST.md)",
+    "desc": "Protocolo de 5 compuertas (Gates) previas al despliegue en servidores productivos."
+  },
+  {
+    "id": "DOC-09",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Estudio Técnico y Plan de Mejoras CAD (ESTUDIO_Y_PLAN_MEJORAS_CAD.md)",
+    "desc": "Ingeniería detallada para corte/extensión de líneas, puertos magnéticos IEC, geometrías libres, agrupación y evaluación de frameworks."
+  },
+  {
+    "id": "CAD-01",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Crítica",
+    "title": "Independización de Conductores: Modelo Topológico WireNet y WireSegment",
+    "desc": "Desacoplar las líneas de etiquetas SVG estáticas hacia entidades de red lógica con potencial eléctrico (Fase, Neutro, 24VDC, Señal) y calibre."
+  },
+  {
+    "id": "CAD-02",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Crítica",
+    "title": "Herramienta Dibujar Cable con Ruteo Ortogonal (90° Snap)",
+    "desc": "Trazador interactivo de conductores en ángulos rectos (Manhattan routing) con magnetismo automático a rejilla métrica de 4mm y 8mm."
+  },
+  {
+    "id": "CAD-03",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Herramienta Cortar / Split Interactivo de Conductores",
+    "desc": "Partición de cualquier cable en 2 segmentos independientes mediante clic, o al insertar un componente intermedio con auto-inserción de nodos."
+  },
+  {
+    "id": "CAD-04",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Herramienta Extender Conductores (Trim / Extend)",
+    "desc": "Extensión de segmentos hasta la colisión con otro conductor colineal o puerto magnético más próximo mediante proyección geométrica."
+  },
+  {
+    "id": "CAD-05",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Media",
+    "title": "Detección de Cruces y Auto-Nodos de Derivación en 'T'",
+    "desc": "Inserción automática de punto de conexión normalizado (círculo relleno de unión) en derivaciones en T y puentes visuales en cruces neutros."
+  },
+  {
+    "id": "CAD-06",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "iec",
+    "priority": "Crítica",
+    "title": "Definición de Puertos Magnéticos (Snap Ports) en Simbología IEC 60617",
+    "desc": "Añadir metadatos normalizados de bornas (A1, A2, 13, 14, L1, etc.), coordenadas locales y orientación de acometida a cada símbolo vectorial."
+  },
+  {
+    "id": "CAD-07",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "iec",
+    "priority": "Alta",
+    "title": "Algoritmo de Auto-Conexión Magnética (Snap to Pin)",
+    "desc": "Atracción magnética del puntero a puertos de conexión de componentes IEC a menos de 6 px de proximidad con feedback visual de anclaje."
+  },
+  {
+    "id": "CAD-08",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Adaptación Elástica de Cables (Rubber-Banding) al Mover Símbolos",
+    "desc": "Al arrastrar un componente por el plano, los conductores conectados recalculan sus codos en 90° automáticamente sin romperse."
+  },
+  {
+    "id": "CAD-09",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Media",
+    "title": "Geometrías y Primitivas Gráficas Independientes",
+    "desc": "Soporte de entidades autónomas (Rectángulo, Círculo, Polilínea, Trayectoria SVG, Cota de acotación y Texto libre) con UUID propio."
+  },
+  {
+    "id": "CAD-10",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Motor de Agrupación y Desagrupación (Group / Ungroup)",
+    "desc": "Jerarquía de grupos con preservación estricta de coordenadas relativas/absolutas mediante matrices de transformación DOMMatrix."
+  },
+  {
+    "id": "CAD-11",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "ui",
+    "priority": "Alta",
+    "title": "Inspector de Propiedades Modal / Emergente Desacoplado",
+    "desc": "Ventana flotante / panel desacoplable para editar Designador (Tag), Función, Bornas, Capas, Colores y atributos técnicos de cualquier objeto."
+  },
+  {
+    "id": "CAD-12",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Pila de Operaciones Deshacer / Rehacer (Undo / Redo Command Pattern)",
+    "desc": "Gestión transaccional de comandos de dibujo, borrado, movimiento y agrupamiento con historial navegable (Ctrl+Z / Ctrl+Y)."
+  },
+  {
+    "id": "MOD-01",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Crítica",
+    "title": "Scaffolding de Aplicación Web en React 19 + TypeScript + Vite",
+    "desc": "Estructuración del proyecto frontend moderno con tipado estricto para modelos geométricos y empaquetado ultra-rápido."
+  },
+  {
+    "id": "MOD-02",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Alta",
+    "title": "Store de Estado Reactivo de Alto Rendimiento (Zustand)",
+    "desc": "Gestión del Scene Graph, selección múltiple y coordenadas sin re-renderizados masivos, garantizando 60-120 FPS en el canvas."
+  },
+  {
+    "id": "MOD-03",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Media",
+    "title": "Desacoplar Módulos del Visor (Pan-Zoom, Layout A3 y Presentador)",
+    "desc": "Modularización limpia de la navegación de láminas, miniaturas laterales y zoom infinito vectorial."
+  },
+  {
+    "id": "MOD-04",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Media",
+    "title": "Integración del Configurador Dinámico de Colores con Presets",
+    "desc": "Componente interactivo para ajuste de los 7 canales cromáticos con soporte de modo oscuro/claro y guardado por proyecto."
+  },
+  {
+    "id": "MOD-05",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Exportador DXF 1:1 Métrico Desacoplado en TypeScript",
+    "desc": "Generador de archivos AutoCAD R12 DXF modular con cálculo de capas, textos y geometrías exportables tanto en cliente como en servidor."
+  },
+  {
+    "id": "MOD-06",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "iec",
+    "priority": "Media",
+    "title": "Paleta Visual de Simbología IEC con Drag & Drop al Canvas",
+    "desc": "Barra lateral organizada por categorías (Fuerza, Control, Sensores, Bornas) con arrastre directo y colocación asistida por rejilla."
+  },
+  {
+    "id": "MOD-07",
+    "phase": "FASE 3",
+    "done": false,
+    "tag": "ui",
+    "priority": "Media",
+    "title": "Editor Visual de Cajetines y Generador de Listado de Materiales (BOM)",
+    "desc": "Edición en línea de metadatos de lámina (Título, Proyecto, Diseñador, Revisión) y extracción automática de tabla de componentes a CSV."
+  },
+  {
+    "id": "SRV-01",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Alta",
+    "title": "Aprovisionamiento en Servidor Ubuntu AXON (/opt/axon/diagrama-html)",
+    "desc": "Creación de estructura de directorios, permisos de usuario del servicio y entorno de despliegue en la red corporativa."
+  },
+  {
+    "id": "SRV-02",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Crítica",
+    "title": "API REST en Node.js para Gestión Multi-Proyecto y Carpetas de Clientes",
+    "desc": "Endpoints para listar proyectos, guardar planos (.axon.json), versionar emisiones y gestionar biblioteca central de símbolos."
+  },
+  {
+    "id": "SRV-03",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Alta",
+    "title": "Microservicio Python para Conversión y Extracción de PDFs (PyMuPDF/ezdxf)",
+    "desc": "Worker asíncrono para generar PDFs vectoriales A3 de alta resolución y procesar planos heredados recibidos de clientes."
+  },
+  {
+    "id": "SRV-04",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Media",
+    "title": "Configuración de Nginx como Reverse Proxy y SSL",
+    "desc": "Enrutamiento de tráfico web, compresión gzip/brotli, cabeceras de seguridad y terminación HTTPS en la intranet de AXON."
+  },
+  {
+    "id": "SRV-05",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "server",
+    "priority": "Media",
+    "title": "Supervisión de Procesos con PM2 y Demonio Systemd",
+    "desc": "Arranque automático al iniciar el servidor, reinicio ante fallos y registro centralizado de logs."
+  },
+  {
+    "id": "SRV-06",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Registro Inmutable de Auditoría (Audit Trail) según ALCOA+",
+    "desc": "Trazabilidad criptográfica de quién modificó cada lámina, fecha, hora y hash SHA-256 de las emisiones aprobadas."
+  },
+  {
+    "id": "QA-01",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "qa",
+    "priority": "Alta",
+    "title": "Suite de Pruebas Unitarias Automatizadas (Vitest)",
+    "desc": "Cobertura >= 80% en motores de cálculo topológico de cables, matrices de transformación geométrica y exportación DXF."
+  },
+  {
+    "id": "QA-02",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "qa",
+    "priority": "Crítica",
+    "title": "Suite de Pruebas E2E en Navegador Real (Playwright)",
+    "desc": "Automatización de pruebas completas de dibujo ortogonal, corte de conductores, arrastre elástico, zoom e impresión A3."
+  },
+  {
+    "id": "QA-03",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "qa",
+    "priority": "Media",
+    "title": "Pipeline CI/CD en GitHub Actions",
+    "desc": "Validación continua de linting, tipos de TypeScript, ejecución de tests y despliegue automatizado a servidor ante tags de versión."
+  },
+  {
+    "id": "QA-04",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Protocolo de Calificación IQ / OQ según Guía GAMP 5",
+    "desc": "Documentación formal de Calificación de Instalación y Operación para validación ante clientes farmacéuticos e industriales."
+  },
+  {
+    "id": "QA-05",
+    "phase": "FASE 5",
+    "done": false,
+    "tag": "qa",
+    "priority": "Crítica",
+    "title": "Puesta en Marcha Productiva en Red AXON y Manual de Operación",
+    "desc": "Publicación oficial del sistema en la intranet, migración de proyectos activos y capacitación a ingenieros de diseño."
+  }
+]
+</script>
+﻿<script>
+(function() {
+  'use strict';
+
+  const STORAGE_KEY = 'AXON_DIAGRAMA_ROADMAP_v1';
+  const rawSeed = JSON.parse(document.getElementById('taskSeedData').textContent);
+  let tasks = loadState();
+
+  function loadState() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return rawSeed.map(t => {
+          const match = parsed.find(p => p.id === t.id);
+          return match ? { ...t, done: match.done } : t;
+        });
+      }
+    } catch(e) {
+      console.warn('Error leyendo localStorage', e);
+    }
+    return JSON.parse(JSON.stringify(rawSeed));
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      showToast('💾 Progreso guardado automáticamente');
+    } catch(e) {
+      console.warn('Error guardando en localStorage', e);
+    }
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.style.display = 'flex';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+      toast.style.display = 'none';
+    }, 2000);
+  }
+
+  const mProgress = document.getElementById('mProgress');
+  const mDone = document.getElementById('mDone');
+  const mPending = document.getElementById('mPending');
+  const mTotal = document.getElementById('mTotal');
+  const mPhasesClosed = document.getElementById('mPhasesClosed');
+  const mNextMilestone = document.getElementById('mNextMilestone');
+  const progressBar = document.getElementById('progressBar');
+  const taskListContainer = document.getElementById('taskListContainer');
+  const searchInput = document.getElementById('searchInput');
+  const phaseSelect = document.getElementById('phaseSelect');
+  const taskCounterHint = document.getElementById('taskCounterHint');
+  const activeFilterLabel = document.getElementById('activeFilterLabel');
+  const btnReset = document.getElementById('btnReset');
+  const btnExport = document.getElementById('btnExport');
+  const btnExportJson = document.getElementById('btnExportJson');
+  const btnImportJson = document.getElementById('btnImportJson');
+  const fileImportInput = document.getElementById('fileImportInput');
+  const btnShowAllNodes = document.getElementById('btnShowAllNodes');
+  const btnMarkPhaseDone = document.getElementById('btnMarkPhaseDone');
+  const pills = document.querySelectorAll('.pill');
+  const nodes = document.querySelectorAll('.map .node');
+
+  let currentTagFilter = 'all';
+  let currentPhaseFilter = 'ALL';
+  let currentSearch = '';
+
+  function renderMetrics() {
+    const total = tasks.length;
+    const done = tasks.filter(t => t.done).length;
+    const pending = total - done;
+    const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+    const phases = ['FASE 1', 'FASE 2', 'FASE 3', 'FASE 4', 'FASE 5'];
+    let closedCount = 0;
+    let nextPhase = 'COMPLETADO';
+
+    phases.forEach(ph => {
+      const phTasks = tasks.filter(t => t.phase === ph);
+      if (phTasks.length > 0 && phTasks.every(t => t.done)) {
+        closedCount++;
+      } else if (nextPhase === 'COMPLETADO') {
+        nextPhase = ph;
+      }
+    });
+
+    mTotal.textContent = total;
+    mDone.textContent = done;
+    mPending.textContent = pending;
+    mProgress.textContent = pct + '%';
+    progressBar.style.width = pct + '%';
+    mPhasesClosed.textContent = `${closedCount} / ${phases.length}`;
+    mNextMilestone.textContent = nextPhase;
+  }
+
+  function renderTasks() {
+    taskListContainer.innerHTML = '';
+
+    const filtered = tasks.filter(t => {
+      if (currentPhaseFilter !== 'ALL' && t.phase !== currentPhaseFilter) return false;
+      if (currentTagFilter === 'open' && t.done) return false;
+      if (currentTagFilter === 'done' && !t.done) return false;
+      if (currentTagFilter !== 'all' && currentTagFilter !== 'open' && currentTagFilter !== 'done') {
+        if (t.tag !== currentTagFilter) return false;
+      }
+      if (currentSearch.trim()) {
+        const q = currentSearch.toLowerCase();
+        const match = t.id.toLowerCase().includes(q) ||
+                      t.title.toLowerCase().includes(q) ||
+                      t.desc.toLowerCase().includes(q) ||
+                      t.phase.toLowerCase().includes(q) ||
+                      t.priority.toLowerCase().includes(q);
+        if (!match) return false;
+      }
+      return true;
+    });
+
+    taskCounterHint.textContent = `${filtered.length} de ${tasks.length} tareas`;
+
+    if (filtered.length === 0) {
+      taskListContainer.innerHTML = `
+        <div style="text-align: center; padding: 40px 20px; color: var(--muted);">
+          <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+          <div>No se encontraron tareas con los filtros seleccionados.</div>
+        </div>
+      `;
+      return;
+    }
+
+    filtered.forEach(task => {
+      const el = document.createElement('div');
+      el.className = `task ${task.done ? 'done' : ''}`;
+      
+      const prioClass = task.priority === 'Crítica' ? 'prio-critica' : 
+                        task.priority === 'Alta' ? 'prio-alta' : 'prio-media';
+
+      el.innerHTML = `
+        <div class="tasktop">
+          <label>
+            <input type="checkbox" ${task.done ? 'checked' : ''} data-id="${task.id}">
+            <div>
+              <div class="task-meta">
+                <span class="taskid">${task.id}</span>
+                <span class="taskphase">${task.phase}</span>
+                <span class="prio-badge ${prioClass}">${task.priority}</span>
+              </div>
+              <span class="tasktitle">${escapeHtml(task.title)}</span>
+            </div>
+          </label>
+          <span class="tag ${task.done ? 'done' : 'pending'}">
+            ${task.done ? '✓ Listo' : '⏳ Pendiente'}
+          </span>
+        </div>
+        <div class="detail">${escapeHtml(task.desc)}</div>
+      `;
+      taskListContainer.appendChild(el);
+    });
+
+    taskListContainer.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        const id = e.target.getAttribute('data-id');
+        const isChecked = e.target.checked;
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+          task.done = isChecked;
+          saveState();
+          renderMetrics();
+          renderTasks();
+          updateGraphVisuals();
+        }
+      });
+    });
+  }
+
+  function updateGraphVisuals() {
+    const phases = ['FASE 1', 'FASE 2', 'FASE 3', 'FASE 4', 'FASE 5'];
+    
+    phases.forEach(ph => {
+      const phTasks = tasks.filter(t => t.phase === ph);
+      const total = phTasks.length;
+      const done = phTasks.filter(t => t.done).length;
+      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+      const nodeBar = document.getElementById('nodeBar_' + ph);
+      const nodeStatus = document.getElementById('nodeStatus_' + ph);
+      const nodeEl = document.querySelector(`.map .node[data-phase="${ph}"]`);
+
+      if (nodeBar) {
+        const maxW = ph === 'FASE 1' ? 120 : 190;
+        nodeBar.setAttribute('width', Math.round((pct / 100) * maxW));
+      }
+
+      if (nodeStatus && nodeEl) {
+        const rect = nodeEl.querySelector('rect');
+        if (pct === 100) {
+          nodeStatus.textContent = '✓ 100% COMPLETADA';
+          nodeStatus.setAttribute('fill', '#10b981');
+          rect.setAttribute('stroke', '#10b981');
+        } else if (pct > 0) {
+          nodeStatus.textContent = `⚡ ${pct}% EN CURSO`;
+          nodeStatus.setAttribute('fill', '#f59e0b');
+          rect.setAttribute('stroke', '#f59e0b');
+        } else {
+          nodeStatus.textContent = '⏳ PENDIENTE';
+          nodeStatus.setAttribute('fill', '#94a3b8');
+          rect.setAttribute('stroke', '#334b6e');
+        }
+      }
+    });
+  }
+
+  function selectPhase(phase) {
+    currentPhaseFilter = phase;
+    phaseSelect.value = phase;
+
+    nodes.forEach(n => {
+      if (phase === 'ALL' || n.getAttribute('data-phase') === phase) {
+        n.classList.add('selected');
+      } else {
+        n.classList.remove('selected');
+      }
+    });
+
+    activeFilterLabel.textContent = phase === 'ALL' ? 'Mostrando: Todas las fases' : `Filtrando: ${phase}`;
+    btnMarkPhaseDone.style.display = phase === 'ALL' ? 'none' : 'inline-flex';
+    renderTasks();
+  }
+
+  searchInput.addEventListener('input', (e) => {
+    currentSearch = e.target.value;
+    renderTasks();
+  });
+
+  phaseSelect.addEventListener('change', (e) => {
+    selectPhase(e.target.value);
+  });
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentTagFilter = pill.getAttribute('data-filter');
+      renderTasks();
+    });
+  });
+
+  nodes.forEach(node => {
+    node.addEventListener('click', () => {
+      const phase = node.getAttribute('data-phase');
+      selectPhase(phase);
+    });
+  });
+
+  btnShowAllNodes.addEventListener('click', () => {
+    selectPhase('ALL');
+  });
+
+  btnMarkPhaseDone.addEventListener('click', () => {
+    if (currentPhaseFilter === 'ALL') return;
+    if (confirm(`¿Marcar todas las tareas de ${currentPhaseFilter} como completadas?`)) {
+      tasks.forEach(t => {
+        if (t.phase === currentPhaseFilter) t.done = true;
+      });
+      saveState();
+      renderMetrics();
+      renderTasks();
+      updateGraphVisuals();
+    }
+  });
+
+  btnReset.addEventListener('click', () => {
+    if (confirm('¿Restablecer el mapa y checklist al estado inicial oficial?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      tasks = JSON.parse(JSON.stringify(rawSeed));
+      saveState();
+      renderMetrics();
+      renderTasks();
+      updateGraphVisuals();
+      selectPhase('ALL');
+    }
+  });
+
+  btnExportJson.addEventListener('click', () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks, null, 2));
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute("href", dataStr);
+    dlAnchor.setAttribute("download", "ROADMAP_DIAGRAMA_STATE.json");
+    dlAnchor.click();
+  });
+
+  btnImportJson.addEventListener('click', () => {
+    fileImportInput.click();
+  });
+
+  fileImportInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const imported = JSON.parse(event.target.result);
+        if (Array.isArray(imported)) {
+          tasks = rawSeed.map(t => {
+            const match = imported.find(p => p.id === t.id);
+            return match ? { ...t, done: match.done } : t;
+          });
+          saveState();
+          renderMetrics();
+          renderTasks();
+          updateGraphVisuals();
+          showToast('📥 Estado importado con éxito');
+        }
+      } catch(err) {
+        alert('Archivo JSON no válido');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  btnExport.addEventListener('click', () => {
+    let md = `# Hoja de Ruta del Proyecto (Roadmap) - Diagrama-HTML (AXON CAD Web)\n\n`;
+    md += `*Generado interactivamente desde roadmap.html el ${new Date().toISOString().split('T')[0]}*\n\n`;
+
+    const phases = ['FASE 1', 'FASE 2', 'FASE 3', 'FASE 4', 'FASE 5'];
+    phases.forEach(ph => {
+      const phTasks = tasks.filter(t => t.phase === ph);
+      const doneCount = phTasks.filter(t => t.done).length;
+      const pct = phTasks.length === 0 ? 0 : Math.round((doneCount / phTasks.length) * 100);
+      md += `### ${ph} (${pct}% completado - ${doneCount}/${phTasks.length})\n\n`;
+      phTasks.forEach(t => {
+        md += `- [${t.done ? 'x' : ' '}] **${t.id}** [${t.priority}] — ${t.title}: ${t.desc}\n`;
+      });
+      md += `\n`;
+    });
+
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ROADMAP_ACTUALIZADO.md';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('📄 ROADMAP_ACTUALIZADO.md generado');
+  });
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>'"]/g, tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag));
+  }
+
+  renderMetrics();
+  renderTasks();
+  updateGraphVisuals();
+  selectPhase('ALL');
+
+})();
+</script>
+</body>
+</html>
