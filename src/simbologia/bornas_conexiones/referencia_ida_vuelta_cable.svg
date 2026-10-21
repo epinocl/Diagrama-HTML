@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120" style="background:#ffffff;">
+  <defs>
+    <style>
+      .wire { stroke: #0f172a; stroke-width: 2; fill: none; stroke-linecap: round; }
+      .component { stroke: #0f172a; stroke-width: 2.2; fill: none; }
+      .fill-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; }
+      .sym-text { font-family: Arial, sans-serif; font-size: 11px; fill: #1e293b; text-anchor: middle; }
+      .pin-label { font-family: monospace; font-size: 9px; fill: #475569; }
+    </style>
+  </defs>
+
+  <!-- Referencia Cruzada -->
+  <line x1="20" y1="60" x2="80" y2="60" class="wire"/>
+  <polygon points="80,50 115,60 80,70" fill="#0f172a"/>
+  <text x="65" y="44" class="sym-text" font-weight="bold">+24V</text>
+  <text x="135" y="64" class="pin-label" font-size="11" font-weight="bold" fill="#0284c7">/12.4</text>
+
+</svg>

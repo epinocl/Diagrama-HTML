@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120" style="background:#ffffff;">
+  <defs>
+    <style>
+      .wire { stroke: #0f172a; stroke-width: 2; fill: none; stroke-linecap: round; }
+      .component { stroke: #0f172a; stroke-width: 2.2; fill: none; }
+      .fill-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; }
+      .sym-text { font-family: Arial, sans-serif; font-size: 11px; fill: #1e293b; text-anchor: middle; }
+      .pin-label { font-family: monospace; font-size: 9px; fill: #475569; }
+    </style>
+  </defs>
+
+  <!-- Contacto NO -->
+  <line x1="80" y1="10" x2="80" y2="40" class="wire"/>
+  <circle cx="80" cy="40" r="3" fill="#0f172a"/>
+  <line x1="80" y1="40" x2="98" y2="76" class="wire" stroke-width="2.5"/>
+  <circle cx="80" cy="80" r="3" fill="#0f172a"/>
+  <line x1="80" y1="80" x2="80" y2="110" class="wire"/>
+  <text x="65" y="36" class="pin-label">13</text>
+  <text x="65" y="90" class="pin-label">14</text>
+  <text x="120" y="62" class="sym-text" font-weight="bold">NO</text>
+
+</svg>

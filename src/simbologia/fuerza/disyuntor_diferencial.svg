@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120" style="background:#ffffff;">
+  <defs>
+    <style>
+      .wire { stroke: #0f172a; stroke-width: 2; fill: none; stroke-linecap: round; }
+      .component { stroke: #0f172a; stroke-width: 2.2; fill: none; }
+      .fill-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; }
+      .sym-text { font-family: Arial, sans-serif; font-size: 11px; fill: #1e293b; text-anchor: middle; }
+      .pin-label { font-family: monospace; font-size: 9px; fill: #475569; }
+    </style>
+  </defs>
+
+  <!-- Disyuntor Diferencial -->
+  <line x1="50" y1="10" x2="50" y2="35" class="wire"/>
+  <line x1="110" y1="10" x2="110" y2="35" class="wire"/>
+  <!-- Contactos principales -->
+  <line x1="50" y1="35" x2="62" y2="70" class="wire" stroke-width="2.5"/>
+  <line x1="110" y1="35" x2="122" y2="70" class="wire" stroke-width="2.5"/>
+  <!-- Barra de disparo térmico/magnético y toroidal -->
+  <line x1="45" y1="52" x2="127" y2="52" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <ellipse cx="80" cy="52" rx="14" ry="24" stroke="#0f172a" stroke-width="1.8" fill="none"/>
+  <line x1="50" y1="75" x2="50" y2="110" class="wire"/>
+  <line x1="110" y1="75" x2="110" y2="110" class="wire"/>
+  <text x="25" y="60" class="pin-label" fill="#dc2626" font-weight="bold">IΔn</text>
+  <text x="135" y="60" class="pin-label">QA</text>
+
+</svg>

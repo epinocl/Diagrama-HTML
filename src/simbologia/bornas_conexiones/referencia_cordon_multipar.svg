@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120" style="background:#ffffff;">
+  <defs>
+    <style>
+      .wire { stroke: #0f172a; stroke-width: 2; fill: none; stroke-linecap: round; }
+      .component { stroke: #0f172a; stroke-width: 2.2; fill: none; }
+      .fill-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; }
+      .sym-text { font-family: Arial, sans-serif; font-size: 11px; fill: #1e293b; text-anchor: middle; }
+      .pin-label { font-family: monospace; font-size: 9px; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect x="30" y="25" width="100" height="70" rx="4" class="fill-box"/>
+  <text x="80" y="65" class="sym-text" font-weight="bold">Referencia a Co</text>
+  <line x1="80" y1="10" x2="80" y2="25" class="wire"/>
+  <line x1="80" y1="95" x2="80" y2="110" class="wire"/>
+
+</svg>

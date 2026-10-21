@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120" style="background:#ffffff;">
+  <defs>
+    <style>
+      .wire { stroke: #0f172a; stroke-width: 2; fill: none; stroke-linecap: round; }
+      .component { stroke: #0f172a; stroke-width: 2.2; fill: none; }
+      .fill-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; }
+      .sym-text { font-family: Arial, sans-serif; font-size: 11px; fill: #1e293b; text-anchor: middle; }
+      .pin-label { font-family: monospace; font-size: 9px; fill: #475569; }
+    </style>
+  </defs>
+
+  <!-- Fuente 24VDC -->
+  <rect x="25" y="20" width="110" height="80" rx="4" class="fill-box"/>
+  <line x1="25" y1="45" x2="135" y2="45" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <text x="80" y="38" class="sym-text" font-weight="bold">POWER SUPPLY</text>
+  <text x="80" y="70" class="sym-text" font-size="13" font-weight="bold" fill="#0284c7">24 VDC</text>
+  <!-- Bornas Entrada AC -->
+  <circle cx="45" cy="20" r="3" fill="#0f172a"/>
+  <text x="45" y="14" class="pin-label" text-anchor="middle">L</text>
+  <circle cx="80" cy="20" r="3" fill="#0f172a"/>
+  <text x="80" y="14" class="pin-label" text-anchor="middle">N</text>
+  <circle cx="115" cy="20" r="3" fill="#0f172a"/>
+  <text x="115" y="14" class="pin-label" text-anchor="middle">PE</text>
+  <!-- Bornas Salida DC -->
+  <circle cx="55" cy="100" r="3" fill="#0284c7"/>
+  <text x="55" y="114" class="pin-label" text-anchor="middle" font-weight="bold" fill="#0284c7">+24V</text>
+  <circle cx="105" cy="100" r="3" fill="#0284c7"/>
+  <text x="105" y="114" class="pin-label" text-anchor="middle" font-weight="bold" fill="#0284c7">0V</text>
+
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 90" width="930" height="90" style="background:#ffffff;">
+  <defs>
+    <style>
+      .cad-border { stroke: #0f172a; stroke-width: 1.8; fill: none; }
+      .cad-thin { stroke: #334155; stroke-width: 0.8; fill: none; }
+      .title-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #475569; font-weight: 700; text-transform: uppercase; }
+      .title-value { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #0f172a; font-weight: bold; }
+      .title-main { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; fill: #0284c7; font-weight: 800; letter-spacing: 0.5px; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="930" height="90" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
+
+  <!-- Divisiones Verticales (75px, 150px, 110px, 335px, 135px, 125px) -->
+  <line x1="75" y1="0" x2="75" y2="90" class="cad-thin"/>
+  <line x1="225" y1="0" x2="225" y2="90" class="cad-thin"/>
+  <line x1="335" y1="0" x2="335" y2="90" class="cad-thin"/>
+  <line x1="670" y1="0" x2="670" y2="90" class="cad-thin"/>
+  <line x1="805" y1="0" x2="805" y2="90" class="cad-thin"/>
+
+  <!-- Divisiones Horizontales -->
+  <line x1="0" y1="22" x2="335" y2="22" class="cad-thin"/>
+  <line x1="0" y1="45" x2="335" y2="45" class="cad-thin"/>
+  <line x1="0" y1="67" x2="335" y2="67" class="cad-thin"/>
+
+  <line x1="335" y1="27" x2="670" y2="27" class="cad-thin"/>
+  
+  <line x1="670" y1="30" x2="805" y2="30" class="cad-thin"/>
+  <line x1="670" y1="60" x2="805" y2="60" class="cad-thin"/>
+  
+  <line x1="805" y1="50" x2="930" y2="50" class="cad-thin"/>
+
+  <!-- 1. Bloque de Firmas y Responsables -->
+  <text x="6" y="15" class="title-label">DIBUJADO</text>
+  <text x="82" y="15" class="title-value">AXON ING.</text>
+  <text x="280" y="15" class="title-value" text-anchor="middle">2026-10-16</text>
+
+  <text x="6" y="38" class="title-label">REVISADO</text>
+  <text x="82" y="38" class="title-value">EPINO</text>
+  <text x="280" y="38" class="title-value" text-anchor="middle">2026-10-16</text>
+
+  <text x="6" y="60" class="title-label">APROBADO</text>
+  <text x="82" y="60" class="title-value">GARDEN HOUSE S.A.</text>
+  <text x="280" y="60" class="title-value" text-anchor="middle">2026-10-16</text>
+
+  <text x="6" y="83" class="title-label">ESTÁNDAR</text>
+  <text x="82" y="83" class="title-value">IEC 60617</text>
+  <text x="280" y="83" class="title-value" text-anchor="middle">REV. 0</text>
+
+  <!-- 2. Bloque de Cliente y Título del Proyecto -->
+  <text x="345" y="17" class="title-label">CLIENTE:</text>
+  <text x="405" y="18" class="title-value" font-size="14" fill="#0f172a">GARDEN HOUSE S.A.</text>
+
+  <text x="345" y="45" class="title-main">TITULO DEL PROYECTO O MAQUINA</text>
+  <text x="345" y="71" class="title-value" font-size="12" fill="#0284c7">DIAGRAMA DE FUERZA Y CONTROL</text>
+
+  <!-- 3. Bloque de Identificación Técnica -->
+  <text x="678" y="18" class="title-label">CÓDIGO:</text>
+  <text x="735" y="20" class="title-value" font-size="13" fill="#dc2626">DE-XXXX</text>
+
+  <text x="678" y="48" class="title-label">DISCIPLINA:</text>
+  <text x="745" y="49" class="title-value" font-size="12">Fuerza / Control</text>
+
+  <text x="678" y="78" class="title-label">PLANO N°:</text>
+  <text x="738" y="79" class="title-value" font-size="12">XXXX-E-01</text>
+
+  <!-- 4. Bloque de Lámina y Estado -->
+  <text x="815" y="20" class="title-label">LÁMINA / HOJA</text>
+  <text x="868" y="41" class="title-value" font-size="20" fill="#0284c7" text-anchor="middle">01 / 01</text>
+
+  <text x="815" y="65" class="title-label">ESTADO</text>
+  <text x="868" y="81" class="title-value" font-size="13" fill="#16a34a" text-anchor="middle">AS-BUILT</text>
+</svg>
