@@ -2,6 +2,7 @@
 import { Toolbar } from './components/Toolbar';
 import { CadCanvas } from './components/CadCanvas';
 import { PropertyInspector } from './components/PropertyInspector';
+import { SymbolPalette } from './components/SymbolPalette';
 import { useCadStore } from './store/useCadStore';
 import { ZoomIn, ZoomOut, RotateCcw, ShieldCheck, FolderUp, Download, CheckCircle2 } from 'lucide-react';
 
@@ -16,7 +17,14 @@ export const App: React.FC = () => {
     projectName,
     importZipFile,
     exportCurrentZip,
-    notification
+    notification,
+    sheets,
+    activeSheetIndex,
+    setActiveSheetIndex,
+    showSketchUnderlay,
+    sketchOpacity,
+    setSketchOpacity,
+    sketches
   } = useCadStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -138,6 +146,13 @@ export const App: React.FC = () => {
             <Download size={14} /> Exportar .axon.zip
           </button>
 
+          {showSketchUnderlay && Object.keys(sketches).length > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: mutedColor }}>
+              <span>Opacidad Boceto:</span>
+              <input type='range' min='0.05' max='1' step='0.05' value={sketchOpacity} onChange={(e) => setSketchOpacity(parseFloat(e.target.value))} style={{ width: '60px', cursor: 'pointer' }} />
+              <span style={{ minWidth: '28px', color: textColor }}>{Math.round(sketchOpacity * 100)}%</span>
+            </div>
+          )}
           <div style={{ width: '1px', height: '20px', backgroundColor: borderColor, margin: '0 2px' }} />
 
           {/* Zoom */}
@@ -200,6 +215,7 @@ export const App: React.FC = () => {
         <Toolbar />
         <CadCanvas />
         <PropertyInspector />
+        <SymbolPalette />
 
         {/* Notificación Toast Flotante */}
         {notification && (
@@ -247,7 +263,18 @@ export const App: React.FC = () => {
           <span>Formato: <strong>DIN ISO 5457 A3 (420 x 297 mm)</strong></span>
         </div>
         <div>
-          <span>Lámina: <strong>01 / 11 — Circuito Fuerza</strong></span>
+          {sheets.length > 0 ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>Lamina:</span>
+              <select value={activeSheetIndex} onChange={(e) => setActiveSheetIndex(Number(e.target.value))} style={{ backgroundColor: isDark ? '#14223d' : '#f1f5f9', color: textColor, border: '1px solid ' + borderColor, borderRadius: '4px', padding: '1px 6px', fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>
+                {sheets.map((s, idx) => (
+                  <option key={s.id} value={idx}>Lamina {s.meta.sheetCode || idx + 1}: {s.meta.titleShort || ('Lamina ' + (idx + 1))}</option>
+                ))}
+              </select>
+            </div>
+          ) : (
+            <span>Lamina: <strong>01 / 01 - Circuito General</strong></span>
+          )}
           <span style={{ margin: '0 8px' }}>•</span>
           <span>Audit Trail: <strong style={{ color: '#10b981' }}>ALCOA+ Activo</strong></span>
         </div>

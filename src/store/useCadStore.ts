@@ -7,7 +7,7 @@ import {
   GeometryEntity, 
   ProjectDocument,
   SheetDocument,
-  PackageMetadata
+  ConnectionPort
 } from '../cad/types';
 import { splitWireSegment, extendWireSegment, snapToGrid } from '../cad/topology';
 import { exportProjectToZip, importProjectFromZip, downloadBlob } from '../cad/zipPackage';
@@ -21,7 +21,14 @@ interface CadState {
   projectName: string;
   client: string;
   activeSheetId: string;
+  activeSheetIndex: number;
+  sheets: SheetDocument[];
   sketches: Record<string, string>;
+
+  // Capa de Boceto de Referencia (Underlay)
+  showSketchUnderlay: boolean;
+  sketchOpacity: number;
+  isPaletteOpen: boolean;
 
   // Notificaciones de usuario
   notification: string | null;
@@ -52,14 +59,18 @@ interface CadState {
   setPan: (pan: Point2D) => void;
   toggleInspector: () => void;
   setInspectorFloating: (floating: boolean) => void;
+  toggleSketchUnderlay: () => void;
+  setSketchOpacity: (opacity: number) => void;
+  togglePalette: () => void;
   showNotification: (msg: string) => void;
   
   // Selección
   selectEntity: (id: string, multiple?: boolean) => void;
   clearSelection: () => void;
 
-  // Modificación de componentes
+  // Modificación de componentes y símbolos IEC
   addComponent: (comp: ComponentEntity) => void;
+  insertIecSymbol: (symbolId: string, name: string, category: string) => void;
   updateComponentPosition: (id: string, pos: Point2D) => void;
   updateComponentProperty: (id: string, key: string, value: string) => void;
   deleteSelected: () => void;
@@ -73,6 +84,7 @@ interface CadState {
   loadProjectDocument: (doc: ProjectDocument, sketches?: Record<string, string>) => void;
   importZipFile: (file: File | Blob) => Promise<void>;
   exportCurrentZip: () => Promise<void>;
+  setActiveSheetIndex: (idx: number) => void;
 }
 
 export const useCadStore = create<CadState>((set, get) => ({
@@ -80,7 +92,12 @@ export const useCadStore = create<CadState>((set, get) => ({
   projectName: 'Control Visión Blistera 3',
   client: 'Eurofarma Chile SpA',
   activeSheetId: 'sheet_01',
+  activeSheetIndex: 0,
+  sheets: [],
   sketches: {},
+  showSketchUnderlay: true,
+  sketchOpacity: 0.35,
+  isPaletteOpen: false,
   notification: null,
 
   tool: 'select',
@@ -159,6 +176,9 @@ export const useCadStore = create<CadState>((set, get) => ({
   setPan: (pan) => set({ pan }),
   toggleInspector: () => set((s) => ({ isInspectorOpen: !s.isInspectorOpen })),
   setInspectorFloating: (isInspectorFloating) => set({ isInspectorFloating }),
+  toggleSketchUnderlay: () => set((s) => ({ showSketchUnderlay: !s.showSketchUnderlay })),
+  setSketchOpacity: (sketchOpacity) => set({ sketchOpacity }),
+  togglePalette: () => set((s) => ({ isPaletteOpen: !s.isPaletteOpen })),
 
   showNotification: (msg: string) => {
     set({ notification: msg });
@@ -174,6 +194,45 @@ export const useCadStore = create<CadState>((set, get) => ({
   clearSelection: () => set({ selectedIds: [] }),
 
   addComponent: (comp) => set((s) => ({ components: [...s.components, comp] })),
+
+  insertIecSymbol: (symbolId, name, category) => set((s) => {
+    const id = `comp_${Date.now()}`;
+    const nextNum = s.components.filter(c => c.symbolId === symbolId).length + 1;
+    const tagPrefix = symbolId.includes('contactor') ? '-KM' : 
+                      symbolId.includes('disyuntor') ? '-Q' : 
+                      symbolId.includes('fuente') ? '-PS' : 
+                      symbolId.includes('motor') ? '-M' : 
+                      symbolId.includes('variador') ? '-U' : '-X';
+
+    // Crear bornas por defecto según categoría
+    const ports: ConnectionPort[] = [
+      { id: `${id}_1`, componentId: id, label: '1', relPosition: { x: 0, y: -24 }, direction: 'top', type: 'power_in', connectedWireIds: [] },
+      { id: `${id}_2`, componentId: id, label: '2', relPosition: { x: 0, y: 24 }, direction: 'bottom', type: 'power_out', connectedWireIds: [] }
+    ];
+
+    const newComp: ComponentEntity = {
+      id,
+      type: 'iec_component',
+      symbolId,
+      tag: `${tagPrefix}${nextNum}`,
+      functionText: name,
+      position: { x: 200, y: 150 },
+      rotation: 0,
+      scale: 1,
+      layer: category === 'fuerza' ? 'Fuerza' : 'Control',
+      attributes: {
+        'Tipo': name,
+        'Fabricante': 'AXON Estándar'
+      },
+      ports
+    };
+
+    return {
+      components: [...s.components, newComp],
+      selectedIds: [id],
+      isPaletteOpen: false
+    };
+  }),
 
   updateComponentPosition: (id, pos) => set((s) => {
     const { gridSize, snapGridEnabled } = s;
@@ -301,11 +360,16 @@ export const useCadStore = create<CadState>((set, get) => ({
 
   // Cargar Documento Completo
   loadProjectDocument: (doc, sketches = {}) => {
-    const activeSheet = doc.sheets.find(s => s.id === doc.activeSheetId) || doc.sheets[0];
+    const sheets = doc.sheets || [];
+    const activeSheet = sheets.find(s => s.id === doc.activeSheetId) || sheets[0];
+    const sheetIdx = sheets.findIndex(s => s.id === activeSheet?.id);
+
     set({
       projectCode: doc.projectCode,
       projectName: doc.projectName,
       client: doc.client,
+      sheets,
+      activeSheetIndex: sheetIdx >= 0 ? sheetIdx : 0,
       activeSheetId: activeSheet?.id || 'sheet_01',
       components: activeSheet?.components || [],
       wires: activeSheet?.wires || [],
@@ -313,7 +377,22 @@ export const useCadStore = create<CadState>((set, get) => ({
       sketches,
       selectedIds: []
     });
-    get().showNotification(`✓ Proyecto ${doc.projectCode} cargado con éxito`);
+    get().showNotification(`✓ Proyecto ${doc.projectCode} cargado (${sheets.length} láminas)`);
+  },
+
+  setActiveSheetIndex: (idx) => {
+    const { sheets } = get();
+    if (idx >= 0 && idx < sheets.length) {
+      const targetSheet = sheets[idx];
+      set({
+        activeSheetIndex: idx,
+        activeSheetId: targetSheet.id,
+        components: targetSheet.components || [],
+        wires: targetSheet.wires || [],
+        geometries: targetSheet.geometries || [],
+        selectedIds: []
+      });
+    }
   },
 
   // Importar desde archivo .axon.zip
@@ -338,7 +417,14 @@ export const useCadStore = create<CadState>((set, get) => ({
       standard: 'IEC_60617',
       format: 'DIN_ISO_5457_A3',
       activeSheetId: state.activeSheetId,
-      sheets: [
+      sheets: state.sheets.length > 0 ? state.sheets.map((s, idx) => 
+        idx === state.activeSheetIndex ? {
+          ...s,
+          components: state.components,
+          wires: state.wires,
+          geometries: state.geometries
+        } : s
+      ) : [
         {
           id: state.activeSheetId,
           meta: {

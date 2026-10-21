@@ -13,7 +13,9 @@ import {
   RotateCcw, 
   Trash2,
   Magnet,
-  Grid
+  Grid,
+  Cpu,
+  Image as ImageIcon
 } from 'lucide-react';
 
 export const Toolbar: React.FC = () => {
@@ -31,7 +33,11 @@ export const Toolbar: React.FC = () => {
     snapGridEnabled,
     snapPortEnabled,
     deleteSelected,
-    selectedIds
+    selectedIds,
+    isPaletteOpen,
+    togglePalette,
+    showSketchUnderlay,
+    toggleSketchUnderlay
   } = useCadStore();
 
   const tools: { id: CadTool; label: string; icon: React.ReactNode }[] = [
@@ -124,6 +130,12 @@ export const Toolbar: React.FC = () => {
       >
         <Grid size={18} />
       </button>
+
+      {/* Catalogo de Simbolos IEC */}
+      <button title='Catalogo de Simbolos IEC 60617' onClick={togglePalette} style={{ width: '40px', height: '40px', borderRadius: '8px', border: isPaletteOpen ? '1px solid #38bdf8' : '1px solid transparent', backgroundColor: isPaletteOpen ? 'rgba(56, 189, 248, 0.15)' : 'transparent', color: isPaletteOpen ? '#38bdf8' : '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><Cpu size={18} /></button>
+
+      {/* Alternar Boceto */}
+      <button title={showSketchUnderlay ? 'Ocultar Boceto de Fondo' : 'Mostrar Boceto de Fondo'} onClick={toggleSketchUnderlay} style={{ width: '40px', height: '40px', borderRadius: '8px', border: showSketchUnderlay ? '1px solid #eab308' : '1px solid transparent', backgroundColor: showSketchUnderlay ? 'rgba(234, 179, 8, 0.15)' : 'transparent', color: showSketchUnderlay ? '#eab308' : '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}><ImageIcon size={18} /></button>
 
       <div style={{ flex: 1 }} />
 

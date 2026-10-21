@@ -22,8 +22,18 @@ export const CadCanvas: React.FC = () => {
     gridSize,
     snapGridEnabled,
     snapPortEnabled,
-    importZipFile
+    importZipFile,
+    sheets,
+    activeSheetIndex,
+    activeSheetId,
+    sketches,
+    showSketchUnderlay,
+    sketchOpacity
   } = useCadStore();
+
+  const activeSheet = sheets[activeSheetIndex] || sheets.find(s => s.id === activeSheetId);
+  const sketchFileName = activeSheet?.sketchFile?.replace("bocetos/", "");
+  const activeSketchUrl = (sketchFileName && sketches[sketchFileName]) || (sketches[Object.keys(sketches)[activeSheetIndex]]) || Object.values(sketches)[0];
 
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -222,6 +232,20 @@ export const CadCanvas: React.FC = () => {
 
           <rect x="0" y="0" width="420" height="297" fill="url(#cadGrid)" />
           <rect x="10" y="10" width="400" height="277" fill="none" stroke={sheetBorder} strokeWidth="1" />
+          
+          {/* Capa de Cotejo: Boceto o PDF */}
+          {showSketchUnderlay && activeSketchUrl && (
+            <g id="sketchUnderlayLayer" opacity={sketchOpacity} style={{ pointerEvents: "none" }}>
+              <image
+                href={activeSketchUrl}
+                x="10"
+                y="10"
+                width="400"
+                height="277"
+                preserveAspectRatio="xMidYMid meet"
+              />
+            </g>
+          )}
           
           {/* Cajetín Normalizado A3 */}
           <g transform="translate(230, 247)">

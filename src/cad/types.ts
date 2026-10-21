@@ -121,6 +121,7 @@ export interface SheetMetadata {
 export interface SheetDocument {
   id: string;
   meta: SheetMetadata;
+  sketchFile?: string;
   components: ComponentEntity[];
   wires: WireNet[];
   geometries: GeometryEntity[];
