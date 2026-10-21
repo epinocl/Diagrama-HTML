@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Simbología Eléctrica Normalizada - AXON</title>
+  <link rel="stylesheet" href="css/catalogo.css">
+</head>
+<body>
+
+  <!-- Encabezado del Catálogo -->
+  <header class="catalog-header">
+    <div class="catalog-title">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <span style="background:#0284c7; color:#fff; font-size:11px; font-weight:bold; padding:3px 8px; border-radius:4px;">BIBLIOTECA CAD</span>
+        <h1>Base de Datos de Simbología Industrial</h1>
+      </div>
+      <p>Biblioteca de símbolos vectoriales (IEC 60617 / EPLAN) extraídos y normalizados para la digitalización de bocetos.</p>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" class="search-input" placeholder="Buscar símbolo (ej: motor, válvula, opto, borna)...">
+      <a href="index.html" class="action-btn" style="text-decoration:none; padding:10px 16px; border-radius:8px; background:#0284c7; color:#fff;">
+        ← Volver al Visor de Planos
+      </a>
+    </div>
+  </header>
+
+  <!-- Filtros de Categoría -->
+  <nav class="filter-bar">
+    <button class="cat-btn active" data-cat="todas">Todos los Símbolos</button>
+    <button class="cat-btn" data-cat="fuerza">Fuerza y Potencia</button>
+    <button class="cat-btn" data-cat="control">Control y Maniobra</button>
+    <button class="cat-btn" data-cat="plc_io">PLC & I/O</button>
+    <button class="cat-btn" data-cat="accionamientos_vdf">Variadores & SEW</button>
+    <button class="cat-btn" data-cat="neumatica">Neumática</button>
+    <button class="cat-btn" data-cat="sensores_campo">Sensores & Encoders</button>
+    <button class="cat-btn" data-cat="bornas_conexiones">Bornas & Cables</button>
+    <button class="cat-btn" data-cat="cajetines_marcos">Cajetines & Marcos A3</button>
+  </nav>
+
+  <!-- Grilla de Tarjetas -->
+  <main class="symbol-grid" id="symbolGrid">
+    <!-- Renderizado dinámico -->
+  </main>
+
+  <script src="js/catalogo_datos.js"></script>
+  <script>
+    let activeCat = "todas";
+    let searchTerm = "";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderSymbols();
+
+      // Buscador
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        searchTerm = e.target.value.toLowerCase().trim();
+        renderSymbols();
+      });
+
+      // Filtros por Categoría
+      document.querySelectorAll(".cat-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          document.querySelectorAll(".cat-btn").forEach((b) => b.classList.remove("active"));
+          e.target.classList.add("active");
+          activeCat = e.target.dataset.cat;
+          renderSymbols();
+        });
+      });
+    });
+
+    function renderSymbols() {
+      const grid = document.getElementById("symbolGrid");
+      grid.innerHTML = "";
+
+      const filtered = BASE_DATOS_SIMBOLOS.filter((item) => {
+        const matchCat = activeCat === "todas" || item.categoria === activeCat;
+        const matchSearch =
+          searchTerm === "" ||
+          item.nombre.toLowerCase().includes(searchTerm) ||
+          item.descripcion.toLowerCase().includes(searchTerm) ||
+          item.tags.some((t) => t.toLowerCase().includes(searchTerm));
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 48px; color: #94a3b8;">
+            <h3>No se encontraron símbolos con ese criterio.</h3>
+            <p style="font-size: 13px; margin-top: 8px;">Intenta buscar por tag o selecciona "Todos los Símbolos".</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach((sym) => {
+        const card = document.createElement("div");
+        card.className = "symbol-card";
+        card.innerHTML = `
+          <div class="symbol-preview-box">
+            <span class="category-tag">${sym.categoria.replace("_", " ")}</span>
+            <img class="symbol-preview-img" src="${sym.archivo_svg}" alt="${sym.nombre}" onerror="this.src='${sym.archivo_png}'">
+          </div>
+          <div class="symbol-details">
+            <h3 class="symbol-name">${sym.nombre}</h3>
+            <p class="symbol-desc">${sym.descripcion}</p>
+            <div class="symbol-tags">
+              ${sym.tags.map((t) => `<span class="tag-badge">${t}</span>`).join("")}
+            </div>
+            <div class="card-actions">
+              <button class="action-btn" onclick="copiarRuta(this, '${sym.archivo_svg}')" title="Copiar ruta relativa del SVG">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                Copiar Ruta
+              </button>
+              <button class="action-btn" onclick="copiarSnippetHTML(this, '${sym.id}', '${sym.archivo_svg}')" title="Copiar snippet HTML para insertar">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Copiar HTML
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function copiarRuta(btn, ruta) {
+      navigator.clipboard.writeText(ruta).then(() => {
+        const origText = btn.innerHTML;
+        btn.innerHTML = "✓ ¡Copiado!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.innerHTML = origText;
+          btn.classList.remove("copied");
+        }, 1500);
+      });
+    }
+
+    function copiarSnippetHTML(btn, id, ruta) {
+      const snippet = `<image href="${ruta}" x="100" y="100" width="120" height="90" id="sym_${id}" />`;
+      navigator.clipboard.writeText(snippet).then(() => {
+        const origText = btn.innerHTML;
+        btn.innerHTML = "✓ Snippet Copiado";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.innerHTML = origText;
+          btn.classList.remove("copied");
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

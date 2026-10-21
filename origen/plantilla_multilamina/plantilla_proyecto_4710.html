@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DE-4710 Control Semáforos de Agua - Garden House</title>
+  <link rel="stylesheet" href="dependencias/css/layout-a3.css">
+  <link rel="stylesheet" href="dependencias/css/presentador-ppt.css">
+  <link rel="stylesheet" href="dependencias/css/print-a3.css">
+  <style>
+    /* Estilos adicionales para las herramientas de edición y modos */
+    .btn-tool {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #f8fafc;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-tool:hover {
+      background: rgba(14, 165, 233, 0.2);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+    .btn-accent {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+    }
+    .btn-accent:hover {
+      background: #0369a1;
+      border-color: #0369a1;
+      color: #ffffff;
+    }
+    .btn-save {
+      background: #16a34a;
+      border-color: #15803d;
+      color: #ffffff;
+      font-weight: 700;
+    }
+    .btn-save:hover {
+      background: #15803d;
+      border-color: #166534;
+      color: #ffffff;
+    }
+    .save-option-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: left;
+    }
+    .save-option-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+    .save-option-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 6px;
+    }
+    .save-option-desc {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .badge-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(14, 165, 233, 0.2);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .badge-master {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+    .modal-input {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f8fafc;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .modal-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+    .tab-guardar-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .tab-guardar-btn.active {
+      color: #38bdf8;
+      border-bottom-color: #38bdf8;
+    }
+    .btn-color-swatch {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 0;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .btn-color-swatch:hover {
+      transform: scale(1.3);
+      border-color: #ffffff;
+      box-shadow: 0 0 0 2px #38bdf8;
+    }
+    .btn-color-swatch.active {
+      box-shadow: 0 0 0 2px #38bdf8, 0 0 6px rgba(56, 189, 248, 0.9);
+      transform: scale(1.15);
+      border-color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- BARRA DE NAVEGACION Y CONTROLES SUPERIORES (ESTILO PPT)                  -->
+  <!-- ========================================================================= -->
+  <header class="top-navbar no-print">
+    <!-- Identidad del Proyecto -->
+    <div class="brand-section">
+      <span class="brand-badge">AXON CAD</span>
+      <div class="project-title">
+        <span class="project-code">DE-4710</span>
+        <span>GARDEN HOUSE - CONTROL SEMÁFORO AGUA</span>
+      </div>
+    </div>
+
+    <!-- Controles de Diapositivas / Láminas -->
+    <div class="nav-controls">
+      <button id="btnPrev" class="btn-icon" title="Lámina Anterior (Flecha Izquierda / A)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+
+      <select id="sheetPicker" class="sheet-picker" title="Seleccionar Lámina"></select>
+
+      <span id="sheetCounter" class="sheet-counter">01 / 04</span>
+
+      <button id="btnNext" class="btn-icon" title="Lámina Siguiente (Flecha Derecha / D / Espacio)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+
+    <!-- Herramientas Principales: Ver 4 Láminas, Mover Textos, Boceto, Impresión -->
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <!-- Modo Continuo: Ver todas las 4 láminas en secuencia vertical -->
+      <button id="btnModoContinuo" class="btn-tool" title="Ver las 4 láminas en una sola vista continua con desplazamiento vertical (Tecla V)">
+        📄 Ver 4 Láminas
+      </button>
+
+      <!-- Modo Reubicación Manual de Textos -->
+      <button id="btnModoMover" class="btn-tool" title="Activa el modo para arrastrar textos con el ratón y editarlos con doble clic (Tecla M)">
+        🖐️ Mover Textos
+      </button>
+
+      <!-- Controles de Tamaño de Letra (Aparece en Modo Mover) -->
+      <div id="fontSizeControls" style="display:none; align-items:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:2px 5px; gap:4px;" title="Ajustar tamaño de letra del texto seleccionado">
+        <span style="font-size:11px; color:#94a3b8; user-select:none;">🔤</span>
+        <button id="btnFontDec" class="btn-icon" title="Achicar letra (-1px) [Tecla '[' o '-']" style="width:24px; height:24px; font-weight:bold; font-size:11px; color:#38bdf8;">A-</button>
+        <span id="lblFontSize" style="font-family:monospace; font-size:11px; font-weight:bold; color:#f8fafc; min-width:30px; text-align:center; user-select:none;">--</span>
+        <button id="btnFontInc" class="btn-icon" title="Agrandar letra (+1px) [Tecla ']' o '+']" style="width:24px; height:24px; font-weight:bold; font-size:11px; color:#38bdf8;">A+</button>
+      </div>
+
+      <!-- Controles de Color de Texto (Aparece en Modo Mover) -->
+      <div id="colorControls" style="display:none; align-items:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:2px 7px; gap:5px;" title="Cambiar color del texto seleccionado">
+        <span style="font-size:11px; color:#94a3b8; user-select:none;" title="Paleta de Colores">🎨</span>
+        <button class="btn-color-swatch" data-color="#ffffff" title="Blanco (#ffffff) - Contraste alto para cajas oscuras" style="background:#ffffff;"></button>
+        <button class="btn-color-swatch" data-color="#0f172a" title="Negro / Carbón (#0f172a) - Estándar plano" style="background:#0f172a;"></button>
+        <button class="btn-color-swatch" data-color="#0284c7" title="Azul Eléctrico (#0284c7) - Neutro / Títulos" style="background:#0284c7;"></button>
+        <button class="btn-color-swatch" data-color="#dc2626" title="Rojo (#dc2626) - Fase / 24V / Alarma" style="background:#dc2626;"></button>
+        <button class="btn-color-swatch" data-color="#16a34a" title="Verde (#16a34a) - Señal OK" style="background:#16a34a;"></button>
+        <button class="btn-color-swatch" data-color="#f59e0b" title="Ámbar / Naranja (#f59e0b) - Alerta" style="background:#f59e0b;"></button>
+        <button class="btn-color-swatch" data-color="#38bdf8" title="Cian Brillante (#38bdf8) - Pantalla PLC" style="background:#38bdf8;"></button>
+        <button class="btn-color-swatch" data-color="#4ade80" title="Verde Neón (#4ade80) - LCD Display" style="background:#4ade80;"></button>
+        <label for="inputTextColor" style="cursor:pointer; display:flex; align-items:center; margin:0;" title="Elegir cualquier otro color">
+          <input type="color" id="inputTextColor" value="#0f172a" style="width:18px; height:18px; padding:0; border:none; border-radius:50%; cursor:pointer; background:transparent;">
+        </label>
+      </div>
+
+      <!-- Botón Guardar / Versionar -->
+      <button id="btnAbrirGuardar" class="btn-tool btn-save" title="Sobreescribir archivos con correcciones o guardar nueva versión (Tecla S / Ctrl+S)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        <span id="btnGuardarTexto">Guardar / Versionar</span>
+      </button>
+
+      <button id="btnResetTexts" class="btn-icon" title="Restablecer textos a sus posiciones originales" style="width:32px; height:32px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+      </button>
+
+      <!-- Alternar con Boceto Original -->
+      <button id="btnToggleBoceto" class="btn-tool" title="Alternar entre el plano CAD vectorial y la foto del boceto a mano alzada (Tecla C)">
+        📝 Boceto Original (C)
+      </button>
+
+      <!-- Impresión Normalizada A3 -->
+      <button id="btnPrintSheet" class="btn-tool btn-accent" title="Imprimir en Hoja A3 Horizontal (Ctrl+P / Tecla P)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Imprimir A3
+      </button>
+
+      <!-- Panel BOM e Información -->
+      <button id="btnToggleSidebar" class="btn-icon" title="Abrir Listado de Materiales (BOM) e Índice (Tecla B)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- LIENZO PRINCIPAL DEL PLANO EN FORMATO A3 (420 x 297 mm)                   -->
+  <!-- ========================================================================= -->
+  <main class="viewport-container" id="viewport">
+    <div class="sheet-stage" id="stage">
+      <!-- Contenedor de la Lámina Activa (SVG Inline para manipulación y arrastre) -->
+      <div class="a3-sheet" id="activeSheetContainer"></div>
+    </div>
+
+    <!-- Barra Flotante de Zoom y Pantalla Completa -->
+    <div class="zoom-floating-bar no-print">
+      <button id="btnZoomOut" class="btn-icon" title="Alejar (-)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <span id="zoomLevel" class="zoom-level-label">100%</span>
+      <button id="btnZoomIn" class="btn-icon" title="Acercar (+)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <div style="width:1px; height:18px; background:rgba(255,255,255,0.2); margin:0 2px;"></div>
+      <button id="btnZoomFit" class="btn-icon" title="Encajar en Pantalla (0 o R)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button id="btnZoom100" class="btn-icon" title="Escala 1:1">1:1</button>
+      <button id="btnFullscreen" class="btn-icon" title="Pantalla Completa (F)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+      </button>
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- TIRA INFERIOR DE DIAPOSITIVAS (THUMBNAILS ESTILO PPT)                     -->
+  <!-- ========================================================================= -->
+  <footer class="bottom-slide-strip no-print" id="slideStrip">
+    <!-- Miniaturas dinámicas -->
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- PANEL LATERAL DESPLEGABLE (INDICE Y BOM DE MATERIALES)                    -->
+  <!-- ========================================================================= -->
+  <aside class="sidebar-panel no-print" id="sidebarPanel">
+    <div class="sidebar-header">
+      <span class="sidebar-title">DATOS DEL PROYECTO DE-4710</span>
+      <button id="btnCloseSidebar" class="btn-icon" style="width:28px; height:28px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="sidebar-tabs">
+      <div class="sidebar-tab active" data-tab="toc">Láminas (04)</div>
+      <div class="sidebar-tab" data-tab="bom">BOM Materiales</div>
+    </div>
+
+    <!-- Pestaña 1: Índice de Láminas -->
+    <div class="sidebar-body" id="tabToc">
+      <div id="tocList"></div>
+    </div>
+
+    <!-- Pestaña 2: Listado de Materiales (BOM) -->
+    <div class="sidebar-body" id="tabBom" style="display:none;">
+      <p style="font-size:12px; color:#94a3b8; margin-bottom:12px;">Componentes identificados del diagrama digitalizado:</p>
+      <table class="bom-table">
+        <thead>
+          <tr>
+            <th>Tag</th>
+            <th>Cant</th>
+            <th>Descripción / Componente</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="bom-tag">-Q0</td><td>1</td><td>Disyuntor Diferencial Bipolar 2P 10A / 30mA</td></tr>
+          <tr><td class="bom-tag">-F0</td><td>1</td><td>Portafusible Seccionable + Fusible 10x38 2A</td></tr>
+          <tr><td class="bom-tag">-P0</td><td>1</td><td>Luz Piloto Blanca 220VAC (Presencia de Red)</td></tr>
+          <tr><td class="bom-tag">-PS0</td><td>1</td><td>Fuente Switching 24VDC 5A (Mean Well)</td></tr>
+          <tr><td class="bom-tag">-CPU</td><td>1</td><td>PLC Siemens LOGO! 24CE (8 DI / 4 DO Relé)</td></tr>
+          <tr><td class="bom-tag">PA1</td><td>1</td><td>Puesto Mando 1: S1 (Agua Aprobada), S2 (Agua Rechazada)</td></tr>
+          <tr><td class="bom-tag">PA2</td><td>1</td><td>Puesto Mando 2: S3 (Deshabilitar), S4, S5</td></tr>
+          <tr><td class="bom-tag">-R1..R4</td><td>4</td><td>Relés Intermedios 24VDC con base riel DIN (SPDT/DPDT)</td></tr>
+          <tr><td class="bom-tag">-P3</td><td>1</td><td>Luz Piloto Verde 24VDC (Semáforo 1 - Agua Aprobada)</td></tr>
+          <tr><td class="bom-tag">-P4</td><td>1</td><td>Luz Piloto Roja 24VDC (Semáforo 1 - Agua Rechazada)</td></tr>
+          <tr><td class="bom-tag">-P5..P7</td><td>3</td><td>Luces Piloto 24VDC de señalización auxiliar</td></tr>
+          <tr><td class="bom-tag">-P1, P2</td><td>2</td><td>Luces Semáforo Exterior 220VAC (Verde / Rojo)</td></tr>
+          <tr><td class="bom-tag">(X0)</td><td>2</td><td>Bornas de Entrada Red 220V (L1, N1)</td></tr>
+          <tr><td class="bom-tag">(X9)</td><td>5</td><td>Bornas de Campo Entradas Digitales (1 a 5)</td></tr>
+          <tr><td class="bom-tag">(X2)</td><td>5</td><td>Bornas de Salida a Semáforos y Balizas (1 a 5)</td></tr>
+          <tr><td class="bom-tag">(X+)</td><td>1</td><td>Regleta repartidora de potencial +24VDC</td></tr>
+          <tr><td class="bom-tag">(X-)</td><td>1</td><td>Regleta repartidora de referencia -0VDC</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </aside>
+
+  <!-- Contenedor oculto para impresión en lote de las 4 láminas en hojas separadas A3 -->
+  <div id="printAllContainer" class="print-only"></div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL DE GUARDAR Y VERSIONAR PLANOS (SOBREESCRIBIR O NUEVA VERSION)       -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="modalGuardar">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-title">
+        <span style="display:flex; align-items:center; gap:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          Guardar y Versionar Planos AXON
+        </span>
+        <button class="btn-icon" id="btnCloseModalGuardar" style="width:28px; height:28px;">✕</button>
+      </div>
+
+      <div style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">
+        Elige si deseas sobreescribir los archivos locales con las correcciones manuales realizadas o guardarlos como una nueva versión con revisión actualizada.
+      </div>
+
+      <!-- Selector de Ámbito: Hoja Actual vs Proyecto Completo -->
+      <div style="display:flex; gap:6px; margin-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:8px;">
+        <button class="tab-guardar-btn active" id="tabBtnHoja">
+          📄 Lámina Actual (<span id="lblHojaActivaModal">Hoja 01</span>)
+        </button>
+        <button class="tab-guardar-btn" id="tabBtnConjunto">
+          📦 Proyecto Completo (4 Láminas)
+        </button>
+      </div>
+
+      <!-- PANEL 1: GUARDAR HOJA ACTUAL -->
+      <div id="panelGuardarHoja">
+        <div class="save-option-card">
+          <div class="save-option-header">
+            <span>1. Sobreescribir Archivo SVG de la Lámina</span>
+            <span class="badge-tag">Actualizar Hoja</span>
+          </div>
+          <div class="save-option-desc">
+            Sobreescribe directamente el archivo vectorial <code id="lblNombreSvgHoja" style="color:#38bdf8;">dependencias/hojas/hoja_01.svg</code> con las nuevas posiciones de los textos.
+          </div>
+          <button class="btn-tool btn-accent" id="btnActionSobreescribirHoja" style="width:100%; justify-content:center; padding:9px;">
+            💾 Sobreescribir Archivo SVG de esta Lámina
+          </button>
+        </div>
+
+        <div class="save-option-card" style="margin-top:12px;">
+          <div class="save-option-header">
+            <span>2. Guardar como Nueva Versión / Revisión</span>
+            <span class="badge-tag" style="background:rgba(234,179,8,0.2); color:#facc15; border-color:rgba(234,179,8,0.3);">Versionar</span>
+          </div>
+          <div class="save-option-desc">
+            Actualiza automáticamente el casillero <strong>REV.</strong> y la fecha de hoy en el cajetín de esta lámina, y genera un nuevo archivo SVG versionado.
+          </div>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="inputRevisionHoja" class="modal-input" placeholder="Ej: REV. A, REV. 1, REV. B" value="REV. A" style="flex:1;">
+            <button class="btn-tool" id="btnActionVersionarHoja" style="background:#0284c7; color:#fff; border-color:#0284c7; padding:0 14px;">
+              Guardar Hoja Versionada
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: GUARDAR PROYECTO COMPLETO -->
+      <div id="panelGuardarConjunto" style="display:none;">
+        <div class="save-option-card">
+          <div class="save-option-header">
+            <span>1. Sobreescribir Base de Datos del Proyecto</span>
+            <span class="badge-tag badge-master">Permanente</span>
+          </div>
+          <div class="save-option-desc">
+            Actualiza y sobreescribe el archivo maestro <code style="color:#4ade80;">dependencias/js/hojas_svg_inline.js</code> con las 4 láminas. Al reemplazarlo, las correcciones quedan aplicadas permanentemente para cualquier usuario que abra el visor.
+          </div>
+          <button class="btn-tool" id="btnActionSobreescribirJs" style="width:100%; justify-content:center; padding:9px; background:#16a34a; border-color:#15803d; color:#fff; font-weight:700;">
+            📦 Sobreescribir hojas_svg_inline.js (Conjunto Completo)
+          </button>
+        </div>
+
+        <div class="save-option-card" style="margin-top:12px;">
+          <div class="save-option-header">
+            <span>2. Guardar Proyecto como Nuevo Archivo HTML</span>
+            <span class="badge-tag" style="background:rgba(168,85,247,0.2); color:#c084fc; border-color:rgba(168,85,247,0.3);">Autónomo</span>
+          </div>
+          <div class="save-option-desc">
+            Genera un nuevo archivo HTML versionado independiente (ej: <code id="lblEjemploHtml" style="color:#c084fc;">diagrama_4710_control_semaforos_RevA.html</code>) con todas las láminas y estilos listos para archivar o enviar.
+          </div>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="inputVersionHtml" class="modal-input" placeholder="Sufijo de versión (ej: Rev_A, V2)" value="Rev_A" style="flex:1;">
+            <button class="btn-tool" id="btnActionVersionarHtml" style="background:#7c3aed; color:#fff; border-color:#6d28d9; padding:0 14px;">
+              Guardar Nuevo HTML
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:11px; color:#64748b;">
+          💡 En Chrome o Edge, el explorador permite seleccionar y reemplazar el archivo directamente.
+        </span>
+        <button class="btn-tool" id="btnCerrarModalGuardarBottom" style="font-size:11px;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts del visor y editor -->
+  <script src="dependencias/js/datos_proyecto.js"></script>
+  <script src="dependencias/js/hojas_svg_inline.js"></script>
+  <script src="dependencias/js/zoom-pan.js"></script>
+  <script src="dependencias/js/editor_textos.js"></script>
+  <script src="dependencias/js/presentador.js"></script>
+</body>
+</html>

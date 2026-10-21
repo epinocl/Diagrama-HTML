@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1191 842" width="1191" height="842" style="background:#ffffff;" id="svg_sheet_2">
+  <defs>
+    <style>
+      .cad-border { stroke: #0f172a; stroke-width: 1.5; fill: none; }
+      .cad-thin { stroke: #334155; stroke-width: 0.8; fill: none; }
+      .grid-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #0f172a; text-anchor: middle; dominant-baseline: middle; }
+      .title-label { font-size: 10px; fill: #475569; font-weight: 700; text-transform: uppercase; }
+      .title-value { font-size: 12px; fill: #0f172a; font-weight: bold; }
+      .title-main { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; fill: #0284c7; font-weight: 800; letter-spacing: 0.5px; }
+
+      .wire-ctrl { stroke: #0f172a; stroke-width: 1.8; fill: none; }
+      .wire-24v { stroke: #dc2626; stroke-width: 2.2; fill: none; }
+      .wire-0v { stroke: #0284c7; stroke-width: 2.2; fill: none; }
+      .dot { fill: #0f172a; }
+      .comp-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; }
+      .tag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; }
+      .subtag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; }
+      .tag:not([fill]) { fill: #0f172a; }
+      .subtag:not([fill]) { fill: #475569; }
+      .wire-tag { font-family: monospace; font-size: 11px; font-weight: bold; }
+      .wire-tag:not([fill]) { fill: #dc2626; }
+      .draggable-text { cursor: move; user-select: none; }
+      .draggable-text:hover { fill: #0284c7; }
+    </style>
+  </defs>
+
+  
+  <!-- Marco Exterior A3 (420x297mm) -->
+  <rect x="15" y="15" width="1161" height="812" class="cad-thin"/>
+  <!-- Marco Interior Principal -->
+  <rect x="40" y="30" width="1125" height="782" class="cad-border"/>
+
+  <!-- Cuadrícula Superior e Inferior (Columnas 8 a 1) -->
+  <line x1="40" y1="45" x2="1165" y2="45" class="cad-thin"/>
+  <line x1="40" y1="797" x2="1165" y2="797" class="cad-thin"/>
+
+  <line x1="180.6" y1="30" x2="180.6" y2="45" class="cad-thin"/><line x1="180.6" y1="797" x2="180.6" y2="812" class="cad-thin"/>
+  <line x1="321.2" y1="30" x2="321.2" y2="45" class="cad-thin"/><line x1="321.2" y1="797" x2="321.2" y2="812" class="cad-thin"/>
+  <line x1="461.8" y1="30" x2="461.8" y2="45" class="cad-thin"/><line x1="461.8" y1="797" x2="461.8" y2="812" class="cad-thin"/>
+  <line x1="602.5" y1="30" x2="602.5" y2="45" class="cad-thin"/><line x1="602.5" y1="797" x2="602.5" y2="812" class="cad-thin"/>
+  <line x1="743.1" y1="30" x2="743.1" y2="45" class="cad-thin"/><line x1="743.1" y1="797" x2="743.1" y2="812" class="cad-thin"/>
+  <line x1="883.7" y1="30" x2="883.7" y2="45" class="cad-thin"/><line x1="883.7" y1="797" x2="883.7" y2="812" class="cad-thin"/>
+  <line x1="1024.3" y1="30" x2="1024.3" y2="45" class="cad-thin"/><line x1="1024.3" y1="797" x2="1024.3" y2="812" class="cad-thin"/>
+
+  <text x="110.3" y="39" class="grid-label">8</text><text x="110.3" y="806" class="grid-label">8</text>
+  <text x="250.9" y="39" class="grid-label">7</text><text x="250.9" y="806" class="grid-label">7</text>
+  <text x="391.5" y="39" class="grid-label">6</text><text x="391.5" y="806" class="grid-label">6</text>
+  <text x="532.1" y="39" class="grid-label">5</text><text x="532.1" y="806" class="grid-label">5</text>
+  <text x="672.8" y="39" class="grid-label">4</text><text x="672.8" y="806" class="grid-label">4</text>
+  <text x="813.4" y="39" class="grid-label">3</text><text x="813.4" y="806" class="grid-label">3</text>
+  <text x="954.0" y="39" class="grid-label">2</text><text x="954.0" y="806" class="grid-label">2</text>
+  <text x="1094.6" y="39" class="grid-label">1</text><text x="1094.6" y="806" class="grid-label">1</text>
+
+  <!-- Cuadrícula Lateral (Filas A a F) -->
+  <line x1="55" y1="45" x2="55" y2="797" class="cad-thin"/>
+  <line x1="1150" y1="45" x2="1150" y2="797" class="cad-thin"/>
+
+  <line x1="40" y1="170.3" x2="55" y2="170.3" class="cad-thin"/><line x1="1150" y1="170.3" x2="1165" y2="170.3" class="cad-thin"/>
+  <line x1="40" y1="295.6" x2="55" y2="295.6" class="cad-thin"/><line x1="1150" y1="295.6" x2="1165" y2="295.6" class="cad-thin"/>
+  <line x1="40" y1="421.0" x2="55" y2="421.0" class="cad-thin"/><line x1="1150" y1="421.0" x2="1165" y2="421.0" class="cad-thin"/>
+  <line x1="40" y1="546.3" x2="55" y2="546.3" class="cad-thin"/><line x1="1150" y1="546.3" x2="1165" y2="546.3" class="cad-thin"/>
+  <line x1="40" y1="671.6" x2="55" y2="671.6" class="cad-thin"/><line x1="1150" y1="671.6" x2="1165" y2="671.6" class="cad-thin"/>
+
+  <text x="47.5" y="107.6" class="grid-label">A</text><text x="1157.5" y="107.6" class="grid-label">A</text>
+  <text x="47.5" y="233.0" class="grid-label">B</text><text x="1157.5" y="233.0" class="grid-label">B</text>
+  <text x="47.5" y="358.3" class="grid-label">C</text><text x="1157.5" y="358.3" class="grid-label">C</text>
+  <text x="47.5" y="483.6" class="grid-label">D</text><text x="1157.5" y="483.6" class="grid-label">D</text>
+  <text x="47.5" y="609.0" class="grid-label">E</text><text x="1157.5" y="609.0" class="grid-label">E</text>
+  <text x="47.5" y="734.3" class="grid-label">F</text><text x="1157.5" y="734.3" class="grid-label">F</text>
+
+      <!-- ========================================================================= -->
+  <!-- CAJETÍN AMPLIADO DE INGENIERÍA AXON (X: 220..1150, Y: 705..795, Alto: 90) -->
+  <!-- ========================================================================= -->
+  <g id="cajetin_axon">
+    <!-- Contenedor general -->
+    <rect x="220" y="705" width="930" height="90" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
+
+    <!-- Divisiones Verticales -->
+    <line x1="295" y1="705" x2="295" y2="795" class="cad-thin"/>
+    <line x1="445" y1="705" x2="445" y2="795" class="cad-thin"/>
+    <line x1="555" y1="705" x2="555" y2="795" class="cad-thin"/>
+    <line x1="890" y1="705" x2="890" y2="795" class="cad-thin"/>
+    <line x1="1025" y1="705" x2="1025" y2="795" class="cad-thin"/>
+
+    <!-- Divisiones Horizontales -->
+    <line x1="220" y1="727" x2="555" y2="727" class="cad-thin"/>
+    <line x1="220" y1="750" x2="555" y2="750" class="cad-thin"/>
+    <line x1="220" y1="772" x2="555" y2="772" class="cad-thin"/>
+
+    <line x1="555" y1="732" x2="890" y2="732" class="cad-thin"/>
+    
+    <line x1="890" y1="735" x2="1025" y2="735" class="cad-thin"/>
+    <line x1="890" y1="765" x2="1025" y2="765" class="cad-thin"/>
+    
+    <line x1="1025" y1="755" x2="1150" y2="755" class="cad-thin"/>
+
+    <!-- 1. Bloque de Firmas y Responsables (Nombres: 150px, Fechas: 110px centradas) -->
+    <text x="226" y="720" class="title-label">DIBUJADO</text>
+    <text x="302" y="720" class="title-value">AXON ING.</text>
+    <text x="500" y="720" class="title-value" text-anchor="middle">2026-10-16</text>
+
+    <text x="226" y="743" class="title-label">REVISADO</text>
+    <text x="302" y="743" class="title-value">EPINO</text>
+    <text x="500" y="743" class="title-value" text-anchor="middle">2026-10-16</text>
+
+    <text x="226" y="765" class="title-label">APROBADO</text>
+    <text x="302" y="765" class="title-value" font-size="12">GARDEN HOUSE S.A.</text>
+    <text x="500" y="765" class="title-value" text-anchor="middle">2026-10-16</text>
+
+    <text x="226" y="788" class="title-label">ESTÁNDAR</text>
+    <text x="302" y="788" class="title-value">IEC 60617</text>
+    <text x="500" y="788" class="title-value" text-anchor="middle">REV. 0</text>
+
+    <!-- 2. Bloque de Cliente y Título del Proyecto (Amplio: 335px de ancho) -->
+    <text x="565" y="722" class="title-label">CLIENTE:</text>
+    <text x="625" y="723" class="title-value" font-size="14" fill="#0f172a">GARDEN HOUSE S.A.</text>
+
+    <text x="565" y="750" class="title-main" font-size="16">4710 - CONTROL SEMÁFORO DE AGUA</text>
+    <text x="565" y="776" class="title-value" font-size="12" fill="#0284c7">ENTRADAS DIGITALES PLC SIEMENS LOGO!</text>
+
+    <!-- 3. Bloque de Identificación Técnica -->
+    <text x="898" y="723" class="title-label">CÓDIGO:</text>
+    <text x="955" y="725" class="title-value" font-size="13" fill="#dc2626">DE-4710</text>
+
+    <text x="898" y="753" class="title-label">DISCIPLINA:</text>
+    <text x="965" y="754" class="title-value" font-size="12">PLC &amp; I/O</text>
+
+    <text x="898" y="783" class="title-label">PLANO N°:</text>
+    <text x="958" y="784" class="title-value" font-size="12">4710-E-02</text>
+
+    <!-- 4. Bloque de Lámina y Estado -->
+    <text x="1035" y="725" class="title-label">LÁMINA / HOJA</text>
+    <text x="1088" y="746" class="title-value" font-size="20" fill="#0284c7" text-anchor="middle">02 / 04</text>
+
+    <text x="1035" y="770" class="title-label">ESTADO</text>
+    <text x="1088" y="786" class="title-value" font-size="13" fill="#16a34a" text-anchor="middle">AS-BUILT</text>
+  </g>
+
+
+  <g id="layer_titles">
+    <text x="99" y="72" class="tag draggable-text" font-size="16" fill="#0284c7" style="font-size: 16px;">ENTRADAS DIGITALES - CONTROL SEMÁFOROS</text>
+    <text x="100" y="92" class="subtag draggable-text">PLC SIEMENS LOGO! 24CE (8 ENTRADAS DIGITALES 24VDC) | PUESTOS DE BOTONERA PA1 Y PA2</text>
+  </g>
+
+  <g id="entradas_plc">
+    <!-- Bus Superior +24VDC -->
+    <line x1="80" y1="130" x2="860" y2="130" class="wire-24v"/>
+    <polygon points="80,125 65,130 80,135" fill="#dc2626"/>
+    <text x="90" y="122" class="tag draggable-text" fill="#dc2626">+24V</text>
+    <text x="64" y="149" class="subtag draggable-text">01.8</text>
+
+    <!-- Regleta Repartidora Positiva (X+) -->
+    <line x1="180" y1="190" x2="800" y2="190" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <text x="135" y="194" class="tag draggable-text" fill="#dc2626">(X+)</text>
+    <text x="135" y="208" class="subtag draggable-text">REPARTIDOR +24V</text>
+
+    <!-- Recuadros de Puestos de Mando PA1 y PA2 -->
+    <rect x="200" y="225" width="220" height="95" rx="4" fill="none" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="259" y="216" class="tag draggable-text" fill="#0284c7" font-size="11" style="font-size: 11px;">PA1 (PUESTO 1 - - - - PRODUCCIÓN)</text>
+
+    <rect x="460" y="225" width="360" height="95" rx="4" fill="none" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="510" y="214" class="tag draggable-text" fill="#0284c7">PA2 (PUESTO 2 - - - - - SUPERVISIÓN)</text>
+
+    <!-- Regleta de Bornas de Campo (X9) -->
+    <line x1="180" y1="370" x2="800" y2="370" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,4"/>
+    <text x="135" y="374" class="tag draggable-text" fill="#dc2626">(X9)</text>
+    <text x="127" y="388" class="subtag draggable-text">BORNERA DE CAMPO</text>
+
+    
+      <!-- Pulsador S1 en X=240 -->
+      <circle cx="240" cy="130" r="3.5" class="dot" fill="#dc2626"/>
+      <line x1="240" y1="130" x2="240" y2="190" class="wire-24v"/>
+      
+      <!-- Borna de repartidor X+ -->
+      <circle cx="240" cy="190" r="5" class="comp-box"/>
+      <line x1="240" y1="195" x2="240" y2="240" class="wire-ctrl"/>
+
+      <!-- Contacto NA S1 -->
+      <circle cx="240" cy="240" r="3" fill="#0f172a"/>
+      <line x1="240" y1="240" x2="254" y2="280" class="wire-ctrl" stroke-width="2.5"/>
+      <circle cx="240" cy="290" r="3" fill="#0f172a"/>
+      <!-- Símbolo caperuza pulsador -->
+      <line x1="247" y1="260" x2="265" y2="260" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="2,2"/>
+      <line x1="265" y1="252" x2="265" y2="268" stroke="#0f172a" stroke-width="2"/>
+      
+      <text x="230" y="265" class="tag draggable-text" text-anchor="end">-S1</text>
+      <text x="189" y="119" class="subtag draggable-text" font-size="9.5" style="font-size: 9.5px;">AGUA APROBADA (S1)</text>
+
+      <line x1="240" y1="290" x2="240" y2="370" class="wire-ctrl"/>
+
+      <!-- Borna de campo X9 -->
+      <circle cx="240" cy="370" r="9" class="comp-box"/>
+      <text x="240" y="374" class="subtag" text-anchor="middle" font-weight="bold">1</text>
+      <text x="254" y="355" class="wire-tag draggable-text">101</text>
+
+      <line x1="240" y1="379" x2="240" y2="490" class="wire-ctrl"/>
+      <circle cx="240" cy="490" r="3.5" fill="#0f172a"/>
+
+      <!-- Pulsador S2 en X=360 -->
+      <circle cx="360" cy="130" r="3.5" class="dot" fill="#dc2626"/>
+      <line x1="360" y1="130" x2="360" y2="190" class="wire-24v"/>
+      
+      <!-- Borna de repartidor X+ -->
+      <circle cx="360" cy="190" r="5" class="comp-box"/>
+      <line x1="360" y1="195" x2="360" y2="240" class="wire-ctrl"/>
+
+      <!-- Contacto NA S2 -->
+      <circle cx="360" cy="240" r="3" fill="#0f172a"/>
+      <line x1="360" y1="240" x2="374" y2="280" class="wire-ctrl" stroke-width="2.5"/>
+      <circle cx="360" cy="290" r="3" fill="#0f172a"/>
+      <!-- Símbolo caperuza pulsador -->
+      <line x1="367" y1="260" x2="385" y2="260" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="2,2"/>
+      <line x1="385" y1="252" x2="385" y2="268" stroke="#0f172a" stroke-width="2"/>
+      
+      <text x="350" y="265" class="tag draggable-text" text-anchor="end">-S2</text>
+      <text x="314" y="120" class="subtag draggable-text" font-size="9.5" style="font-size: 9.5px;">AGUA RECHAZADA (S2)</text>
+
+      <line x1="360" y1="290" x2="360" y2="370" class="wire-ctrl"/>
+
+      <!-- Borna de campo X9 -->
+      <circle cx="360" cy="370" r="9" class="comp-box"/>
+      <text x="360" y="374" class="subtag" text-anchor="middle" font-weight="bold">2</text>
+      <text x="374" y="355" class="wire-tag draggable-text">102</text>
+
+      <line x1="360" y1="379" x2="360" y2="490" class="wire-ctrl"/>
+      <circle cx="360" cy="490" r="3.5" fill="#0f172a"/>
+
+      <!-- Pulsador S3 en X=500 -->
+      <circle cx="500" cy="130" r="3.5" class="dot" fill="#dc2626"/>
+      <line x1="500" y1="130" x2="500" y2="190" class="wire-24v"/>
+      
+      <!-- Borna de repartidor X+ -->
+      <circle cx="500" cy="190" r="5" class="comp-box"/>
+      <line x1="500" y1="195" x2="500" y2="240" class="wire-ctrl"/>
+
+      <!-- Contacto NA S3 -->
+      <circle cx="500" cy="240" r="3" fill="#0f172a"/>
+      <line x1="500" y1="240" x2="514" y2="280" class="wire-ctrl" stroke-width="2.5"/>
+      <circle cx="500" cy="290" r="3" fill="#0f172a"/>
+      <!-- Símbolo caperuza pulsador -->
+      <line x1="507" y1="260" x2="525" y2="260" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="2,2"/>
+      <line x1="525" y1="252" x2="525" y2="268" stroke="#0f172a" stroke-width="2"/>
+      
+      <text x="490" y="265" class="tag draggable-text" text-anchor="end">-S3</text>
+      <text x="460" y="123" class="subtag draggable-text" font-size="9.5" style="font-size: 9.5px;">DESHABILITAR (S3)</text>
+
+      <line x1="500" y1="290" x2="500" y2="370" class="wire-ctrl"/>
+
+      <!-- Borna de campo X9 -->
+      <circle cx="500" cy="370" r="9" class="comp-box"/>
+      <text x="500" y="374" class="subtag" text-anchor="middle" font-weight="bold">3</text>
+      <text x="514" y="355" class="wire-tag draggable-text">103</text>
+
+      <line x1="500" y1="379" x2="500" y2="490" class="wire-ctrl"/>
+      <circle cx="500" cy="490" r="3.5" fill="#0f172a"/>
+
+      <!-- Pulsador S4 en X=630 -->
+      <circle cx="630" cy="130" r="3.5" class="dot" fill="#dc2626"/>
+      <line x1="630" y1="130" x2="630" y2="190" class="wire-24v"/>
+      
+      <!-- Borna de repartidor X+ -->
+      <circle cx="630" cy="190" r="5" class="comp-box"/>
+      <line x1="630" y1="195" x2="630" y2="240" class="wire-ctrl"/>
+
+      <!-- Contacto NA S4 -->
+      <circle cx="630" cy="240" r="3" fill="#0f172a"/>
+      <line x1="630" y1="240" x2="644" y2="280" class="wire-ctrl" stroke-width="2.5"/>
+      <circle cx="630" cy="290" r="3" fill="#0f172a"/>
+      <!-- Símbolo caperuza pulsador -->
+      <line x1="637" y1="260" x2="655" y2="260" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="2,2"/>
+      <line x1="655" y1="252" x2="655" y2="268" stroke="#0f172a" stroke-width="2"/>
+      
+      <text x="620" y="265" class="tag draggable-text" text-anchor="end">-S4</text>
+      <text x="587" y="119" class="subtag draggable-text" font-size="9.5" style="font-size: 9.5px;">PULSADOR 4 (S4)</text>
+
+      <line x1="630" y1="290" x2="630" y2="370" class="wire-ctrl"/>
+
+      <!-- Borna de campo X9 -->
+      <circle cx="630" cy="370" r="9" class="comp-box"/>
+      <text x="630" y="374" class="subtag" text-anchor="middle" font-weight="bold">4</text>
+      <text x="644" y="355" class="wire-tag draggable-text">104</text>
+
+      <line x1="630" y1="379" x2="630" y2="490" class="wire-ctrl"/>
+      <circle cx="630" cy="490" r="3.5" fill="#0f172a"/>
+
+      <!-- Pulsador S5 en X=760 -->
+      <circle cx="760" cy="130" r="3.5" class="dot" fill="#dc2626"/>
+      <line x1="760" y1="130" x2="760" y2="190" class="wire-24v"/>
+      
+      <!-- Borna de repartidor X+ -->
+      <circle cx="760" cy="190" r="5" class="comp-box"/>
+      <line x1="760" y1="195" x2="760" y2="240" class="wire-ctrl"/>
+
+      <!-- Contacto NA S5 -->
+      <circle cx="760" cy="240" r="3" fill="#0f172a"/>
+      <line x1="760" y1="240" x2="774" y2="280" class="wire-ctrl" stroke-width="2.5"/>
+      <circle cx="760" cy="290" r="3" fill="#0f172a"/>
+      <!-- Símbolo caperuza pulsador -->
+      <line x1="767" y1="260" x2="785" y2="260" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="2,2"/>
+      <line x1="785" y1="252" x2="785" y2="268" stroke="#0f172a" stroke-width="2"/>
+      
+      <text x="750" y="265" class="tag draggable-text" text-anchor="end">-S5</text>
+      <text x="736" y="121" class="subtag draggable-text" font-size="9.5" style="font-size: 9.5px;">PULSADOR 5 (S5)</text>
+
+      <line x1="760" y1="290" x2="760" y2="370" class="wire-ctrl"/>
+
+      <!-- Borna de campo X9 -->
+      <circle cx="760" cy="370" r="9" class="comp-box"/>
+      <text x="760" y="374" class="subtag" text-anchor="middle" font-weight="bold">5</text>
+      <text x="774" y="355" class="wire-tag draggable-text">105</text>
+
+      <line x1="760" y1="379" x2="760" y2="490" class="wire-ctrl"/>
+      <circle cx="760" cy="490" r="3.5" fill="#0f172a"/>
+
+
+    <!-- Alimentación de la CPU LOGO! -->
+    <!-- L+ a +24V (X=110) -->
+    <circle cx="110" cy="130" r="3.5" class="dot" fill="#dc2626"/>
+    <line x1="110" y1="130" x2="110" y2="490" class="wire-24v"/>
+    
+    <!-- M a -0V (X=150) -->
+    <line x1="150" y1="430" x2="150" y2="490" class="wire-0v"/>
+    <polygon points="150,430 144,445 156,445" fill="#0284c7"/>
+    <text x="150" y="420" class="tag draggable-text" text-anchor="middle" fill="#0284c7">-0V</text>
+    <text x="150" y="405" class="subtag draggable-text" text-anchor="middle">DESDE /01.8</text>
+
+    <!-- Bloque Físico de CPU Siemens LOGO! -->
+    <g id="cpu_logo_entradas">
+      <rect x="80" y="490" width="800" height="170" rx="4" class="comp-box"/>
+      <rect x="80" y="490" width="800" height="35" fill="#1e293b"/>
+      <text x="480" y="513" class="tag draggable-text" fill="#ffffff" style="fill: rgb(255, 255, 255) !important; font-size: 14px;" font-size="14" font-weight="bold" text-anchor="middle">CPU SIEMENS LOGO! 24CE (6ED1052-1CC08-0BA1)</text>
+
+      <!-- Bornas L+, M -->
+      <rect x="95" y="525" width="30" height="30" class="comp-box"/><text x="110" y="545" class="tag" text-anchor="middle" font-size="11" fill="#dc2626" style="font-size: 11px;">L+</text>
+      <rect x="135" y="525" width="30" height="30" class="comp-box"/><text x="150" y="545" class="tag" text-anchor="middle" font-size="11" fill="#0284c7" style="font-size: 11px;">M</text>
+
+      <!-- Bornas I1 a I5 -->
+      <rect x="225" y="525" width="30" height="30" class="comp-box"/><text x="240" y="545" class="tag" text-anchor="middle">I1</text>
+      <rect x="345" y="525" width="30" height="30" class="comp-box"/><text x="360" y="545" class="tag" text-anchor="middle">I2</text>
+      <rect x="485" y="525" width="30" height="30" class="comp-box"/><text x="500" y="545" class="tag" text-anchor="middle">I3</text>
+      <rect x="615" y="525" width="30" height="30" class="comp-box"/><text x="630" y="545" class="tag" text-anchor="middle">I4</text>
+      <rect x="745" y="525" width="30" height="30" class="comp-box"/><text x="760" y="545" class="tag" text-anchor="middle">I5</text>
+
+      <!-- Reservas I6, I7, I8 -->
+      <rect x="790" y="525" width="25" height="30" class="comp-box" opacity="0.6"/><text x="802" y="545" class="subtag" text-anchor="middle">I6</text>
+      <rect x="820" y="525" width="25" height="30" class="comp-box" opacity="0.6"/><text x="832" y="545" class="subtag" text-anchor="middle">I7</text>
+      <rect x="850" y="525" width="25" height="30" class="comp-box" opacity="0.6"/><text x="862" y="545" class="subtag" text-anchor="middle">I8</text>
+
+      <!-- Pantalla Display LOGO! -->
+      <rect x="250" y="575" width="400" height="65" rx="3" fill="#0f172a"/>
+      <text x="450" y="605" class="subtag draggable-text" fill="#4ade80" style="fill: rgb(74, 222, 128) !important; font-size: 13px;" font-size="13" font-weight="bold" text-anchor="middle">RUN - LOGO! 24CE (SEMAFOROS AGUA)</text>
+      <text x="450" y="625" class="subtag draggable-text" fill="#38bdf8" style="fill: rgb(56, 189, 248) !important; font-size: 11px;" font-size="11" font-weight="bold" text-anchor="middle">I1: APROBADA | I2: RECHAZADA | I3: DESHABILITAR</text>
+    </g>
+  </g>
+</svg>

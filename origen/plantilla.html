@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plantilla A3 - Plano Eléctrico Industrial AXON</title>
+  <link rel="stylesheet" href="css/layout-a3.css">
+  <link rel="stylesheet" href="css/presentador-ppt.css">
+  <link rel="stylesheet" href="css/print-a3.css">
+  <style>
+    /* Estilos propios de la barra y canvas en modo plantilla */
+    body {
+      background: #0f172a;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* Estilos de líneas eléctricas normalizadas en el SVG */
+    .bus-power { stroke: #dc2626; stroke-width: 2.2; fill: none; }
+    .bus-neutral { stroke: #0284c7; stroke-width: 2.2; fill: none; }
+    .bus-pe { stroke: #16a34a; stroke-width: 2.2; stroke-dasharray: 6,4; fill: none; }
+    .bus-24v { stroke: #dc2626; stroke-width: 2.2; fill: none; }
+    .bus-0v { stroke: #0284c7; stroke-width: 2.2; fill: none; }
+    .wire-control { stroke: #0f172a; stroke-width: 1.6; fill: none; }
+    .wire-dot { fill: #0f172a; }
+    .comp-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 1.8; }
+    .tag-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #0f172a; }
+    .wire-text { font-family: monospace; font-size: 10px; fill: #475569; }
+    .draggable-text { cursor: move; user-select: none; }
+    .draggable-text:hover { fill: #0284c7; }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- BARRA DE HERRAMIENTAS SUPERIOR PROFESIONAL (ESTILO AXON CAD)              -->
+  <!-- ========================================================================= -->
+  <header class="top-navbar no-print">
+    <!-- Identidad del Proyecto / Plantilla -->
+    <div class="brand-section">
+      <span class="brand-badge">AXON CAD</span>
+      <div class="project-title">
+        <span class="project-code" id="lblCodigoProyecto">DE-XXXX</span>
+        <span id="lblTituloProyecto">PLANTILLA A3 - PLANO ELÉCTRICO</span>
+        <span style="color:#94a3b8; font-size:12px; font-weight:normal;" id="lblClienteProyecto">(GARDEN HOUSE)</span>
+      </div>
+    </div>
+
+    <!-- Herramientas Interactivas de Dibujo y Edición -->
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <!-- Modo Reubicación Manual de Textos -->
+      <button id="btnModoMover" class="btn-tool" title="Activa el modo para arrastrar textos con el ratón y editarlos con doble clic (Tecla M)">
+        🖐️ Mover Textos
+      </button>
+
+      <!-- Controles de Tamaño de Letra (Aparece en Modo Mover) -->
+      <div id="fontSizeControls" style="display:none; align-items:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:2px 5px; gap:4px;" title="Ajustar tamaño de letra del texto seleccionado">
+        <span style="font-size:11px; color:#94a3b8; user-select:none;">🔤</span>
+        <button id="btnFontDec" class="btn-icon" title="Achicar letra (-1px) [Tecla '[' o '-']" style="width:24px; height:24px; font-weight:bold; font-size:11px; color:#38bdf8;">A-</button>
+        <span id="lblFontSize" style="font-family:monospace; font-size:11px; font-weight:bold; color:#f8fafc; min-width:30px; text-align:center; user-select:none;">--</span>
+        <button id="btnFontInc" class="btn-icon" title="Agrandar letra (+1px) [Tecla ']' o '+']" style="width:24px; height:24px; font-weight:bold; font-size:11px; color:#38bdf8;">A+</button>
+      </div>
+
+      <!-- Controles de Color de Texto (Aparece en Modo Mover) -->
+      <div id="colorControls" style="display:none; align-items:center; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:2px 7px; gap:5px;" title="Cambiar color del texto seleccionado">
+        <span style="font-size:11px; color:#94a3b8; user-select:none;" title="Paleta de Colores">🎨</span>
+        <button class="btn-color-swatch" data-color="#ffffff" title="Blanco (#ffffff) - Contraste alto para cajas oscuras" style="background:#ffffff;"></button>
+        <button class="btn-color-swatch" data-color="#0f172a" title="Negro / Carbón (#0f172a) - Estándar plano" style="background:#0f172a;"></button>
+        <button class="btn-color-swatch" data-color="#0284c7" title="Azul Eléctrico (#0284c7) - Neutro / Títulos" style="background:#0284c7;"></button>
+        <button class="btn-color-swatch" data-color="#dc2626" title="Rojo (#dc2626) - Fase / 24V / Alarma" style="background:#dc2626;"></button>
+        <button class="btn-color-swatch" data-color="#16a34a" title="Verde (#16a34a) - Señal OK" style="background:#16a34a;"></button>
+        <button class="btn-color-swatch" data-color="#f59e0b" title="Ámbar / Naranja (#f59e0b) - Alerta" style="background:#f59e0b;"></button>
+        <button class="btn-color-swatch" data-color="#38bdf8" title="Cian Brillante (#38bdf8) - Pantalla PLC" style="background:#38bdf8;"></button>
+        <button class="btn-color-swatch" data-color="#4ade80" title="Verde Neón (#4ade80) - LCD Display" style="background:#4ade80;"></button>
+        <label for="inputTextColor" style="cursor:pointer; display:flex; align-items:center; margin:0;" title="Elegir cualquier otro color">
+          <input type="color" id="inputTextColor" value="#0f172a" style="width:18px; height:18px; padding:0; border:none; border-radius:50%; cursor:pointer; background:transparent;">
+        </label>
+      </div>
+
+      <!-- Botón Guardar / Exportar SVG y HTML -->
+      <button id="btnAbrirGuardar" class="btn-tool btn-save" title="Exportar lámina SVG modificada o guardar plano HTML (Tecla S / Ctrl+S)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        <span>Guardar / Exportar</span>
+      </button>
+
+      <!-- Botón Restablecer Textos -->
+      <button id="btnResetTexts" class="btn-icon" title="Restablecer textos a sus posiciones originales" style="width:32px; height:32px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+      </button>
+
+      <!-- Botón Catálogo de Simbología -->
+      <a href="catalogo_simbolos.html" target="_blank" class="btn-tool" style="text-decoration:none;" title="Abrir Catálogo de Simbología Normalizada para copiar componentes">
+        📚 Catálogo Simbología
+      </a>
+
+      <!-- Impresión Normalizada A3 -->
+      <button id="btnPrintSheet" class="btn-tool btn-accent" title="Imprimir en Hoja A3 Horizontal 1:1 (Ctrl+P / Tecla P)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Imprimir A3 (1:1)
+      </button>
+
+      <!-- Volver al Visor -->
+      <a href="index.html" class="btn-icon" title="Volver al Visor de Planos Principal" style="width:32px; height:32px; text-decoration:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- LIENZO PRINCIPAL DEL PLANO EN FORMATO A3 (420 x 297 mm)                   -->
+  <!-- ========================================================================= -->
+  <main class="viewport-container" id="viewport">
+    <div class="sheet-stage" id="stage">
+      <div class="a3-sheet" id="activeSheetContainer">
+        <!-- SVG Vectorial de la Plantilla Normalizada A3 -->
+        <svg id="schematicSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1191 842" width="1191" height="842" style="background:#ffffff;">
+          <defs>
+            <style>
+              .cad-border { stroke: #0f172a; stroke-width: 1.5; fill: none; }
+              .cad-thin { stroke: #334155; stroke-width: 0.8; fill: none; }
+              .cad-text { font-family: 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+              .grid-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #0f172a; text-anchor: middle; dominant-baseline: middle; }
+              .title-label { font-size: 10px; fill: #475569; font-weight: 700; text-transform: uppercase; }
+              .title-value { font-size: 12px; fill: #0f172a; font-weight: bold; }
+              .title-main { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; fill: #0284c7; font-weight: 800; letter-spacing: 0.5px; }
+            </style>
+          </defs>
+
+          <!-- ===================================================================== -->
+          <!-- 1. MARCO PERIMETRAL Y CUADRÍCULA DE COORDENADAS A-F / 1-8            -->
+          <!-- ===================================================================== -->
+          <!-- Marco Exterior A3 (420x297mm) -->
+          <rect x="15" y="15" width="1161" height="812" class="cad-thin"/>
+          <!-- Marco Interior Principal -->
+          <rect x="40" y="30" width="1125" height="782" class="cad-border"/>
+
+          <!-- Cuadrícula Superior e Inferior (Columnas 8 a 1) -->
+          <line x1="40" y1="45" x2="1165" y2="45" class="cad-thin"/>
+          <line x1="40" y1="797" x2="1165" y2="797" class="cad-thin"/>
+
+          <!-- Divisiones de Columnas -->
+          <line x1="180.6" y1="30" x2="180.6" y2="45" class="cad-thin"/><line x1="180.6" y1="797" x2="180.6" y2="812" class="cad-thin"/>
+          <line x1="321.2" y1="30" x2="321.2" y2="45" class="cad-thin"/><line x1="321.2" y1="797" x2="321.2" y2="812" class="cad-thin"/>
+          <line x1="461.8" y1="30" x2="461.8" y2="45" class="cad-thin"/><line x1="461.8" y1="797" x2="461.8" y2="812" class="cad-thin"/>
+          <line x1="602.5" y1="30" x2="602.5" y2="45" class="cad-thin"/><line x1="602.5" y1="797" x2="602.5" y2="812" class="cad-thin"/>
+          <line x1="743.1" y1="30" x2="743.1" y2="45" class="cad-thin"/><line x1="743.1" y1="797" x2="743.1" y2="812" class="cad-thin"/>
+          <line x1="883.7" y1="30" x2="883.7" y2="45" class="cad-thin"/><line x1="883.7" y1="797" x2="883.7" y2="812" class="cad-thin"/>
+          <line x1="1024.3" y1="30" x2="1024.3" y2="45" class="cad-thin"/><line x1="1024.3" y1="797" x2="1024.3" y2="812" class="cad-thin"/>
+
+          <!-- Rótulos de Columnas -->
+          <text x="110.3" y="39" class="grid-label">8</text><text x="110.3" y="806" class="grid-label">8</text>
+          <text x="250.9" y="39" class="grid-label">7</text><text x="250.9" y="806" class="grid-label">7</text>
+          <text x="391.5" y="39" class="grid-label">6</text><text x="391.5" y="806" class="grid-label">6</text>
+          <text x="532.1" y="39" class="grid-label">5</text><text x="532.1" y="806" class="grid-label">5</text>
+          <text x="672.8" y="39" class="grid-label">4</text><text x="672.8" y="806" class="grid-label">4</text>
+          <text x="813.4" y="39" class="grid-label">3</text><text x="813.4" y="806" class="grid-label">3</text>
+          <text x="954.0" y="39" class="grid-label">2</text><text x="954.0" y="806" class="grid-label">2</text>
+          <text x="1094.6" y="39" class="grid-label">1</text><text x="1094.6" y="806" class="grid-label">1</text>
+
+          <!-- Cuadrícula Lateral (Filas A a F) -->
+          <line x1="55" y1="45" x2="55" y2="797" class="cad-thin"/>
+          <line x1="1150" y1="45" x2="1150" y2="797" class="cad-thin"/>
+
+          <line x1="40" y1="170.3" x2="55" y2="170.3" class="cad-thin"/><line x1="1150" y1="170.3" x2="1165" y2="170.3" class="cad-thin"/>
+          <line x1="40" y1="295.6" x2="55" y2="295.6" class="cad-thin"/><line x1="1150" y1="295.6" x2="1165" y2="295.6" class="cad-thin"/>
+          <line x1="40" y1="421.0" x2="55" y2="421.0" class="cad-thin"/><line x1="1150" y1="421.0" x2="1165" y2="421.0" class="cad-thin"/>
+          <line x1="40" y1="546.3" x2="55" y2="546.3" class="cad-thin"/><line x1="1150" y1="546.3" x2="1165" y2="546.3" class="cad-thin"/>
+          <line x1="40" y1="671.6" x2="55" y2="671.6" class="cad-thin"/><line x1="1150" y1="671.6" x2="1165" y2="671.6" class="cad-thin"/>
+
+          <text x="47.5" y="107.6" class="grid-label">A</text><text x="1157.5" y="107.6" class="grid-label">A</text>
+          <text x="47.5" y="233.0" class="grid-label">B</text><text x="1157.5" y="233.0" class="grid-label">B</text>
+          <text x="47.5" y="358.3" class="grid-label">C</text><text x="1157.5" y="358.3" class="grid-label">C</text>
+          <text x="47.5" y="483.6" class="grid-label">D</text><text x="1157.5" y="483.6" class="grid-label">D</text>
+          <text x="47.5" y="609.0" class="grid-label">E</text><text x="1157.5" y="609.0" class="grid-label">E</text>
+          <text x="47.5" y="734.3" class="grid-label">F</text><text x="1157.5" y="734.3" class="grid-label">F</text>
+
+          <!-- ===================================================================== -->
+          <!-- 2. BUSES DE ALIMENTACION NORMALIZADOS (+24VDC / 0VDC / PE)            -->
+          <!-- ===================================================================== -->
+          <g id="power_buses">
+            <!-- Bus +24VDC (Rojo) -->
+            <line x1="70" y1="70" x2="1130" y2="70" class="bus-24v"/>
+            <text x="65" y="66" class="tag-text draggable-text" fill="#dc2626">+24VDC</text>
+            <polygon points="1130,65 1145,70 1130,75" fill="#dc2626"/>
+            <text x="1115" y="62" class="wire-text draggable-text">/02.1</text>
+
+            <!-- Bus 0VDC (Azul) -->
+            <line x1="70" y1="95" x2="1130" y2="95" class="bus-0v"/>
+            <text x="65" y="91" class="tag-text draggable-text" fill="#0284c7">0VDC</text>
+            <polygon points="1130,90 1145,95 1130,100" fill="#0284c7"/>
+            <text x="1115" y="87" class="wire-text draggable-text">/02.1</text>
+
+            <!-- Bus Tierra PE (inferior) -->
+            <line x1="70" y1="700" x2="1130" y2="700" class="bus-pe"/>
+            <text x="65" y="695" class="tag-text draggable-text" fill="#16a34a">PE</text>
+          </g>
+
+          <!-- ===================================================================== -->
+          <!-- 3. ZONA DE DIBUJO DEL ESQUEMA (COLUMNAS 8 A 1)                        -->
+          <!-- ===================================================================== -->
+          <g id="circuit_elements">
+            <!-- Encabezados de lámina de ejemplo -->
+            <g id="layer_titles">
+              <text x="100" y="130" class="tag draggable-text" font-size="16" fill="#0284c7">DIAGRAMA DE FUERZA Y CONTROL GENERAL</text>
+              <text x="100" y="148" class="subtag draggable-text">ALIMENTACIÓN 220VAC / 24VDC Y ELEMENTOS DE CAMPO</text>
+            </g>
+
+            <!-- Ejemplo Columna 8: Alimentación y Protección -->
+            <g id="col_8_ejemplo">
+              <text x="110" y="180" class="tag-text draggable-text" text-anchor="middle" fill="#64748b">[COLUMNA 8: FUERZA]</text>
+
+              <!-- Conexión a bus +24V -->
+              <circle cx="110" cy="70" r="3.5" class="wire-dot" fill="#dc2626"/>
+              <line x1="110" y1="70" x2="110" y2="200" class="wire-control"/>
+
+              <!-- Disyuntor / Fusible QA1 -->
+              <rect x="80" y="200" width="60" height="50" rx="3" class="comp-box"/>
+              <line x1="110" y1="200" x2="110" y2="250" stroke="#0f172a" stroke-width="1.8"/>
+              <text x="150" y="222" class="tag draggable-text">-QA1</text>
+              <text x="150" y="238" class="subtag draggable-text">10A / 30mA</text>
+
+              <!-- Cable intermedio -->
+              <line x1="110" y1="250" x2="110" y2="290" class="wire-control"/>
+
+              <!-- Fuente de poder Mean Well PS0 -->
+              <rect x="65" y="290" width="90" height="70" rx="4" class="comp-box" fill="#f1f5f9"/>
+              <text x="110" y="325" class="tag draggable-text" text-anchor="middle" fill="#0284c7">24V 5A</text>
+              <text x="165" y="325" class="tag draggable-text">-PS0</text>
+              <text x="165" y="342" class="subtag draggable-text">Mean Well</text>
+
+              <!-- Cable a bornera X1 -->
+              <line x1="110" y1="360" x2="110" y2="430" class="wire-control"/>
+
+              <!-- Bornera de paso X1 -->
+              <circle cx="110" cy="430" r="6" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
+              <text x="125" y="434" class="tag draggable-text">-X1:1</text>
+
+              <!-- Conexión a tierra PE -->
+              <line x1="110" y1="436" x2="110" y2="700" class="wire-control" stroke-dasharray="5,3" stroke="#16a34a"/>
+              <circle cx="110" cy="700" r="3.5" class="wire-dot" fill="#16a34a"/>
+            </g>
+
+            <!-- Ejemplo Columna 7: Maniobra y Control -->
+            <g id="col_7_ejemplo">
+              <text x="250" y="180" class="tag-text draggable-text" text-anchor="middle" fill="#64748b">[COLUMNA 7: CONTROL]</text>
+
+              <!-- Cable desde bus +24V -->
+              <circle cx="250" cy="70" r="3.5" class="wire-dot" fill="#dc2626"/>
+              <line x1="250" y1="70" x2="250" y2="210" class="wire-control"/>
+
+              <!-- Pulsador / Contacto S1 -->
+              <circle cx="250" cy="210" r="3" fill="#0f172a"/>
+              <line x1="240" y1="210" x2="260" y2="235" stroke="#0f172a" stroke-width="1.8"/>
+              <circle cx="250" cy="245" r="3" fill="#0f172a"/>
+              <text x="270" y="225" class="tag draggable-text">-S1</text>
+              <text x="270" y="240" class="subtag draggable-text">Marcha</text>
+
+              <line x1="250" y1="245" x2="250" y2="290" class="wire-control"/>
+
+              <!-- Relé / Optoacoplador OP1 -->
+              <rect x="220" y="290" width="60" height="50" rx="3" class="comp-box"/>
+              <text x="250" y="320" class="tag draggable-text" text-anchor="middle" font-size="11">RELÉ</text>
+              <text x="290" y="315" class="tag draggable-text">-OP1</text>
+              <text x="290" y="332" class="subtag draggable-text">Finder 24V</text>
+
+              <!-- Retorno a 0VDC -->
+              <line x1="250" y1="340" x2="250" y2="390" class="wire-control" stroke="#0284c7"/>
+              <line x1="250" y1="390" x2="290" y2="390" class="wire-control" stroke="#0284c7"/>
+              <polygon points="290,386 302,390 290,394" fill="#0284c7"/>
+              <text x="295" y="380" class="wire-text draggable-text" fill="#0284c7">0VDC /01.8</text>
+            </g>
+          </g>
+
+          <!-- ===================================================================== -->
+          <!-- 4. CAJETÍN AMPLIADO DE INGENIERÍA AXON (90 pt, Y: 705..795, X: 280)  -->
+          <!-- ===================================================================== -->
+          <g id="cajetin_axon">
+            <!-- Contenedor general del cajetín -->
+            <rect x="280" y="705" width="870" height="90" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
+
+            <!-- Divisiones Verticales -->
+            <line x1="380" y1="705" x2="380" y2="795" class="cad-thin"/>
+            <line x1="450" y1="705" x2="450" y2="795" class="cad-thin"/>
+            <line x1="535" y1="705" x2="535" y2="795" class="cad-thin"/>
+            <line x1="880" y1="705" x2="880" y2="795" class="cad-thin"/>
+            <line x1="1025" y1="705" x2="1025" y2="795" class="cad-thin"/>
+
+            <!-- Divisiones Horizontales -->
+            <line x1="280" y1="727" x2="535" y2="727" class="cad-thin"/>
+            <line x1="280" y1="750" x2="535" y2="750" class="cad-thin"/>
+            <line x1="280" y1="772" x2="535" y2="772" class="cad-thin"/>
+
+            <line x1="535" y1="732" x2="880" y2="732" class="cad-thin"/>
+            <line x1="880" y1="735" x2="1025" y2="735" class="cad-thin"/>
+            <line x1="880" y1="765" x2="1025" y2="765" class="cad-thin"/>
+            <line x1="1025" y1="755" x2="1150" y2="755" class="cad-thin"/>
+
+            <!-- 1. Bloque de Firmas y Responsables -->
+            <text x="285" y="720" class="title-label">DIBUJADO</text>
+            <text x="385" y="720" class="title-value draggable-text">AXON ING.</text>
+            <text x="455" y="720" class="title-value draggable-text" id="cajetinFechaDib">2026-10-16</text>
+
+            <text x="285" y="743" class="title-label">REVISADO</text>
+            <text x="385" y="743" class="title-value draggable-text">EPINO</text>
+            <text x="455" y="743" class="title-value draggable-text" id="cajetinFechaRev">2026-10-16</text>
+
+            <text x="285" y="765" class="title-label">APROBADO</text>
+            <text x="385" y="765" class="title-value draggable-text">GARDEN HOUSE</text>
+            <text x="455" y="765" class="title-value draggable-text">2026-10-16</text>
+
+            <text x="285" y="788" class="title-label">ESTÁNDAR</text>
+            <text x="385" y="788" class="title-value draggable-text">IEC 60617</text>
+            <text x="455" y="788" class="title-value draggable-text" id="cajetinRevision">REV. 0</text>
+
+            <!-- 2. Bloque de Cliente y Título del Proyecto -->
+            <text x="545" y="722" class="title-label">CLIENTE:</text>
+            <text x="610" y="723" class="title-value draggable-text" font-size="14" fill="#0f172a" id="cajetinCliente">GARDEN HOUSE</text>
+
+            <text x="545" y="750" class="title-main draggable-text" font-size="17" id="cajetinProyecto">NUEVA MAQUINA / PROYECTO</text>
+            <text x="545" y="776" class="title-value draggable-text" font-size="13" fill="#0284c7" id="cajetinTituloLamina">DIAGRAMA DE FUERZA Y CONTROL</text>
+
+            <!-- 3. Bloque de Identificación Técnica -->
+            <text x="888" y="723" class="title-label">CÓDIGO:</text>
+            <text x="945" y="725" class="title-value draggable-text" font-size="13" fill="#dc2626" id="cajetinCodigo">DE-XXXX</text>
+
+            <text x="888" y="753" class="title-label">DISCIPLINA:</text>
+            <text x="955" y="754" class="title-value draggable-text" font-size="12" id="cajetinDisciplina">Control</text>
+
+            <text x="888" y="783" class="title-label">PLANO N°:</text>
+            <text x="948" y="784" class="title-value draggable-text" font-size="12" id="cajetinPlanoNum">XXXX-E-001</text>
+
+            <!-- 4. Bloque de Lámina y Estado -->
+            <text x="1035" y="725" class="title-label">LÁMINA / HOJA</text>
+            <text x="1088" y="746" class="title-value draggable-text" font-size="20" fill="#0284c7" text-anchor="middle" id="cajetinHoja">01 / 01</text>
+
+            <text x="1035" y="770" class="title-label">ESTADO</text>
+            <text x="1088" y="786" class="title-value draggable-text" font-size="13" fill="#16a34a" text-anchor="middle" id="cajetinEstado">PRELIMINAR</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Barra Flotante de Zoom y Pantalla Completa -->
+    <div class="zoom-floating-bar no-print">
+      <button id="btnZoomOut" class="btn-icon" title="Alejar (-)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <span id="zoomLevel" class="zoom-level-label">100%</span>
+      <button id="btnZoomIn" class="btn-icon" title="Acercar (+)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </button>
+      <div style="width:1px; height:18px; background:rgba(255,255,255,0.2); margin:0 2px;"></div>
+      <button id="btnZoomFit" class="btn-icon" title="Encajar en Pantalla (0 o R)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button id="btnZoom100" class="btn-icon" title="Escala 1:1">1:1</button>
+      <button id="btnFullscreen" class="btn-icon" title="Pantalla Completa (F)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+      </button>
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL DE GUARDAR Y EXPORTAR (DESCARGAR SVG O HTML VERSIONADO)             -->
+  <!-- ========================================================================= -->
+  <div class="modal-overlay" id="modalGuardar">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-title">
+        <span style="display:flex; align-items:center; gap:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          Exportar y Guardar Plano A3
+        </span>
+        <button class="btn-icon" id="btnCloseModalGuardar" style="width:28px; height:28px;">✕</button>
+      </div>
+
+      <div style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">
+        Descarga el plano vectorial con todas las posiciones y ediciones de texto aplicadas:
+      </div>
+
+      <!-- Tarjeta 1: Descargar archivo SVG directo -->
+      <div class="save-option-card">
+        <div class="save-option-header">
+          <span>1. Descargar Lámina como Archivo SVG</span>
+          <span class="badge-tag">Vectorial Puro</span>
+        </div>
+        <div class="save-option-desc">
+          Descarga el archivo <code>hoja_01.svg</code> listo para almacenar en <code>hojas/</code> o importar en cualquier software CAD/vectorial.
+        </div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="inputSvgFilename" class="modal-input" value="hoja_01.svg" placeholder="nombre_archivo.svg" style="flex:1;">
+          <button class="btn-tool btn-accent" id="btnDescargarSvg" style="padding:0 14px;">
+            💾 Descargar SVG
+          </button>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2: Guardar como nueva versión en el cajetín -->
+      <div class="save-option-card" style="margin-top:12px;">
+        <div class="save-option-header">
+          <span>2. Guardar como Nueva Versión / Revisión</span>
+          <span class="badge-tag" style="background:rgba(234,179,8,0.2); color:#facc15; border-color:rgba(234,179,8,0.3);">Versionar</span>
+        </div>
+        <div class="save-option-desc">
+          Actualiza automáticamente el casillero <strong>REV.</strong> y la fecha de hoy en el cajetín, y descarga el archivo SVG versionado.
+        </div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="inputRevision" class="modal-input" placeholder="Ej: REV. A, REV. 1, REV. B" value="REV. A" style="flex:1;">
+          <button class="btn-tool" id="btnDescargarVersionado" style="background:#0284c7; color:#fff; border-color:#0284c7; padding:0 14px;">
+            Guardar Versión
+          </button>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3: Descargar como archivo HTML autónomo -->
+      <div class="save-option-card" style="margin-top:12px;">
+        <div class="save-option-header">
+          <span>3. Descargar como Plano HTML Autónomo</span>
+          <span class="badge-tag" style="background:rgba(168,85,247,0.2); color:#c084fc; border-color:rgba(168,85,247,0.3);">Autónomo</span>
+        </div>
+        <div class="save-option-desc">
+          Genera un archivo <code>.html</code> listo para enviar o visualizar en cualquier navegador sin dependencias externas.
+        </div>
+        <button class="btn-tool" id="btnDescargarHtml" style="width:100%; justify-content:center; padding:9px; background:#7c3aed; color:#fff; border-color:#6d28d9; font-weight:700;">
+          📦 Descargar HTML Autónomo
+        </button>
+      </div>
+
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:11px; color:#64748b;">
+          💡 También puedes presionar <strong>Ctrl+P</strong> para imprimir directamente a escala 1:1 en hoja A3.
+        </span>
+        <button class="btn-tool" id="btnCerrarModalBottom" style="font-size:11px;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts del visor y editor -->
+  <script src="js/zoom-pan.js"></script>
+  <script src="js/editor_textos.js"></script>
+  <script>
+    let zoomController = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Inicializar Zoom y Pan
+      const viewport = document.getElementById("viewport");
+      const stage = document.getElementById("stage");
+      const zoomLabel = document.getElementById("zoomLevel");
+
+      if (typeof ZoomPanController !== "undefined") {
+        zoomController = new ZoomPanController(viewport, stage, (pct) => {
+          if (zoomLabel) zoomLabel.textContent = `${pct}%`;
+        });
+      }
+
+      // 2. Inicializar Editor Interactivo de Textos
+      if (typeof initEditorTextos === "function") {
+        initEditorTextos();
+      }
+
+      // 3. Event Listeners de Botones de Zoom
+      document.getElementById("btnZoomIn").addEventListener("click", () => zoomController.zoomIn());
+      document.getElementById("btnZoomOut").addEventListener("click", () => zoomController.zoomOut());
+      document.getElementById("btnZoomFit").addEventListener("click", () => zoomController.fitToScreen());
+      document.getElementById("btnZoom100").addEventListener("click", () => zoomController.setZoom100());
+      document.getElementById("btnFullscreen").addEventListener("click", () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      });
+
+      // 4. Modal de Guardar y Exportar
+      const modal = document.getElementById("modalGuardar");
+      const btnAbrir = document.getElementById("btnAbrirGuardar");
+      const btnCerrar = document.getElementById("btnCloseModalGuardar");
+      const btnCerrarBtm = document.getElementById("btnCerrarModalBottom");
+
+      const abrirModal = () => {
+        if (typeof sincronizarSvgActivoEnMemoria === "function") sincronizarSvgActivoEnMemoria();
+        modal.classList.add("open");
+      };
+      const cerrarModal = () => modal.classList.remove("open");
+
+      btnAbrir.addEventListener("click", abrirModal);
+      btnCerrar.addEventListener("click", cerrarModal);
+      btnCerrarBtm.addEventListener("click", cerrarModal);
+      modal.addEventListener("click", (e) => { if (e.target === modal) cerrarModal(); });
+
+      // Descargar SVG
+      document.getElementById("btnDescargarSvg").addEventListener("click", () => {
+        const svgEl = document.getElementById("schematicSvg");
+        const filename = document.getElementById("inputSvgFilename").value.trim() || "hoja_01.svg";
+        descargarBlob(svgEl.outerHTML, filename, "image/svg+xml");
+        cerrarModal();
+        if (typeof mostrarNotificacion === "function") mostrarNotificacion(`Archivo SVG descargado: ${filename}`);
+      });
+
+      // Descargar SVG Versionado
+      document.getElementById("btnDescargarVersionado").addEventListener("click", () => {
+        const rev = document.getElementById("inputRevision").value.trim() || "REV. A";
+        const revEl = document.getElementById("cajetinRevision");
+        const fechaEl = document.getElementById("cajetinFechaRev");
+        const hoy = new Date().toISOString().split("T")[0];
+
+        if (revEl) revEl.textContent = rev;
+        if (fechaEl) fechaEl.textContent = hoy;
+
+        const svgEl = document.getElementById("schematicSvg");
+        const cleanRev = rev.replace(/[^a-zA-Z0-9_-]/g, "_");
+        const filename = `hoja_01_${cleanRev}.svg`;
+        descargarBlob(svgEl.outerHTML, filename, "image/svg+xml");
+        cerrarModal();
+        if (typeof mostrarNotificacion === "function") mostrarNotificacion(`Lámina versionada descargada: ${filename}`);
+      });
+
+      // Descargar HTML Autónomo
+      document.getElementById("btnDescargarHtml").addEventListener("click", () => {
+        const fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        descargarBlob(fullHtml, "plano_electrico_a3.html", "text/html");
+        cerrarModal();
+        if (typeof mostrarNotificacion === "function") mostrarNotificacion("Plano HTML autónomo descargado con éxito.");
+      });
+
+      // 5. Botón de Impresión A3
+      document.getElementById("btnPrintSheet").addEventListener("click", () => {
+        window.print();
+      });
+
+      // 6. Atajos de teclado en Plantilla
+      window.addEventListener("keydown", (e) => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.isContentEditable) return;
+
+        switch (e.key) {
+          case "m":
+          case "M":
+            if (typeof toggleModoMoverTextos === "function") toggleModoMoverTextos();
+            break;
+          case "s":
+          case "S":
+            e.preventDefault();
+            abrirModal();
+            break;
+          case "p":
+          case "P":
+            if (!e.ctrlKey) {
+              window.print();
+            }
+            break;
+          case "f":
+          case "F":
+            if (!document.fullscreenElement) {
+              document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+              document.exitFullscreen().catch(() => {});
+            }
+            break;
+          case "0":
+          case "r":
+          case "R":
+            if (zoomController) zoomController.fitToScreen();
+            break;
+          case "+":
+          case "=":
+            if (zoomController) zoomController.zoomIn();
+            break;
+          case "-":
+          case "_":
+            if (zoomController) zoomController.zoomOut();
+            break;
+          case "Escape":
+            cerrarModal();
+            if (typeof modoEdicionActivo !== "undefined" && modoEdicionActivo && typeof toggleModoMoverTextos === "function") {
+              toggleModoMoverTextos();
+            }
+            break;
+        }
+      });
+    });
+
+    function descargarBlob(content, filename, type) {
+      const blob = new Blob([content], { type: `${type};charset=utf-8` });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

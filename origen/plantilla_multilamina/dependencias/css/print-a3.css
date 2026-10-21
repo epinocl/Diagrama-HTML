@@ -1,0 +1,888 @@
+/* ==========================================================================
+   CONFIGURACION DE IMPRESION NORMALIZADA A3 HORIZONTAL
+   Salida vectorial a escala 1:1 sin márgenes parásitos ni saltos indeseados
+   4 Láminas exactas (01/04 a 04/04) sin duplicados ni hojas en blanco
+   ========================================================================== */
+
+/* En pantalla interactiva, ocultar siempre el contenedor de impresión por lote */
+.print-only,
+#printAllContainer {
+  display: none;
+}
+
+@page {
+  size: A3 landscape;
+  margin: 0;
+}
+
+@media print {
+  /* 1. Ocultar interfaz interactiva y el viewport de trabajo para NO duplicar la hoja activa */
+  .top-navbar,
+  .bottom-slide-strip,
+  .zoom-floating-bar,
+  .sidebar-panel,
+  .modal-overlay,
+  button,
+  .no-print,
+  .viewport-container,
+  .sheet-stage,
+  #activeSheetContainer {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* 2. Configuración de página limpia y fiel en A3 Horizontal */
+  html, body {
+    width: 420mm !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 3. Contenedor Exclusivo de Impresión de las 4 Láminas */
+  .print-only,
+  #printAllContainer {
+    display: block !important;
+    width: 420mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #printAllContainer .a3-sheet {
+    width: 420mm !important;
+    height: 297mm !important;
+    max-width: 420mm !important;
+    max-height: 297mm !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    overflow: hidden !important;
+  }
+
+  /* Evitar hoja en blanco extra al final */
+  #printAllContainer .a3-sheet:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  #printAllContainer .a3-sheet svg {
+    width: 420mm !important;
+    height: 297mm !important;
+    display: block !important;
+    background: #ffffff !important;
+  }
+
+  /* 4. Estilos de Objetos para Impresión: Blanco con líneas negras o de colores */
+  .a3-sheet .cad-sheet-bg {
+    fill: #ffffff !important;
+    stroke: none !important;
+  }
+
+  .a3-sheet .cad-outer-border {
+    stroke: #475569 !important;
+    stroke-width: 1px !important;
+    fill: none !important;
+  }
+
+  .a3-sheet .cad-inner-border {
+    stroke: #000000 !important;
+    stroke-width: 1.6px !important;
+    fill: none !important;
+  }
+
+  .a3-sheet .grid-tick {
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+  }
+
+  .a3-sheet .grid-label {
+    fill: #000000 !important;
+    font-weight: bold !important;
+  }
+
+  .a3-sheet .cajetin-box {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1.8px !important;
+  }
+
+  .a3-sheet .cajetin-div-line {
+    stroke: #000000 !important;
+    stroke-width: 1.8px !important;
+  }
+
+  .a3-sheet .cajetin-div-thin {
+    stroke: #000000 !important;
+    stroke-width: 0.8px !important;
+    opacity: 1 !important;
+  }
+
+  .a3-sheet .cajetin-label-red {
+    fill: #dc2626 !important;
+    font-weight: bold !important;
+  }
+
+  .a3-sheet .cajetin-val-white {
+    fill: var(--print-color-text, #000000) !important;
+    font-weight: bold !important;
+  }
+
+  .a3-sheet .cajetin-title-proj {
+    fill: var(--print-color-text, #000000) !important;
+    font-weight: 700 !important;
+  }
+
+  .a3-sheet .cajetin-title-sub {
+    fill: var(--print-color-muted, #334155) !important;
+    font-weight: 600 !important;
+  }
+
+  .a3-sheet .cajetin-title-sheet {
+    fill: var(--print-color-cyan, #0284c7) !important;
+    font-weight: bold !important;
+  }
+
+  .a3-sheet .cajetin-page-badge {
+    fill: var(--print-color-cyan, #0284c7) !important;
+    font-weight: bold !important;
+  }
+
+  /* Proteger Logo Oficial AXON Bicolor */
+  .a3-sheet #logo_axon polygon[fill="#2828ff" i] { fill: #2828ff !important; }
+  .a3-sheet #logo_axon polygon[fill="#f66c1e" i] { fill: #f66c1e !important; }
+  .a3-sheet #logo_axon line[stroke="#2828ff" i] { stroke: #2828ff !important; }
+  .a3-sheet #logo_axon line[stroke="#f66c1e" i] { stroke: #f66c1e !important; }
+
+  /* Encabezado Superior de Lámina */
+  .a3-sheet svg > rect[y="32.4"][height="38"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1.5px !important;
+  }
+
+  /* Envolventes, Tableros y Cajas */
+  .a3-sheet #tablero_tdc > rect[x="75"][y="115"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 2px !important;
+  }
+
+  .a3-sheet #tablero_tdc > rect[x="95"][y="135"] {
+    fill: #ffffff !important;
+    stroke: #ea580c !important;
+    stroke-width: 1.6px !important;
+  }
+
+  .a3-sheet #caja_hmi_operador > rect[x="685"][y="115"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 2.2px !important;
+  }
+
+  /* Canaletas Ranuradas y Rieles DIN */
+  .a3-sheet #tablero_tdc rect[x="110"][width="490"] {
+    fill: #f8fafc !important;
+    stroke: #475569 !important;
+    stroke-width: 1.2px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="115"][height="15"] {
+    fill: #f1f5f9 !important;
+    stroke: #64748b !important;
+    stroke-width: 1px !important;
+  }
+
+  /* PLC Phoenix Contact ILC 150 ETH y Módulos Inline */
+  .a3-sheet #tablero_tdc rect[x="135"][y="185"] {
+    fill: #ffffff !important;
+    stroke: #15803d !important;
+    stroke-width: 2px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="142"][y="193"] {
+    fill: #f0fdf4 !important;
+    stroke: #15803d !important;
+    stroke-width: 1.2px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="160"][y="300"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1.2px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="233"][y="185"],
+  .a3-sheet #tablero_tdc rect[x="273"][y="185"],
+  .a3-sheet #tablero_tdc rect[x="363"][y="185"] {
+    fill: #ffffff !important;
+    stroke: #15803d !important;
+    stroke-width: 1.8px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="238"][y="250"],
+  .a3-sheet #tablero_tdc rect[x="277"][y="250"] {
+    fill: #f0fdf4 !important;
+    stroke: #15803d !important;
+    stroke-width: 1px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="318"][y="185"] {
+    fill: #ffffff !important;
+    stroke: #d97706 !important;
+    stroke-width: 2px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="322"][y="250"] {
+    fill: #fefce8 !important;
+    stroke: #d97706 !important;
+    stroke-width: 1px !important;
+  }
+
+  /* Fuente Traco Power */
+  .a3-sheet #tablero_tdc rect[x="420"][y="170"],
+  .a3-sheet #fuente_g1_traco rect[x="195"][y="505"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 2px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="421"][y="280"] {
+    fill: #f1f5f9 !important;
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="440"][y="175"],
+  .a3-sheet #tablero_tdc rect[x="450"][y="322"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+  }
+
+  /* Borneras X1, X2, X3 */
+  .a3-sheet #tablero_tdc rect[x="135"][y="445"][width="220"] {
+    fill: #ffffff !important;
+    stroke: #0284c7 !important;
+    stroke-width: 1.8px !important;
+  }
+  .a3-sheet #tablero_tdc rect[x="135"][y="445"][height="25"] {
+    fill: #f0f9ff !important;
+    stroke: #0284c7 !important;
+    stroke-width: 1px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="365"][y="445"][width="125"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1.8px !important;
+  }
+  .a3-sheet #tablero_tdc rect[x="365"][y="445"][height="25"] {
+    fill: #f1f5f9 !important;
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+  }
+
+  .a3-sheet #tablero_tdc rect[x="500"][y="445"][width="105"] {
+    fill: #ffffff !important;
+    stroke: #dc2626 !important;
+    stroke-width: 1.8px !important;
+  }
+  .a3-sheet #tablero_tdc rect[x="500"][y="445"][height="25"] {
+    fill: #fef2f2 !important;
+    stroke: #dc2626 !important;
+    stroke-width: 1px !important;
+  }
+
+  /* Pantalla Laetus Commander 110S */
+  .a3-sheet #caja_hmi_operador rect[x="715"][y="145"] {
+    fill: #ffffff !important;
+    stroke: #0284c7 !important;
+    stroke-width: 2.5px !important;
+  }
+
+  .a3-sheet #caja_hmi_operador rect[x="735"][y="165"],
+  .a3-sheet #caja_hmi_operador rect[x="740"][y="170"] {
+    fill: #f8fafc !important;
+    stroke: #0284c7 !important;
+    stroke-width: 1.5px !important;
+    opacity: 1 !important;
+  }
+
+  /* Pantalla Weintek 7" */
+  .a3-sheet #caja_hmi_operador rect[x="755"][y="420"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 2px !important;
+  }
+
+  .a3-sheet #caja_hmi_operador rect[x="775"][y="440"] {
+    fill: #f0fdf4 !important;
+    stroke: #16a34a !important;
+    stroke-width: 1.8px !important;
+  }
+
+  .a3-sheet .comp-box {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1.6px !important;
+  }
+
+  /* Convertir cajas oscuras a blanco con borde negro o temático */
+  .a3-sheet svg rect[fill="#1a2230"],
+  .a3-sheet svg rect[fill="#162030"],
+  .a3-sheet svg rect[fill="#1e2433"],
+  .a3-sheet svg rect[fill="#232d42"],
+  .a3-sheet svg rect[fill="#0f172a"],
+  .a3-sheet svg rect[fill="#162032"],
+  .a3-sheet svg rect[fill="#1e293b"],
+  .a3-sheet svg rect[fill="#131b28"],
+  .a3-sheet svg rect[fill="#172033"],
+  .a3-sheet svg rect[fill="#161f30"],
+  .a3-sheet svg rect[fill="#201116"],
+  .a3-sheet svg rect[fill="#14532d"],
+  .a3-sheet svg rect[fill="#166534"],
+  .a3-sheet svg rect[fill="#132a1e"],
+  .a3-sheet svg rect[fill="#132338"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+  }
+
+  /* Módulos Phoenix Contact Inline y PLCs: fondo blanco con línea verde industrial */
+  .a3-sheet svg rect[fill="#14532d"] {
+    fill: #ffffff !important;
+    stroke: var(--print-color-green, #15803d) !important;
+    stroke-width: 1.8px !important;
+  }
+
+  /* Canales de salida en reserva (Lámina 10): fondo blanco con borde gris sutil */
+  .a3-sheet svg [id^="canal_"][id$="_reserva"] rect {
+    fill: #ffffff !important;
+    stroke: #94a3b8 !important;
+    stroke-width: 1.2px !important;
+  }
+  .a3-sheet svg [id^="canal_"][id$="_reserva"] line {
+    stroke: #94a3b8 !important;
+  }
+  .a3-sheet svg [id^="canal_"][id$="_reserva"] text {
+    fill: var(--print-color-muted, #64748b) !important;
+  }
+
+  /* Salida paroEQ activa (Lámina 10): fondo blanco con línea ámbar de señal */
+  .a3-sheet svg rect[fill="#166534"],
+  .a3-sheet svg #canal_1_paro rect[x="90"][y="190"] {
+    fill: #ffffff !important;
+    stroke: var(--print-color-amber, #d97706) !important;
+    stroke-width: 2px !important;
+  }
+
+  /* Paneles de Seguridad y Falla: fondo blanco con línea roja */
+  .a3-sheet svg rect[fill="#201116"] {
+    fill: #ffffff !important;
+    stroke: var(--print-color-red, #dc2626) !important;
+    stroke-width: 1.8px !important;
+  }
+
+  /* Redes Directas y Enlaces (Lámina 11): fondo blanco con contorno temático */
+  .a3-sheet svg rect[fill="#132338"] {
+    fill: #ffffff !important;
+    stroke: var(--print-color-blue, #0284c7) !important;
+    stroke-width: 1.8px !important;
+  }
+  .a3-sheet svg rect[fill="#132a1e"] {
+    fill: #ffffff !important;
+    stroke: var(--print-color-green, #16a34a) !important;
+    stroke-width: 1.8px !important;
+  }
+  .a3-sheet svg rect[fill="#161f30"] {
+    fill: #ffffff !important;
+    stroke: var(--print-color-blue, #0284c7) !important;
+    stroke-width: 1.8px !important;
+  }
+
+  /* Encabezados / Barras de Título de Paneles (Estilo editorial blanco/claro sin bloques de tinta) */
+  .a3-sheet svg rect[fill="#0284c7"] {
+    fill: #f0f9ff !important;
+    stroke: var(--print-color-blue, #0284c7) !important;
+    stroke-width: 1.2px !important;
+  }
+  .a3-sheet svg rect[fill="#0284c7"] + text,
+  .a3-sheet svg rect[fill="#0284c7"] ~ text.table-hdr {
+    fill: var(--print-color-blue, #0284c7) !important;
+    font-weight: bold !important;
+  }
+
+  body.theme-print .a3-sheet svg rect[fill="#dc2626"],
+  .a3-sheet svg rect[fill="#dc2626"] {
+    fill: #fef2f2 !important;
+    stroke: var(--print-color-red, #dc2626) !important;
+    stroke-width: 1.2px !important;
+  }
+  .a3-sheet svg rect[fill="#dc2626"] + text,
+  .a3-sheet svg rect[fill="#dc2626"] ~ text.table-hdr {
+    fill: var(--print-color-red, #dc2626) !important;
+    font-weight: bold !important;
+  }
+
+  /* Badges circulares OK y ! en Filosofía de Paro (Lámina 10) */
+  .a3-sheet svg circle[fill="#15803d"] {
+    fill: #dcfce7 !important;
+    stroke: var(--print-color-green, #16a34a) !important;
+    stroke-width: 1.5px !important;
+  }
+  .a3-sheet svg circle[fill="#15803d"] + text {
+    fill: var(--print-color-green, #15803d) !important;
+    font-weight: bold !important;
+  }
+  .a3-sheet svg circle[fill="#dc2626"] {
+    fill: #fee2e2 !important;
+    stroke: var(--print-color-red, #dc2626) !important;
+    stroke-width: 1.5px !important;
+  }
+  .a3-sheet svg circle[fill="#dc2626"] + text {
+    fill: var(--print-color-red, #dc2626) !important;
+    font-weight: bold !important;
+  }
+
+  /* Círculos de borna X1 en Lámina 09 y 10 */
+  .a3-sheet svg circle[fill="#1a2230"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1.8px !important;
+  }
+
+  /* Indicador LED en Lámina 10 */
+  .a3-sheet svg rect[x="95"][y="148"][fill="#0f172a"] {
+    fill: #f8fafc !important;
+    stroke: var(--print-color-green, #15803d) !important;
+    stroke-width: 1px !important;
+  }
+  .a3-sheet svg circle[fill="#334155"] {
+    fill: #e2e8f0 !important;
+    stroke: #94a3b8 !important;
+    stroke-width: 0.8px !important;
+  }
+
+  /* Tablas Técnicas (Lámina 11: M12, Cordón MH25, Conector CN16) */
+  .a3-sheet svg #tabla_m12_camara rect[y="300"],
+  .a3-sheet svg #tabla_cordon_mh25 rect[y="300"],
+  .a3-sheet svg #tabla_cn16_maquina rect[y="300"] {
+    fill: #f1f5f9 !important;
+    stroke: var(--print-color-blue, #0284c7) !important;
+    stroke-width: 1.4px !important;
+  }
+  .a3-sheet svg #tabla_m12_camara text[y="317"],
+  .a3-sheet svg #tabla_cordon_mh25 text[y="317"],
+  .a3-sheet svg #tabla_cn16_maquina text[y="317"] {
+    fill: var(--print-color-blue, #0284c7) !important;
+    font-weight: bold !important;
+  }
+  .a3-sheet svg #tabla_m12_camara rect[y="325"],
+  .a3-sheet svg #tabla_cordon_mh25 rect[y="325"],
+  .a3-sheet svg #tabla_cn16_maquina rect[y="325"] {
+    fill: #ffffff !important;
+    stroke: var(--print-color-blue, #0284c7) !important;
+    stroke-width: 1.4px !important;
+  }
+  .a3-sheet svg #tabla_m12_camara line,
+  .a3-sheet svg #tabla_cordon_mh25 line,
+  .a3-sheet svg #tabla_cn16_maquina line {
+    stroke: #cbd5e1 !important;
+  }
+  .a3-sheet svg #tabla_m12_camara line[y1="350"],
+  .a3-sheet svg #tabla_cordon_mh25 line[y1="350"],
+  .a3-sheet svg #tabla_cn16_maquina line[y1="350"] {
+    stroke: var(--print-color-blue, #0284c7) !important;
+    stroke-width: 1.2px !important;
+  }
+  .a3-sheet svg #tabla_m12_camara text[y="342"],
+  .a3-sheet svg #tabla_cordon_mh25 text[y="342"],
+  .a3-sheet svg #tabla_cn16_maquina text[y="342"] {
+    fill: var(--print-color-amber, #b45309) !important;
+    font-weight: bold !important;
+  }
+
+  /* Regleta Bornera X1 en Láminas 09 y 10 */
+  .a3-sheet svg rect[x="75"][y="625"][height="75"] {
+    fill: #ffffff !important;
+    stroke: var(--print-color-blue, #0284c7) !important;
+    stroke-width: 1.6px !important;
+  }
+
+  /* Invertir trazos blancos a negro */
+  .a3-sheet svg rect[stroke="#ffffff"],
+  .a3-sheet svg rect[stroke="white"],
+  .a3-sheet svg line[stroke="#ffffff"],
+  .a3-sheet svg line[stroke="white"],
+  .a3-sheet svg circle[stroke="#ffffff"],
+  .a3-sheet svg path[stroke="#ffffff"] {
+    stroke: #000000 !important;
+  }
+
+  .a3-sheet .cad-border {
+    stroke: #000000 !important;
+  }
+  .a3-sheet .cad-thin {
+    stroke: #000000 !important;
+    opacity: 0.9 !important;
+  }
+
+  /* Tablas Normalizadas */
+  .a3-sheet svg rect[y="70.4"][height="29.6"] {
+    fill: #f1f5f9 !important;
+    stroke: #000000 !important;
+    stroke-width: 1.2px !important;
+  }
+
+  .a3-sheet svg line[stroke="#334155"] {
+    stroke: #cbd5e1 !important;
+    stroke-width: 1px !important;
+  }
+
+  .a3-sheet svg rect[fill="#131b28"] {
+    fill: #ffffff !important;
+    stroke: #e2e8f0 !important;
+  }
+
+  .a3-sheet svg rect[fill="#172033"] {
+    fill: #f8fafc !important;
+    stroke: #e2e8f0 !important;
+  }
+
+  .a3-sheet svg rect[x="56.3"][y="595"][height="125"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1.4px !important;
+  }
+  .a3-sheet svg rect[x="56.3"][y="595"][height="24"] {
+    fill: #f1f5f9 !important;
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+  }
+
+  .a3-sheet svg rect[x="420"][y="530"][width="370"] {
+    fill: #f8fafc !important;
+    stroke: #0284c7 !important;
+    stroke-width: 1.5px !important;
+  }
+
+  /* Emplazamiento */
+  .a3-sheet #vista_frontal_blistera rect[x="160"][y="332.2"] {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 2px !important;
+  }
+  .a3-sheet #vista_frontal_blistera rect[y="427.2"] {
+    fill: #f1f5f9 !important;
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+  }
+  .a3-sheet #caja_hmi_posicionada rect[fill="#162030"] {
+    fill: #ffffff !important;
+    stroke: #0284c7 !important;
+    stroke-width: 1.8px !important;
+  }
+  .a3-sheet #caja_hmi_posicionada rect[fill="#0f172a"] {
+    fill: #f8fafc !important;
+    stroke: #0284c7 !important;
+  }
+  .a3-sheet #caja_hmi_posicionada rect[fill="#162032"] {
+    fill: #f0fdf4 !important;
+    stroke: #16a34a !important;
+  }
+  .a3-sheet #camara_laetus_posicionada rect[x="501.6"] {
+    fill: #ffffff !important;
+    stroke: #0284c7 !important;
+    stroke-width: 1.8px !important;
+  }
+  .a3-sheet #camara_laetus_posicionada rect[x="540.0"] {
+    fill: #f1f5f9 !important;
+    stroke: #000000 !important;
+  }
+
+  /* Textos */
+  .a3-sheet .tag {
+    fill: var(--print-color-text, #000000) !important;
+    font-weight: bold !important;
+  }
+
+  .a3-sheet .subtag {
+    fill: var(--print-color-muted, #334155) !important;
+  }
+
+  .a3-sheet .wire-tag {
+    fill: var(--print-color-text, #000000) !important;
+  }
+
+  .a3-sheet .table-hdr {
+    fill: var(--print-color-text, #000000) !important;
+    font-weight: bold !important;
+  }
+
+  .a3-sheet .table-cell {
+    fill: var(--print-color-muted, #1e293b) !important;
+  }
+
+  .a3-sheet .table-cell-bold {
+    fill: var(--print-color-text, #000000) !important;
+    font-weight: bold !important;
+  }
+
+  .a3-sheet .title-main {
+    fill: var(--print-color-text, #000000) !important;
+    font-weight: bold !important;
+  }
+
+  .a3-sheet .title-value {
+    fill: var(--print-color-cyan, #0284c7) !important;
+    font-weight: bold !important;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* 1. TEXTOS Y LÍNEAS QUE EN CAD SON BLANCOS -> NEGROS (PRINT TEXT)          */
+  /* ------------------------------------------------------------------------- */
+  .a3-sheet svg text[fill="#ffffff" i],
+  .a3-sheet svg text[fill="white" i],
+  .a3-sheet svg text[fill="#fff" i],
+  .a3-sheet svg text[fill="#f8fafc" i],
+  .a3-sheet svg text[fill="#f1f5f9" i],
+  .a3-sheet svg tspan[fill="#ffffff" i],
+  .a3-sheet svg tspan[fill="white" i],
+  .a3-sheet svg tspan[fill="#fff" i],
+  .a3-sheet svg tspan[fill="#f8fafc" i],
+  .a3-sheet svg tspan[fill="#f1f5f9" i],
+  .a3-sheet .cajetin-val-white,
+  .a3-sheet .cajetin-title-proj,
+  .a3-sheet .table-cell-bold,
+  .a3-sheet .table-cell,
+  .a3-sheet .table-hdr {
+    fill: var(--print-color-text, #000000) !important;
+  }
+
+  .a3-sheet svg line[stroke="#ffffff" i],
+  .a3-sheet svg line[stroke="white" i],
+  .a3-sheet svg rect[stroke="#ffffff" i],
+  .a3-sheet svg rect[stroke="white" i],
+  .a3-sheet svg circle[stroke="#ffffff" i],
+  .a3-sheet svg circle[stroke="white" i],
+  .a3-sheet svg path[stroke="#ffffff" i],
+  .a3-sheet svg path[stroke="white" i],
+  .a3-sheet .cad-inner-border,
+  .a3-sheet .cajetin-div-line,
+  .a3-sheet .cajetin-div-thin,
+  .a3-sheet .cad-border,
+  .a3-sheet .cad-thin {
+    stroke: #000000 !important;
+  }
+
+  .a3-sheet .dot {
+    fill: #000000 !important;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* 2. TEXTOS SECUNDARIOS QUE EN CAD SON SILVER/GRIS -> GRIS OSCURO (MUTED)   */
+  /* ------------------------------------------------------------------------- */
+  .a3-sheet svg text[fill="#cbd5e1" i],
+  .a3-sheet svg text[fill="#e2e8f0" i],
+  .a3-sheet svg text[fill="#94a3b8" i],
+  .a3-sheet svg text[fill="#64748b" i],
+  .a3-sheet svg tspan[fill="#cbd5e1" i],
+  .a3-sheet svg tspan[fill="#e2e8f0" i],
+  .a3-sheet svg tspan[fill="#94a3b8" i],
+  .a3-sheet svg tspan[fill="#64748b" i],
+  .a3-sheet .subtag,
+  .a3-sheet .cajetin-title-sub {
+    fill: var(--print-color-muted, #334155) !important;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* 3. CELESTE CLARO / CYAN (TÍTULOS, SUBRAYADOS, RECUADROS, CABLES NEUTRO/0V) */
+  /* ------------------------------------------------------------------------- */
+  .a3-sheet svg text[fill="#38bdf8" i],
+  .a3-sheet svg text[fill="#60a5fa" i],
+  .a3-sheet svg text[fill="#00e5ff" i],
+  .a3-sheet svg text[fill="#00ffff" i],
+  .a3-sheet svg tspan[fill="#38bdf8" i],
+  .a3-sheet svg tspan[fill="#60a5fa" i],
+  .a3-sheet svg tspan[fill="#00e5ff" i],
+  .a3-sheet svg tspan[fill="#00ffff" i],
+  .a3-sheet .cajetin-title-sheet,
+  .a3-sheet .cajetin-page-badge {
+    fill: var(--print-color-cyan, #0284c7) !important;
+  }
+
+  .a3-sheet svg line[stroke="#38bdf8" i],
+  .a3-sheet svg line[stroke="#60a5fa" i],
+  .a3-sheet svg line[stroke="#00e5ff" i],
+  .a3-sheet svg rect[stroke="#38bdf8" i],
+  .a3-sheet svg rect[stroke="#60a5fa" i],
+  .a3-sheet svg rect[stroke="#00e5ff" i],
+  .a3-sheet svg path[stroke="#38bdf8" i],
+  .a3-sheet svg circle[stroke="#38bdf8" i],
+  .a3-sheet .wire-neutral,
+  .a3-sheet .wire-0v {
+    stroke: var(--print-color-cyan, #0284c7) !important;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* 4. AZUL TÉCNICO / CUADRÍCULA (ACI BLUE #1a66ff)                           */
+  /* ------------------------------------------------------------------------- */
+  .a3-sheet svg text[fill="#1a66ff" i],
+  .a3-sheet svg tspan[fill="#1a66ff" i],
+  .a3-sheet .grid-label {
+    fill: var(--print-color-blue, #1e3a8a) !important;
+  }
+
+  .a3-sheet svg line[stroke="#1a66ff" i],
+  .a3-sheet svg rect[stroke="#1a66ff" i],
+  .a3-sheet .cad-outer-border,
+  .a3-sheet .grid-tick {
+    stroke: var(--print-color-blue, #1e3a8a) !important;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* 5. ÁMBAR / AMARILLO (CABLES DE SEÑAL, TAGS, BORNAS X1)                    */
+  /* ------------------------------------------------------------------------- */
+  .a3-sheet svg text[fill="#facc15" i],
+  .a3-sheet svg text[fill="#fef08a" i],
+  .a3-sheet svg text[fill="#f59e0b" i],
+  .a3-sheet svg tspan[fill="#facc15" i],
+  .a3-sheet svg tspan[fill="#fef08a" i],
+  .a3-sheet svg tspan[fill="#f59e0b" i],
+  .a3-sheet .tag,
+  .a3-sheet .wire-tag {
+    fill: var(--print-color-amber, #b45309) !important;
+  }
+
+  .a3-sheet svg line[stroke="#facc15" i],
+  .a3-sheet svg line[stroke="#f59e0b" i] {
+    stroke: var(--print-color-amber, #b45309) !important;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* 6. VERDE INDUSTRIAL (MÓDULOS PLC, ETHERNET, ESTADO OK)                    */
+  /* ------------------------------------------------------------------------- */
+  .a3-sheet svg text[fill="#4ade80" i],
+  .a3-sheet svg text[fill="#22c55e" i],
+  .a3-sheet svg text[fill="#10b981" i],
+  .a3-sheet svg text[fill="#16a34a" i],
+  .a3-sheet svg tspan[fill="#4ade80" i],
+  .a3-sheet svg tspan[fill="#22c55e" i],
+  .a3-sheet svg tspan[fill="#10b981" i],
+  .a3-sheet svg tspan[fill="#16a34a" i] {
+    fill: var(--print-color-green, #15803d) !important;
+  }
+
+  .a3-sheet svg line[stroke="#4ade80" i],
+  .a3-sheet svg line[stroke="#22c55e" i],
+  .a3-sheet svg line[stroke="#10b981" i],
+  .a3-sheet .wire-eth,
+  .a3-sheet .wire-pe {
+    stroke: var(--print-color-green, #15803d) !important;
+  }
+
+  /* ------------------------------------------------------------------------- */
+  /* 7. ROJO DE SEGURIDAD (PARO paroEQ, 24V, ACOMETIDA, RÓTULOS CAJETÍN)       */
+  /* ------------------------------------------------------------------------- */
+  .a3-sheet svg text[fill="#ef4444" i],
+  .a3-sheet svg text[fill="#f87171" i],
+  .a3-sheet svg text[fill="#fca5a5" i],
+  .a3-sheet svg text[fill="#e11d48" i],
+  .a3-sheet svg text[fill="#dc2626" i],
+  .a3-sheet svg tspan[fill="#ef4444" i],
+  .a3-sheet svg tspan[fill="#f87171" i],
+  .a3-sheet svg tspan[fill="#fca5a5" i],
+  .a3-sheet svg tspan[fill="#e11d48" i],
+  .a3-sheet svg tspan[fill="#dc2626" i],
+  .a3-sheet .cajetin-label-red,
+  .a3-sheet .title-label {
+    fill: var(--print-color-red, #dc2626) !important;
+  }
+
+  .a3-sheet svg line[stroke="#ef4444" i],
+  .a3-sheet svg line[stroke="#dc2626" i],
+  .a3-sheet .wire-phase,
+  .a3-sheet .wire-24v {
+    stroke: var(--print-color-red, #dc2626) !important;
+  }
+
+  /* Cables */
+  .a3-sheet .wire-phase {
+    stroke: #dc2626 !important;
+    stroke-width: 2.2px !important;
+  }
+
+  .a3-sheet .wire-neutral {
+    stroke: #0284c7 !important;
+    stroke-width: 2.2px !important;
+  }
+
+  .a3-sheet .wire-24v {
+    stroke: #dc2626 !important;
+    stroke-width: 2.2px !important;
+  }
+
+  .a3-sheet .wire-0v {
+    stroke: #0284c7 !important;
+    stroke-width: 2.2px !important;
+  }
+
+  .a3-sheet .wire-eq-24 {
+    stroke: #b91c1c !important;
+    stroke-width: 2px !important;
+  }
+
+  .a3-sheet .wire-eq-0 {
+    stroke: #0369a1 !important;
+    stroke-width: 2px !important;
+  }
+
+  .a3-sheet .wire-pe {
+    stroke: #16a34a !important;
+    stroke-width: 2px !important;
+  }
+
+  .a3-sheet .wire-control {
+    stroke: #000000 !important;
+    stroke-width: 1.8px !important;
+  }
+
+  .a3-sheet .wire-signal {
+    stroke: #d97706 !important;
+    stroke-width: 1.8px !important;
+  }
+
+  .a3-sheet .wire-eth {
+    stroke: #16a34a !important;
+    stroke-width: 2.6px !important;
+  }
+
+  .a3-sheet .dot {
+    fill: #000000 !important;
+    stroke: none !important;
+  }
+
+  .a3-sheet svg circle[fill="#4ade80"],
+  .a3-sheet svg circle[fill="#22c55e"],
+  .a3-sheet svg circle[fill="#facc15"],
+  .a3-sheet svg circle[fill="#ef4444"],
+  .a3-sheet svg circle[fill="#dc2626"] {
+    stroke: #000000 !important;
+    stroke-width: 0.8px !important;
+  }
+}

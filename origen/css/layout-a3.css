@@ -1,0 +1,1200 @@
+/* ==========================================================================
+   LAYOUT A3 NORMALIZADO - PLANOS ELECTRICOS INDUSTRIALES
+   Dimensiones estándar DIN A3 Horizontal: 420mm x 297mm (Ratio 1.4142)
+   ========================================================================== */
+
+:root {
+  --a3-width-mm: 420mm;
+  --a3-height-mm: 297mm;
+  --a3-ratio: 1.4142857; /* 1191 / 842 pt */
+  --bg-app: #0f172a;
+  --bg-canvas: #1e293b;
+  --bg-sheet: #ffffff;
+  --border-sheet: #334155;
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-color: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --axon-blue: #0284c7;
+  --axon-dark: #034f75;
+  --danger-color: #ef4444;
+
+  /* ========================================================================= */
+  /* PALETA CONFIGURABLE DE MODO IMPRESIÓN (PAPER SPACE DIN A3 & PDF)          */
+  /* ========================================================================= */
+  --print-color-cyan: #0284c7;        /* Celeste Claro / Cyan de títulos ('BLISTERA 3'), tags y recuadros */
+  --print-color-blue: #1e3a8a;        /* Azul Técnico / Cuadrícula (1-8, A-F, marco A3) */
+  --print-color-text: #000000;        /* Texto principal negro (Ex-Blanco #ffffff en CAD) */
+  --print-color-muted: #334155;       /* Texto secundario y notas técnicas (Ex-Silver #cbd5e1) */
+  --print-color-amber: #b45309;       /* Ámbar de etiquetas, avisos y tags (#facc15 en CAD) */
+  --print-color-green: #15803d;       /* Verde de módulos PLC, estado OK (#4ade80 en CAD) */
+  --print-color-red: #dc2626;         /* Rojo de paro de máquina, seguridad y 24V (#ef4444 en CAD) */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  user-select: none;
+}
+
+/* Área Principal del Lienzo de Presentación */
+.viewport-container {
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - 128px);
+  margin-top: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  cursor: grab;
+}
+
+.viewport-container.panning {
+  cursor: grabbing;
+}
+
+/* Modo Vista Continua (Ver las 4 láminas en secuencia vertical) */
+.viewport-container.continuous-view {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding: 30px 0 !important;
+  cursor: default !important;
+}
+
+.viewport-container.continuous-view .sheet-stage {
+  position: static !important;
+  transform: none !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Contenedor del Plano Escala A3 */
+.sheet-stage {
+  position: absolute;
+  transform-origin: center center;
+  transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  background-color: var(--bg-sheet);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.a3-sheet {
+  position: relative;
+  width: 1191px;
+  height: 842px;
+  background-color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* Gráficos vectoriales SVG de la hoja */
+.sheet-svg, .a3-sheet svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ========================================================================= */
+/* TEMA AUTOCAD ELECTRICAL (MODEL SPACE OSCURO - PREDETERMINADO)             */
+/* ========================================================================= */
+body.theme-autocad {
+  --bg-app: #0d1117;
+  --bg-canvas: #121820;
+}
+
+body.theme-autocad .viewport-container {
+  background: #0f141c;
+  background-image: 
+    radial-gradient(rgba(26, 102, 255, 0.18) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+body.theme-autocad .sheet-stage {
+  background-color: #131822;
+  box-shadow: 0 0 0 1.5px #1a66ff, 0 30px 70px rgba(0, 0, 0, 0.9);
+}
+
+body.theme-autocad .a3-sheet {
+  background-color: #131822;
+  box-shadow: none;
+  cursor: crosshair;
+}
+
+body.theme-autocad .table-cell,
+body.theme-autocad .table-cell-bold {
+  fill: #ffffff;
+}
+
+body.theme-autocad .table-hdr {
+  fill: #38bdf8;
+}
+
+body.theme-autocad .tag {
+  fill: #facc15;
+}
+
+body.theme-autocad .subtag {
+  fill: #e2e8f0;
+}
+
+body.theme-autocad .wire-tag {
+  fill: #facc15;
+}
+
+body.theme-autocad .comp-box {
+  fill: #1a2230;
+  stroke: #ffffff;
+}
+
+body.theme-autocad .cajetin-box {
+  fill: #131822;
+  stroke: #ffffff;
+}
+
+body.theme-autocad .cajetin-div-line,
+body.theme-autocad .cajetin-div-thin {
+  stroke: #ffffff;
+}
+
+body.theme-autocad .wire-24v {
+  stroke: #ef4444;
+}
+
+body.theme-autocad .wire-0v {
+  stroke: #0ea5e9;
+}
+
+body.theme-autocad .wire-control {
+  stroke: #ef4444;
+}
+
+body.theme-autocad .wire-signal {
+  stroke: #0ea5e9;
+}
+
+body.theme-autocad .wire-phase {
+  stroke: #ef4444;
+}
+
+body.theme-autocad .wire-neutral {
+  stroke: #0ea5e9;
+}
+
+body.theme-autocad .wire-pe {
+  stroke: #22c55e;
+}
+
+body.theme-autocad .wire-eth {
+  stroke: #22c55e;
+}
+
+/* ========================================================================= */
+/* ========================================================================= */
+/* TEMA IMPRESIÓN A3 (LAYOUT PAPEL BLANCO - ESTILO CAD INDUSTRIAL NORMALIZADO) */
+/* Objetos blancos con líneas negras o líneas de colores (Estilo EPLAN / CAD) */
+/* ========================================================================= */
+body.theme-print {
+  --bg-app: #1e293b;
+  --bg-canvas: #334155;
+}
+
+body.theme-print .viewport-container {
+  background: radial-gradient(circle at center, #334155 0%, #1e293b 100%);
+}
+
+body.theme-print .sheet-stage {
+  background-color: #ffffff !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 0, 0, 0.15) !important;
+}
+
+body.theme-print .a3-sheet {
+  background-color: #ffffff !important;
+  cursor: default;
+}
+
+body.theme-print .a3-sheet svg {
+  background: #ffffff !important;
+}
+
+/* 1. Fondo de la Lámina y Márgenes */
+body.theme-print .cad-sheet-bg {
+  fill: #ffffff !important;
+  stroke: none !important;
+}
+
+body.theme-print .cad-outer-border {
+  stroke: #475569 !important;
+  stroke-width: 1px !important;
+  fill: none !important;
+}
+
+body.theme-print .cad-inner-border {
+  stroke: #000000 !important;
+  stroke-width: 1.6px !important;
+  fill: none !important;
+}
+
+body.theme-print .grid-tick {
+  stroke: #000000 !important;
+  stroke-width: 1px !important;
+}
+
+body.theme-print .grid-label {
+  fill: #000000 !important;
+  font-weight: bold !important;
+}
+
+/* 2. Cajetín Normalizado AXON */
+body.theme-print .cajetin-box {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 1.8px !important;
+}
+
+body.theme-print .cajetin-div-line {
+  stroke: #000000 !important;
+  stroke-width: 1.8px !important;
+}
+
+body.theme-print .cajetin-div-thin {
+  stroke: #000000 !important;
+  stroke-width: 0.8px !important;
+  opacity: 1 !important;
+}
+
+body.theme-print .cajetin-label-red {
+  fill: var(--print-color-red, #dc2626) !important;
+  font-weight: bold !important;
+}
+
+body.theme-print .cajetin-val-white {
+  fill: var(--print-color-text, #000000) !important;
+  font-weight: bold !important;
+}
+
+body.theme-print .cajetin-title-proj {
+  fill: var(--print-color-text, #000000) !important;
+  font-weight: 700 !important;
+}
+
+body.theme-print .cajetin-title-sub {
+  fill: var(--print-color-muted, #334155) !important;
+  font-weight: 600 !important;
+}
+
+body.theme-print .cajetin-title-sheet {
+  fill: var(--print-color-cyan, #0284c7) !important;
+  font-weight: bold !important;
+}
+
+body.theme-print .cajetin-page-badge {
+  fill: var(--print-color-cyan, #0284c7) !important;
+  font-weight: bold !important;
+}
+
+/* Proteger Logo Oficial AXON Bicolor */
+body.theme-print #logo_axon polygon[fill="#2828ff" i] { fill: #2828ff !important; }
+body.theme-print #logo_axon polygon[fill="#f66c1e" i] { fill: #f66c1e !important; }
+body.theme-print #logo_axon line[stroke="#2828ff" i] { stroke: #2828ff !important; }
+body.theme-print #logo_axon line[stroke="#f66c1e" i] { stroke: #f66c1e !important; }
+
+/* 3. Encabezado Superior de Lámina */
+body.theme-print .a3-sheet svg > rect[y="32.4"][height="38"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 1.5px !important;
+}
+
+/* 4. Envolventes, Tableros y Cajas (Líneas exteriores negras/colores, fondo blanco) */
+body.theme-print #tablero_tdc > rect[x="75"][y="115"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 2px !important;
+}
+
+body.theme-print #tablero_tdc > rect[x="95"][y="135"] {
+  fill: #ffffff !important;
+  stroke: #ea580c !important;
+  stroke-width: 1.6px !important;
+}
+
+body.theme-print #caja_hmi_operador > rect[x="685"][y="115"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 2.2px !important;
+}
+
+/* Canaletas Ranuradas y Rieles DIN */
+body.theme-print #tablero_tdc rect[x="110"][width="490"] {
+  fill: #f8fafc !important;
+  stroke: #475569 !important;
+  stroke-width: 1.2px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="115"][height="15"] {
+  fill: #f1f5f9 !important;
+  stroke: #64748b !important;
+  stroke-width: 1px !important;
+}
+
+/* PLC Phoenix Contact ILC 150 ETH y Módulos Inline */
+body.theme-print #tablero_tdc rect[x="135"][y="185"] {
+  fill: #ffffff !important;
+  stroke: #15803d !important;
+  stroke-width: 2px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="142"][y="193"] {
+  fill: #f0fdf4 !important;
+  stroke: #15803d !important;
+  stroke-width: 1.2px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="160"][y="300"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 1.2px !important;
+}
+
+/* Módulos DI 8, DO 4, PWR */
+body.theme-print #tablero_tdc rect[x="233"][y="185"],
+body.theme-print #tablero_tdc rect[x="273"][y="185"],
+body.theme-print #tablero_tdc rect[x="363"][y="185"] {
+  fill: #ffffff !important;
+  stroke: #15803d !important;
+  stroke-width: 1.8px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="238"][y="250"],
+body.theme-print #tablero_tdc rect[x="277"][y="250"] {
+  fill: #f0fdf4 !important;
+  stroke: #15803d !important;
+  stroke-width: 1px !important;
+}
+
+/* Módulo DO 8 (paroEQ) */
+body.theme-print #tablero_tdc rect[x="318"][y="185"] {
+  fill: #ffffff !important;
+  stroke: #d97706 !important;
+  stroke-width: 2px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="322"][y="250"] {
+  fill: #fefce8 !important;
+  stroke: #d97706 !important;
+  stroke-width: 1px !important;
+}
+
+/* Fuente Traco Power */
+body.theme-print #tablero_tdc rect[x="420"][y="170"],
+body.theme-print #fuente_g1_traco rect[x="195"][y="505"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 2px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="421"][y="280"] {
+  fill: #f1f5f9 !important;
+  stroke: #000000 !important;
+  stroke-width: 1px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="440"][y="175"],
+body.theme-print #tablero_tdc rect[x="450"][y="322"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 1px !important;
+}
+
+/* Borneras X1, X2, X3 */
+body.theme-print #tablero_tdc rect[x="135"][y="445"][width="220"] {
+  fill: #ffffff !important;
+  stroke: #0284c7 !important;
+  stroke-width: 1.8px !important;
+}
+body.theme-print #tablero_tdc rect[x="135"][y="445"][height="25"] {
+  fill: #f0f9ff !important;
+  stroke: #0284c7 !important;
+  stroke-width: 1px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="365"][y="445"][width="125"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 1.8px !important;
+}
+body.theme-print #tablero_tdc rect[x="365"][y="445"][height="25"] {
+  fill: #f1f5f9 !important;
+  stroke: #000000 !important;
+  stroke-width: 1px !important;
+}
+
+body.theme-print #tablero_tdc rect[x="500"][y="445"][width="105"] {
+  fill: #ffffff !important;
+  stroke: #dc2626 !important;
+  stroke-width: 1.8px !important;
+}
+body.theme-print #tablero_tdc rect[x="500"][y="445"][height="25"] {
+  fill: #fef2f2 !important;
+  stroke: #dc2626 !important;
+  stroke-width: 1px !important;
+}
+
+/* Pantalla Laetus Commander 110S */
+body.theme-print #caja_hmi_operador rect[x="715"][y="145"] {
+  fill: #ffffff !important;
+  stroke: #0284c7 !important;
+  stroke-width: 2.5px !important;
+}
+
+body.theme-print #caja_hmi_operador rect[x="735"][y="165"],
+body.theme-print #caja_hmi_operador rect[x="740"][y="170"] {
+  fill: #f8fafc !important;
+  stroke: #0284c7 !important;
+  stroke-width: 1.5px !important;
+  opacity: 1 !important;
+}
+
+/* Pantalla Weintek 7" */
+body.theme-print #caja_hmi_operador rect[x="755"][y="420"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 2px !important;
+}
+
+body.theme-print #caja_hmi_operador rect[x="775"][y="440"] {
+  fill: #f0fdf4 !important;
+  stroke: #16a34a !important;
+  stroke-width: 1.8px !important;
+}
+
+/* Reglas Generales para Cajas de Componentes en Esquemas Eléctricos */
+body.theme-print .comp-box {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 1.6px !important;
+}
+
+/* Convertir cualquier caja oscura de fondo a blanco con borde negro o temático */
+body.theme-print .a3-sheet svg rect[fill="#1a2230"],
+body.theme-print .a3-sheet svg rect[fill="#162030"],
+body.theme-print .a3-sheet svg rect[fill="#1e2433"],
+body.theme-print .a3-sheet svg rect[fill="#232d42"],
+body.theme-print .a3-sheet svg rect[fill="#0f172a"],
+body.theme-print .a3-sheet svg rect[fill="#162032"],
+body.theme-print .a3-sheet svg rect[fill="#1e293b"],
+body.theme-print .a3-sheet svg rect[fill="#131b28"],
+body.theme-print .a3-sheet svg rect[fill="#172033"],
+body.theme-print .a3-sheet svg rect[fill="#161f30"],
+body.theme-print .a3-sheet svg rect[fill="#201116"],
+body.theme-print .a3-sheet svg rect[fill="#14532d"],
+body.theme-print .a3-sheet svg rect[fill="#166534"],
+body.theme-print .a3-sheet svg rect[fill="#132a1e"],
+body.theme-print .a3-sheet svg rect[fill="#132338"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+}
+
+/* Módulos Phoenix Contact Inline y PLCs: fondo blanco con línea verde industrial */
+body.theme-print .a3-sheet svg rect[fill="#14532d"] {
+  fill: #ffffff !important;
+  stroke: var(--print-color-green, #15803d) !important;
+  stroke-width: 1.8px !important;
+}
+
+/* Canales de salida en reserva (Lámina 10): fondo blanco con borde gris sutil */
+body.theme-print .a3-sheet svg [id^="canal_"][id$="_reserva"] rect {
+  fill: #ffffff !important;
+  stroke: #94a3b8 !important;
+  stroke-width: 1.2px !important;
+}
+body.theme-print .a3-sheet svg [id^="canal_"][id$="_reserva"] line {
+  stroke: #94a3b8 !important;
+}
+body.theme-print .a3-sheet svg [id^="canal_"][id$="_reserva"] text {
+  fill: var(--print-color-muted, #64748b) !important;
+}
+
+/* Salida paroEQ activa (Lámina 10): fondo blanco con línea ámbar de señal */
+body.theme-print .a3-sheet svg rect[fill="#166534"],
+body.theme-print .a3-sheet svg #canal_1_paro rect[x="90"][y="190"] {
+  fill: #ffffff !important;
+  stroke: var(--print-color-amber, #d97706) !important;
+  stroke-width: 2px !important;
+}
+
+/* Paneles de Seguridad y Falla: fondo blanco con línea roja */
+body.theme-print .a3-sheet svg rect[fill="#201116"] {
+  fill: #ffffff !important;
+  stroke: var(--print-color-red, #dc2626) !important;
+  stroke-width: 1.8px !important;
+}
+
+/* Redes Directas y Enlaces (Lámina 11): fondo blanco con contorno temático */
+body.theme-print .a3-sheet svg rect[fill="#132338"] {
+  fill: #ffffff !important;
+  stroke: var(--print-color-blue, #0284c7) !important;
+  stroke-width: 1.8px !important;
+}
+body.theme-print .a3-sheet svg rect[fill="#132a1e"] {
+  fill: #ffffff !important;
+  stroke: var(--print-color-green, #16a34a) !important;
+  stroke-width: 1.8px !important;
+}
+body.theme-print .a3-sheet svg rect[fill="#161f30"] {
+  fill: #ffffff !important;
+  stroke: var(--print-color-blue, #0284c7) !important;
+  stroke-width: 1.8px !important;
+}
+
+/* Encabezados / Barras de Título de Paneles (Estilo editorial blanco/claro sin bloques de tinta) */
+body.theme-print .a3-sheet svg rect[fill="#0284c7"] {
+  fill: #f0f9ff !important;
+  stroke: var(--print-color-blue, #0284c7) !important;
+  stroke-width: 1.2px !important;
+}
+body.theme-print .a3-sheet svg rect[fill="#0284c7"] + text,
+body.theme-print .a3-sheet svg rect[fill="#0284c7"] ~ text.table-hdr {
+  fill: var(--print-color-blue, #0284c7) !important;
+  font-weight: bold !important;
+}
+
+body.theme-print .a3-sheet svg rect[fill="#dc2626"] {
+  fill: #fef2f2 !important;
+  stroke: var(--print-color-red, #dc2626) !important;
+  stroke-width: 1.2px !important;
+}
+body.theme-print .a3-sheet svg rect[fill="#dc2626"] + text,
+body.theme-print .a3-sheet svg rect[fill="#dc2626"] ~ text.table-hdr {
+  fill: var(--print-color-red, #dc2626) !important;
+  font-weight: bold !important;
+}
+
+/* Badges circulares OK y ! en Filosofía de Paro (Lámina 10) */
+body.theme-print .a3-sheet svg circle[fill="#15803d"] {
+  fill: #dcfce7 !important;
+  stroke: var(--print-color-green, #16a34a) !important;
+  stroke-width: 1.5px !important;
+}
+body.theme-print .a3-sheet svg circle[fill="#15803d"] + text {
+  fill: var(--print-color-green, #15803d) !important;
+  font-weight: bold !important;
+}
+body.theme-print .a3-sheet svg circle[fill="#dc2626"] {
+  fill: #fee2e2 !important;
+  stroke: var(--print-color-red, #dc2626) !important;
+  stroke-width: 1.5px !important;
+}
+body.theme-print .a3-sheet svg circle[fill="#dc2626"] + text {
+  fill: var(--print-color-red, #dc2626) !important;
+  font-weight: bold !important;
+}
+
+/* Círculos de borna X1 en Lámina 09 y 10 */
+body.theme-print .a3-sheet svg circle[fill="#1a2230"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 1.8px !important;
+}
+
+/* Indicador LED en Lámina 10 */
+body.theme-print .a3-sheet svg rect[x="95"][y="148"][fill="#0f172a"] {
+  fill: #f8fafc !important;
+  stroke: var(--print-color-green, #15803d) !important;
+  stroke-width: 1px !important;
+}
+body.theme-print .a3-sheet svg circle[fill="#334155"] {
+  fill: #e2e8f0 !important;
+  stroke: #94a3b8 !important;
+  stroke-width: 0.8px !important;
+}
+
+/* Tablas Técnicas (Lámina 11: M12, Cordón MH25, Conector CN16) */
+body.theme-print .a3-sheet svg #tabla_m12_camara rect[y="300"],
+body.theme-print .a3-sheet svg #tabla_cordon_mh25 rect[y="300"],
+body.theme-print .a3-sheet svg #tabla_cn16_maquina rect[y="300"] {
+  fill: #f1f5f9 !important;
+  stroke: var(--print-color-blue, #0284c7) !important;
+  stroke-width: 1.4px !important;
+}
+body.theme-print .a3-sheet svg #tabla_m12_camara text[y="317"],
+body.theme-print .a3-sheet svg #tabla_cordon_mh25 text[y="317"],
+body.theme-print .a3-sheet svg #tabla_cn16_maquina text[y="317"] {
+  fill: var(--print-color-blue, #0284c7) !important;
+  font-weight: bold !important;
+}
+body.theme-print .a3-sheet svg #tabla_m12_camara rect[y="325"],
+body.theme-print .a3-sheet svg #tabla_cordon_mh25 rect[y="325"],
+body.theme-print .a3-sheet svg #tabla_cn16_maquina rect[y="325"] {
+  fill: #ffffff !important;
+  stroke: var(--print-color-blue, #0284c7) !important;
+  stroke-width: 1.4px !important;
+}
+body.theme-print .a3-sheet svg #tabla_m12_camara line,
+body.theme-print .a3-sheet svg #tabla_cordon_mh25 line,
+body.theme-print .a3-sheet svg #tabla_cn16_maquina line {
+  stroke: #cbd5e1 !important;
+}
+body.theme-print .a3-sheet svg #tabla_m12_camara line[y1="350"],
+body.theme-print .a3-sheet svg #tabla_cordon_mh25 line[y1="350"],
+body.theme-print .a3-sheet svg #tabla_cn16_maquina line[y1="350"] {
+  stroke: var(--print-color-blue, #0284c7) !important;
+  stroke-width: 1.2px !important;
+}
+body.theme-print .a3-sheet svg #tabla_m12_camara text[y="342"],
+body.theme-print .a3-sheet svg #tabla_cordon_mh25 text[y="342"],
+body.theme-print .a3-sheet svg #tabla_cn16_maquina text[y="342"] {
+  fill: var(--print-color-amber, #b45309) !important;
+  font-weight: bold !important;
+}
+
+/* Regleta Bornera X1 en Láminas 09 y 10 */
+body.theme-print .a3-sheet svg rect[x="75"][y="625"][height="75"] {
+  fill: #ffffff !important;
+  stroke: var(--print-color-blue, #0284c7) !important;
+  stroke-width: 1.6px !important;
+}
+
+/* Mantener trazo blanco invertido a negro */
+body.theme-print .a3-sheet svg rect[stroke="#ffffff"],
+body.theme-print .a3-sheet svg rect[stroke="white"],
+body.theme-print .a3-sheet svg line[stroke="#ffffff"],
+body.theme-print .a3-sheet svg line[stroke="white"],
+body.theme-print .a3-sheet svg circle[stroke="#ffffff"],
+body.theme-print .a3-sheet svg path[stroke="#ffffff"] {
+  stroke: #000000 !important;
+}
+
+/* Trazo fino normalizado */
+body.theme-print .cad-border {
+  stroke: #000000 !important;
+}
+body.theme-print .cad-thin {
+  stroke: #000000 !important;
+  opacity: 0.9 !important;
+}
+
+/* Tablas Normalizadas (Índice Sheet 02, BOM Sheet 04, Conexiones Sheet 11) */
+body.theme-print .a3-sheet svg rect[y="70.4"][height="29.6"] {
+  fill: #f1f5f9 !important;
+  stroke: #000000 !important;
+  stroke-width: 1.2px !important;
+}
+
+body.theme-print .a3-sheet svg line[stroke="#334155"] {
+  stroke: #cbd5e1 !important;
+  stroke-width: 1px !important;
+}
+
+/* Fila alternada de tablas */
+body.theme-print .a3-sheet svg rect[fill="#131b28"] {
+  fill: #ffffff !important;
+  stroke: #e2e8f0 !important;
+}
+
+body.theme-print .a3-sheet svg rect[fill="#172033"] {
+  fill: #f8fafc !important;
+  stroke: #e2e8f0 !important;
+}
+
+/* Recuadro Normas Técnicas (Sheet 02) */
+body.theme-print .a3-sheet svg rect[x="56.3"][y="595"][height="125"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 1.4px !important;
+}
+body.theme-print .a3-sheet svg rect[x="56.3"][y="595"][height="24"] {
+  fill: #f1f5f9 !important;
+  stroke: #000000 !important;
+  stroke-width: 1px !important;
+}
+
+/* Sheet 01 Portada Recuadro Resumen */
+body.theme-print .a3-sheet svg rect[x="420"][y="530"][width="370"] {
+  fill: #f8fafc !important;
+  stroke: #0284c7 !important;
+  stroke-width: 1.5px !important;
+}
+
+/* Sheet 06 Emplazamiento */
+body.theme-print #vista_frontal_blistera rect[x="160"][y="332.2"] {
+  fill: #ffffff !important;
+  stroke: #000000 !important;
+  stroke-width: 2px !important;
+}
+body.theme-print #vista_frontal_blistera rect[y="427.2"] {
+  fill: #f1f5f9 !important;
+  stroke: #000000 !important;
+  stroke-width: 1px !important;
+}
+body.theme-print #caja_hmi_posicionada rect[fill="#162030"] {
+  fill: #ffffff !important;
+  stroke: #0284c7 !important;
+  stroke-width: 1.8px !important;
+}
+body.theme-print #caja_hmi_posicionada rect[fill="#0f172a"] {
+  fill: #f8fafc !important;
+  stroke: #0284c7 !important;
+}
+body.theme-print #caja_hmi_posicionada rect[fill="#162032"] {
+  fill: #f0fdf4 !important;
+  stroke: #16a34a !important;
+}
+body.theme-print #camara_laetus_posicionada rect[x="501.6"] {
+  fill: #ffffff !important;
+  stroke: #0284c7 !important;
+  stroke-width: 1.8px !important;
+}
+body.theme-print #camara_laetus_posicionada rect[x="540.0"] {
+  fill: #f1f5f9 !important;
+  stroke: #000000 !important;
+}
+
+/* 5. TEXTOS Y CONTRASTE EN MODO IMPRESIÓN (Legibilidad Editorial) */
+body.theme-print .tag {
+  fill: var(--print-color-text, #000000) !important;
+  font-weight: bold !important;
+}
+
+body.theme-print .subtag {
+  fill: var(--print-color-muted, #334155) !important;
+}
+
+body.theme-print .wire-tag {
+  fill: var(--print-color-text, #000000) !important;
+}
+
+body.theme-print .table-hdr {
+  fill: var(--print-color-text, #000000) !important;
+  font-weight: bold !important;
+}
+
+body.theme-print .table-cell {
+  fill: var(--print-color-muted, #1e293b) !important;
+}
+
+body.theme-print .table-cell-bold {
+  fill: var(--print-color-text, #000000) !important;
+  font-weight: bold !important;
+}
+
+body.theme-print .title-main {
+  fill: var(--print-color-text, #000000) !important;
+  font-weight: bold !important;
+}
+
+body.theme-print .title-value {
+  fill: var(--print-color-cyan, #0284c7) !important;
+  font-weight: bold !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 1. TEXTOS Y LÍNEAS QUE EN CAD SON BLANCOS -> NEGROS (PRINT TEXT)          */
+/* ------------------------------------------------------------------------- */
+body.theme-print svg text[fill="#ffffff" i],
+body.theme-print svg text[fill="white" i],
+body.theme-print svg text[fill="#fff" i],
+body.theme-print svg text[fill="#f8fafc" i],
+body.theme-print svg text[fill="#f1f5f9" i],
+body.theme-print svg tspan[fill="#ffffff" i],
+body.theme-print svg tspan[fill="white" i],
+body.theme-print svg tspan[fill="#fff" i],
+body.theme-print svg tspan[fill="#f8fafc" i],
+body.theme-print svg tspan[fill="#f1f5f9" i],
+body.theme-print .cajetin-val-white,
+body.theme-print .cajetin-title-proj,
+body.theme-print .table-cell-bold,
+body.theme-print .table-cell,
+body.theme-print .table-hdr {
+  fill: var(--print-color-text, #000000) !important;
+}
+
+body.theme-print svg line[stroke="#ffffff" i],
+body.theme-print svg line[stroke="white" i],
+body.theme-print svg rect[stroke="#ffffff" i],
+body.theme-print svg rect[stroke="white" i],
+body.theme-print svg circle[stroke="#ffffff" i],
+body.theme-print svg circle[stroke="white" i],
+body.theme-print svg path[stroke="#ffffff" i],
+body.theme-print svg path[stroke="white" i],
+body.theme-print .cad-inner-border,
+body.theme-print .cajetin-div-line,
+body.theme-print .cajetin-div-thin,
+body.theme-print .cad-border,
+body.theme-print .cad-thin {
+  stroke: #000000 !important;
+}
+
+body.theme-print .dot {
+  fill: #000000 !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 2. TEXTOS SECUNDARIOS QUE EN CAD SON SILVER/GRIS -> GRIS OSCURO (MUTED)   */
+/* ------------------------------------------------------------------------- */
+body.theme-print svg text[fill="#cbd5e1" i],
+body.theme-print svg text[fill="#e2e8f0" i],
+body.theme-print svg text[fill="#94a3b8" i],
+body.theme-print svg text[fill="#64748b" i],
+body.theme-print svg tspan[fill="#cbd5e1" i],
+body.theme-print svg tspan[fill="#e2e8f0" i],
+body.theme-print svg tspan[fill="#94a3b8" i],
+body.theme-print svg tspan[fill="#64748b" i],
+body.theme-print .subtag,
+body.theme-print .cajetin-title-sub {
+  fill: var(--print-color-muted, #334155) !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 3. CELESTE CLARO / CYAN (TÍTULOS, SUBRAYADOS, RECUADROS, CABLES NEUTRO/0V) */
+/* ------------------------------------------------------------------------- */
+body.theme-print svg text[fill="#38bdf8" i],
+body.theme-print svg text[fill="#60a5fa" i],
+body.theme-print svg text[fill="#00e5ff" i],
+body.theme-print svg text[fill="#00ffff" i],
+body.theme-print svg tspan[fill="#38bdf8" i],
+body.theme-print svg tspan[fill="#60a5fa" i],
+body.theme-print svg tspan[fill="#00e5ff" i],
+body.theme-print svg tspan[fill="#00ffff" i],
+body.theme-print .cajetin-title-sheet,
+body.theme-print .cajetin-page-badge {
+  fill: var(--print-color-cyan, #0284c7) !important;
+}
+
+body.theme-print svg line[stroke="#38bdf8" i],
+body.theme-print svg line[stroke="#60a5fa" i],
+body.theme-print svg line[stroke="#00e5ff" i],
+body.theme-print svg rect[stroke="#38bdf8" i],
+body.theme-print svg rect[stroke="#60a5fa" i],
+body.theme-print svg rect[stroke="#00e5ff" i],
+body.theme-print svg path[stroke="#38bdf8" i],
+body.theme-print svg circle[stroke="#38bdf8" i],
+body.theme-print .wire-neutral,
+body.theme-print .wire-0v {
+  stroke: var(--print-color-cyan, #0284c7) !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 4. AZUL TÉCNICO / CUADRÍCULA (ACI BLUE #1a66ff)                           */
+/* ------------------------------------------------------------------------- */
+body.theme-print svg text[fill="#1a66ff" i],
+body.theme-print svg tspan[fill="#1a66ff" i],
+body.theme-print .grid-label {
+  fill: var(--print-color-blue, #1e3a8a) !important;
+}
+
+body.theme-print svg line[stroke="#1a66ff" i],
+body.theme-print svg rect[stroke="#1a66ff" i],
+body.theme-print .cad-outer-border,
+body.theme-print .grid-tick {
+  stroke: var(--print-color-blue, #1e3a8a) !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 5. ÁMBAR / AMARILLO (CABLES DE SEÑAL, TAGS, BORNAS X1)                    */
+/* ------------------------------------------------------------------------- */
+body.theme-print svg text[fill="#facc15" i],
+body.theme-print svg text[fill="#fef08a" i],
+body.theme-print svg text[fill="#f59e0b" i],
+body.theme-print svg tspan[fill="#facc15" i],
+body.theme-print svg tspan[fill="#fef08a" i],
+body.theme-print svg tspan[fill="#f59e0b" i],
+body.theme-print .tag,
+body.theme-print .wire-tag {
+  fill: var(--print-color-amber, #b45309) !important;
+}
+
+body.theme-print svg line[stroke="#facc15" i],
+body.theme-print svg line[stroke="#f59e0b" i] {
+  stroke: var(--print-color-amber, #b45309) !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 6. VERDE INDUSTRIAL (MÓDULOS PLC, ETHERNET, ESTADO OK)                    */
+/* ------------------------------------------------------------------------- */
+body.theme-print svg text[fill="#4ade80" i],
+body.theme-print svg text[fill="#22c55e" i],
+body.theme-print svg text[fill="#10b981" i],
+body.theme-print svg text[fill="#16a34a" i],
+body.theme-print svg tspan[fill="#4ade80" i],
+body.theme-print svg tspan[fill="#22c55e" i],
+body.theme-print svg tspan[fill="#10b981" i],
+body.theme-print svg tspan[fill="#16a34a" i] {
+  fill: var(--print-color-green, #15803d) !important;
+}
+
+body.theme-print svg line[stroke="#4ade80" i],
+body.theme-print svg line[stroke="#22c55e" i],
+body.theme-print svg line[stroke="#10b981" i],
+body.theme-print .wire-eth,
+body.theme-print .wire-pe {
+  stroke: var(--print-color-green, #15803d) !important;
+}
+
+/* ------------------------------------------------------------------------- */
+/* 7. ROJO DE SEGURIDAD (PARO paroEQ, 24V, ACOMETIDA, RÓTULOS CAJETÍN)       */
+/* ------------------------------------------------------------------------- */
+body.theme-print svg text[fill="#ef4444" i],
+body.theme-print svg text[fill="#f87171" i],
+body.theme-print svg text[fill="#fca5a5" i],
+body.theme-print svg text[fill="#e11d48" i],
+body.theme-print svg text[fill="#dc2626" i],
+body.theme-print svg tspan[fill="#ef4444" i],
+body.theme-print svg tspan[fill="#f87171" i],
+body.theme-print svg tspan[fill="#fca5a5" i],
+body.theme-print svg tspan[fill="#e11d48" i],
+body.theme-print svg tspan[fill="#dc2626" i],
+body.theme-print .cajetin-label-red,
+body.theme-print .title-label {
+  fill: var(--print-color-red, #dc2626) !important;
+}
+
+body.theme-print svg line[stroke="#ef4444" i],
+body.theme-print svg line[stroke="#dc2626" i],
+body.theme-print .wire-phase,
+body.theme-print .wire-24v {
+  stroke: var(--print-color-red, #dc2626) !important;
+}
+
+/* 6. CABLES, BUSES Y CONEXIONES (Líneas de Colores Normalizadas) */
+body.theme-print .wire-phase {
+  stroke: #dc2626 !important;
+  stroke-width: 2.2px !important;
+}
+
+body.theme-print .wire-neutral {
+  stroke: #0284c7 !important;
+  stroke-width: 2.2px !important;
+}
+
+body.theme-print .wire-24v {
+  stroke: #dc2626 !important;
+  stroke-width: 2.2px !important;
+}
+
+body.theme-print .wire-0v {
+  stroke: #0284c7 !important;
+  stroke-width: 2.2px !important;
+}
+
+body.theme-print .wire-eq-24 {
+  stroke: #b91c1c !important;
+  stroke-width: 2px !important;
+}
+
+body.theme-print .wire-eq-0 {
+  stroke: #0369a1 !important;
+  stroke-width: 2px !important;
+}
+
+body.theme-print .wire-pe {
+  stroke: #16a34a !important;
+  stroke-width: 2px !important;
+}
+
+body.theme-print .wire-control {
+  stroke: #000000 !important;
+  stroke-width: 1.8px !important;
+}
+
+body.theme-print .wire-signal {
+  stroke: #d97706 !important;
+  stroke-width: 1.8px !important;
+}
+
+body.theme-print .wire-eth {
+  stroke: #16a34a !important;
+  stroke-width: 2.6px !important;
+}
+
+body.theme-print .dot {
+  fill: #000000 !important;
+  stroke: none !important;
+}
+
+/* LEDs: asegurar borde nítido en círculos */
+body.theme-print .a3-sheet svg circle[fill="#4ade80"],
+body.theme-print .a3-sheet svg circle[fill="#22c55e"],
+body.theme-print .a3-sheet svg circle[fill="#facc15"],
+body.theme-print .a3-sheet svg circle[fill="#ef4444"],
+body.theme-print .a3-sheet svg circle[fill="#dc2626"] {
+  stroke: #000000 !important;
+  stroke-width: 0.8px !important;
+}
+
+/* ========================================================================= */
+/* BARRA DE ESTADO HUD DE COORDENADAS AUTOCAD                                */
+/* ========================================================================= */
+.cad-status-bar {
+  position: absolute;
+  bottom: 12px;
+  left: 20px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(26, 102, 255, 0.5);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: 'ISOCPEUR', 'Consolas', monospace;
+  font-size: 11px;
+  color: #93c5fd;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+}
+
+.cad-status-bar .coord-val {
+  color: #38bdf8;
+  font-weight: bold;
+}
+
+.cad-status-bar .badge-mode {
+  background: rgba(26, 102, 255, 0.25);
+  border: 1px solid #1a66ff;
+  color: #60a5fa;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+/* ========================================================================= */
+/* MODAL CONFIGURADOR DE COLORES DE IMPRESIÓN                               */
+/* ========================================================================= */
+.cfg-color-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+
+@media (max-width: 640px) {
+  .cfg-color-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cfg-color-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.15s ease;
+}
+
+.cfg-color-card:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.cfg-color-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cfg-color-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.cfg-color-desc {
+  font-size: 10.5px;
+  color: #94a3b8;
+  line-height: 1.3;
+}
+
+.cfg-color-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cfg-color-picker {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cfg-color-hex {
+  flex: 1;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.cfg-preview-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #ffffff;
+  border: 1.5px solid currentColor;
+  letter-spacing: 0.5px;
+}
+
+.cfg-preset-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.btn-preset {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-preset:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
