@@ -133,3 +133,29 @@ Servicios modulares desplegados mediante systemd / PM2 en el Servidor Ubuntu:
 | **Runtime de API** | Node.js v20+ LTS / Python 3.11+ |
 | **Gestor de Procesos** | `pm2` para Node.js / `systemd` para servicios Python |
 | **Directorio de Datos** | `/opt/axon/diagrama-html/data/` |
+
+---
+
+## 6. Registro de Decisiones de Arquitectura para Fase 2 (ADRs Aprobados)
+
+Formalización según la metodología Davichuder y estándares GAMP 5 tras la consulta de onboarding de Fase 2:
+
+### ADR-01: Framework Frontend y Bundler
+* **Decisión**: Adopción de **React 19 + TypeScript + Vite** con gestión de estado global mediante **Zustand**.
+* **Fundamento**: Permite dividir el CAD en componentes limpios y reutilizables, tipado estricto para entidades geométricas (`Point`, `WireNet`, `Port`, `BoundingBox`), y suscripciones atómicas que evitan re-renderizados globales, alcanzando tasas estables de 60 a 120 FPS durante el arrastre y ruteo vectorial.
+* **Estado**: Aprobado por el usuario (2026-10-21).
+
+### ADR-02: Ruteo Topológico Ortogonal Adaptativo (Rubber-Banding)
+* **Decisión**: Los conductores eléctricos se modelan como entidades topológicas `WireNet` y `WireSegment` con cálculo ortogonal adaptativo en 90° (Manhattan routing con esquinas normalizadas). Al mover un símbolo o borne, los cables conectados recalculan sus codos automáticamente sin romperse ni generar diagonales.
+* **Fundamento**: Cumplimiento riguroso de la norma IEC 60617 para esquemas unifilares y multifilares.
+* **Estado**: Aprobado por el usuario (2026-10-21).
+
+### ADR-03: Inspector de Propiedades Híbrido (Panel Lateral + Ventana Flotante)
+* **Decisión**: Se implementará un panel lateral derecho desplegable integrado (estilo EPLAN / AutoCAD Properties) que puede desacoplarse a petición del usuario como ventana modal flotante no bloqueante.
+* **Fundamento**: Brinda máxima ergonomía en pantallas Full HD y 4K sin tapar el área de trabajo de la lámina A3.
+* **Estado**: Aprobado por el usuario (2026-10-21).
+
+### ADR-04: Nivel de Criticidad Alta (GAMP 5 Categoría 4 / ALCOA+)
+* **Decisión**: El sistema operará bajo lineamientos de **Criticidad Alta / Software Configurado GAMP Cat. 4**. Se implementará un registro inmutable de auditoría (Audit Trail criptográfico con SHA-256), trazabilidad de autor/fecha en cajetines y cobertura de pruebas unitarias (Vitest) y E2E (Playwright).
+* **Fundamento**: Requisito mandatorio para emisión de planos en clientes farmacéuticos (Eurofarma, etc.) e industrias reguladas.
+* **Estado**: Aprobado por el usuario (2026-10-21).
