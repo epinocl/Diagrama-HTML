@@ -159,3 +159,105 @@ Formalización según la metodología Davichuder y estándares GAMP 5 tras la co
 * **Decisión**: El sistema operará bajo lineamientos de **Criticidad Alta / Software Configurado GAMP Cat. 4**. Se implementará un registro inmutable de auditoría (Audit Trail criptográfico con SHA-256), trazabilidad de autor/fecha en cajetines y cobertura de pruebas unitarias (Vitest) y E2E (Playwright).
 * **Fundamento**: Requisito mandatorio para emisión de planos en clientes farmacéuticos (Eurofarma, etc.) e industrias reguladas.
 * **Estado**: Aprobado por el usuario (2026-10-21).
+
+---
+
+## 7. Arquitectura Híbrida: Digitalización de Bocetos por Agente IA y Paquete Portable (.axon.zip)
+
+### 7.1. Justificación y Principio de Desacoplamiento
+La digitalización de bocetos a mano alzada o planos PDF heredados involucra dos etapas con naturalezas computacionales distintas:
+1. **Etapa Cognitiva / Interpretativa (Agente IA)**: Lectura visual multimodal, interpretación de caligrafía de campo, deducción de tags (`-KM1`, `-Q1`) y mapeo a símbolos IEC normalizados.
+2. **Etapa de Ingeniería / Validación Técnica (GUI Web en Servidor Ubuntu)**: Verificación humana, ajuste fino milimétrico, corte y extensión de conductores, ruteo ortogonal adaptativo, edición de bornas y emisión controlada bajo GAMP 5 / ALCOA+.
+
+La **Opción C: Arquitectura Híbrida** desacopla ambas etapas mediante un contenedor portable estandarizado denominado **`.axon.zip`**, permitiendo que los ingenieros generen proyectos completos con su agente local (Antigravity, Claude Code, Codex) a costo cero y sin latencia, para luego cargarlos al servidor web de AXON con un solo clic.
+
+```mermaid
+flowchart TD
+    subgraph LOCAL["Estación de Trabajo de Ingeniería (Local)"]
+        BOCETO["Boceto en Terreno / PDF"] --> AGENTE["Agente IA (Antigravity / Claude / Codex)"]
+        LIB_LOCAL["Catálogo Simbología IEC (base_datos_simbolos.json)"] --> AGENTE
+        AGENTE -->|"Genera JSON topológico"| PKG["Empaquetador CLI (empaquetar_proyecto.py)"]
+        PKG -->|"Comprime contenedor"| ZIP["Paquete Portable (.axon.zip)"]
+    end
+
+    subgraph SERVER["Plataforma Web CAD & Servidor Ubuntu AXON"]
+        ZIP -->|"Drag & Drop / Upload"| WEB_GUI["GUI Web React 19 (Canvas A3 :3000 / :8088)"]
+        WEB_GUI -->|"Descomprime en memoria (JSZip)"| STORE["Store Topológico Zustand"]
+        STORE -->|"Edición milimétrica (Rubber-Banding)"| CANVAS["Canvas Esquemático Interactivo"]
+        CANVAS -->|"Exportar / Sincronizar"| NGINX["Nginx Proxy (:8080)"]
+        NGINX --> API_UBUNTU["API Node.js / Ubuntu Storage (/opt/axon/proyectos/)"]
+        API_UBUNTU --> DB_ALCOA["Audit Trail Inmutable & Repositorio"]
+        
+        %% Vía opcional servidor
+        BOCETO_WEB["Subida Directa de Foto en Web"] -.-> API_UBUNTU
+        API_UBUNTU -.->|"Llamada Multimodal"| LLM_SRV["Microservicio Visión (Gemini 2.0 / Claude 3.5 API)"]
+        LLM_SRV -.->|"Retorna project.json"| STORE
+    end
+```
+
+### 7.2. Especificación del Contenedor Portable (`.axon.zip`)
+
+El archivo `.axon.zip` es un paquete universal autocontenido con la siguiente estructura de archivos:
+
+```text
+proyecto_DE-5266.axon.zip
+├── project.json            # Modelo topológico íntegro (sheets, wires, components, ports, geometries)
+├── metadata.json           # Trazabilidad ALCOA+ (firmas, timestamps, hashes SHA-256 de insumos)
+├── bocetos/                # Imágenes JPG/PNG originales de terreno o PDF base
+│   ├── boceto_01.png
+│   └── boceto_02.png
+└── preview/                # Miniaturas y SVGs pre-renderizados para visualización rápida
+    ├── hoja_01.svg
+    └── thumb_01.png
+```
+
+#### Contrato de Datos: `project.json`
+```json
+{
+  "projectCode": "DE-5266",
+  "projectName": "CONTROL VISION BLISTERA 3",
+  "client": "EUROFARMA CHILE SPA",
+  "standard": "IEC_60617",
+  "format": "DIN_ISO_5457_A3",
+  "sheets": [
+    {
+      "id": "sheet_01",
+      "meta": {
+        "sheetNumber": 1,
+        "sheetCode": "01",
+        "titleShort": "Fuerza",
+        "titleLong": "Circuito de Alimentación Principal 380V",
+        "discipline": "Fuerza"
+      },
+      "components": [],
+      "wires": [],
+      "geometries": []
+    }
+  ]
+}
+```
+
+#### Contrato de Trazabilidad: `metadata.json`
+```json
+{
+  "projectCode": "DE-5266",
+  "version": "Rev. 1.0",
+  "createdAt": "2026-10-21T20:15:00Z",
+  "createdBy": "Agente IA Antigravity / E. Pino",
+  "gampCategory": 4,
+  "bocetos": [
+    {
+      "file": "bocetos/boceto_01.png",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
+```
+
+### 7.3. Registro de Decisión ADR-05
+* **Decisión**: Adopción de la **Arquitectura Híbrida (Opción C)** basada en el contenedor portable `.axon.zip`.
+* **Fundamento**:
+  1. **Cero Dependencia de Red**: Los ingenieros pueden digitalizar cuadernos enteros con su agente local en vuelos, plantas aisladas o faenas sin requerir acceso a internet.
+  2. **Gobernanza Industrial**: El servidor web de AXON mantiene el control centralizado de revisiones, auditoría GAMP 5 y exportación oficial de emisiones sin sobrecargar la infraestructura con inferencias de modelos pesados.
+  3. **Escalabilidad**: Se mantiene abierta la integración futura de endpoints de visión directa en el servidor para usuarios que no utilicen IDEs de IA.
+* **Estado**: Aprobado por el usuario (2026-10-21).

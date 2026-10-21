@@ -24,7 +24,7 @@
     "tag": "doc",
     "priority": "Alta",
     "title": "Especificación de Arquitectura del Sistema (ARCHITECTURE.md)",
-    "desc": "Modelo C4, diseño bivalente (AutoCAD/Impresión), especificación de módulos y despliegue en Ubuntu Server."
+    "desc": "Modelo C4, diseño bivalente (AutoCAD/Impresión), especificación de módulos y ADRs 01 a 05."
   },
   {
     "id": "DOC-04",
@@ -51,7 +51,7 @@
     "tag": "doc",
     "priority": "Media",
     "title": "Planes Maestros de Implementación (PLANS.md)",
-    "desc": "Estrategia de 5 fases, mitigación de riesgos de rendimiento y matriz de contingencias."
+    "desc": "Estrategia de 5 fases, arquitectura híbrida de agente IA y matriz de mitigación de riesgos."
   },
   {
     "id": "DOC-07",
@@ -78,232 +78,259 @@
     "tag": "doc",
     "priority": "Crítica",
     "title": "Estudio Técnico y Plan de Mejoras CAD (ESTUDIO_Y_PLAN_MEJORAS_CAD.md)",
-    "desc": "Ingeniería detallada para corte/extensión de líneas, puertos magnéticos IEC, geometrías libres, agrupación y evaluación de frameworks."
+    "desc": "Ingeniería detallada para corte/extensión de líneas, puertos magnéticos IEC, geometrías libres e inspector híbrido."
+  },
+  {
+    "id": "DOC-10",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Alta",
+    "title": "Roadmap Interactivo HTML y Mapa Vivo (roadmap.html)",
+    "desc": "Panel de control visual con métricas ejecutivas, topología SVG animada y persistencia en localStorage."
+  },
+  {
+    "id": "DOC-11",
+    "phase": "FASE 1",
+    "done": true,
+    "tag": "doc",
+    "priority": "Crítica",
+    "title": "Adopción de Arquitectura Híbrida y Contenedor .axon.zip (ADR-05)",
+    "desc": "Desacoplamiento formal de digitalización local con Agente IA y edición técnica en Servidor Ubuntu."
   },
   {
     "id": "CAD-01",
     "phase": "FASE 2",
-    "done": false,
+    "done": true,
     "tag": "cad",
     "priority": "Crítica",
-    "title": "Independización de Conductores: Modelo Topológico WireNet y WireSegment",
-    "desc": "Desacoplar las líneas de etiquetas SVG estáticas hacia entidades de red lógica con potencial eléctrico (Fase, Neutro, 24VDC, Señal) y calibre."
+    "title": "Independización de Conductores: WireNet y WireSegment",
+    "desc": "Modelado topológico de cables con potencial eléctrico (L1, L2, L3, N, PE, 24VDC, Señal) y calibre."
   },
   {
     "id": "CAD-02",
     "phase": "FASE 2",
-    "done": false,
+    "done": true,
     "tag": "cad",
     "priority": "Crítica",
-    "title": "Herramienta Dibujar Cable con Ruteo Ortogonal (90° Snap)",
-    "desc": "Trazador interactivo de conductores en ángulos rectos (Manhattan routing) con magnetismo automático a rejilla métrica de 4mm y 8mm."
+    "title": "Herramienta Dibujar Cable con Ruteo Ortogonal 90° (Manhattan)",
+    "desc": "Trazador interactivo de conductores en ángulos rectos con magnetismo automático a rejilla métrica de 4mm y 8mm."
   },
   {
     "id": "CAD-03",
     "phase": "FASE 2",
-    "done": false,
+    "done": true,
     "tag": "cad",
     "priority": "Alta",
     "title": "Herramienta Cortar / Split Interactivo de Conductores",
-    "desc": "Partición de cualquier cable en 2 segmentos independientes mediante clic, o al insertar un componente intermedio con auto-inserción de nodos."
+    "desc": "Partición de cualquier cable en dos segmentos independientes mediante clic sobre el tramo en el canvas."
   },
   {
     "id": "CAD-04",
     "phase": "FASE 2",
-    "done": false,
+    "done": true,
     "tag": "cad",
     "priority": "Alta",
     "title": "Herramienta Extender Conductores (Trim / Extend)",
-    "desc": "Extensión de segmentos hasta la colisión con otro conductor colineal o puerto magnético más próximo mediante proyección geométrica."
+    "desc": "Extensión de segmentos hacia puntos objetivo, terminales o colisiones geométricas."
   },
   {
     "id": "CAD-05",
     "phase": "FASE 2",
-    "done": false,
+    "done": true,
     "tag": "cad",
     "priority": "Media",
-    "title": "Detección de Cruces y Auto-Nodos de Derivación en 'T'",
-    "desc": "Inserción automática de punto de conexión normalizado (círculo relleno de unión) en derivaciones en T y puentes visuales en cruces neutros."
+    "title": "Detección Geométrica de Cruces y Nodos de Conexión",
+    "desc": "Algoritmo para calcular intersección de cables perpendiculares e insertar nodos de derivación en 'T'."
   },
   {
     "id": "CAD-06",
     "phase": "FASE 2",
-    "done": false,
+    "done": true,
     "tag": "iec",
     "priority": "Crítica",
-    "title": "Definición de Puertos Magnéticos (Snap Ports) en Simbología IEC 60617",
-    "desc": "Añadir metadatos normalizados de bornas (A1, A2, 13, 14, L1, etc.), coordenadas locales y orientación de acometida a cada símbolo vectorial."
+    "title": "Bornas Magnéticas (ConnectionPort) en Simbología IEC 60617",
+    "desc": "Metadatos normalizados de bornas (A1, A2, 13, 14, L1, etc.) con coordenadas locales y dirección de acometida."
   },
   {
     "id": "CAD-07",
     "phase": "FASE 2",
-    "done": false,
+    "done": true,
     "tag": "iec",
     "priority": "Alta",
-    "title": "Algoritmo de Auto-Conexión Magnética (Snap to Pin)",
-    "desc": "Atracción magnética del puntero a puertos de conexión de componentes IEC a menos de 6 px de proximidad con feedback visual de anclaje."
+    "title": "Auto-Conexión Magnética (Snap to Pin)",
+    "desc": "Atracción magnética del puntero a terminales de componentes IEC a menos de 8 px con halo visual verde."
   },
   {
     "id": "CAD-08",
     "phase": "FASE 2",
-    "done": false,
+    "done": true,
     "tag": "cad",
-    "priority": "Alta",
+    "priority": "Crítica",
     "title": "Adaptación Elástica de Cables (Rubber-Banding) al Mover Símbolos",
-    "desc": "Al arrastrar un componente por el plano, los conductores conectados recalculan sus codos en 90° automáticamente sin romperse."
+    "desc": "Al arrastrar un componente con el ratón, los conductores conectados recalculan sus posiciones y codos en tiempo real sin desconectarse."
   },
   {
     "id": "CAD-09",
     "phase": "FASE 2",
-    "done": false,
-    "tag": "cad",
-    "priority": "Media",
-    "title": "Geometrías y Primitivas Gráficas Independientes",
-    "desc": "Soporte de entidades autónomas (Rectángulo, Círculo, Polilínea, Trayectoria SVG, Cota de acotación y Texto libre) con UUID propio."
+    "done": true,
+    "tag": "ui",
+    "priority": "Alta",
+    "title": "Inspector de Propiedades Híbrido (Panel Lateral + Modal Flotante)",
+    "desc": "Panel integrado a la derecha con botón para desacoplar como ventana modal flotante no bloqueante (ADR-03)."
   },
   {
     "id": "CAD-10",
     "phase": "FASE 2",
-    "done": false,
-    "tag": "cad",
+    "done": true,
+    "tag": "qa",
     "priority": "Alta",
-    "title": "Motor de Agrupación y Desagrupación (Group / Ungroup)",
-    "desc": "Jerarquía de grupos con preservación estricta de coordenadas relativas/absolutas mediante matrices de transformación DOMMatrix."
+    "title": "Suite de Pruebas Unitarias con Vitest (tests/topology.test.ts)",
+    "desc": "6 pruebas automatizadas validando anclaje métrico, ruteo 90°, división, extensión y snap magnético (6/6 aprobadas)."
   },
   {
     "id": "CAD-11",
     "phase": "FASE 2",
+    "done": true,
+    "tag": "server",
+    "priority": "Media",
+    "title": "Entorno Docker Desktop (Dockerfile y docker-compose.yml)",
+    "desc": "Contenedores para desarrollo con HMR (puerto 3000) y producción Nginx Alpine (puerto 8088)."
+  },
+  {
+    "id": "ZIP-01",
+    "phase": "FASE 2",
     "done": false,
-    "tag": "ui",
+    "tag": "zip",
+    "priority": "Crítica",
+    "title": "Especificación del Contenedor Portable .axon.zip",
+    "desc": "Estructura unificada conteniendo project.json, metadata.json con SHA-256 de bocetos originales y preview/."
+  },
+  {
+    "id": "ZIP-02",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "zip",
     "priority": "Alta",
-    "title": "Inspector de Propiedades Modal / Emergente Desacoplado",
-    "desc": "Ventana flotante / panel desacoplable para editar Designador (Tag), Función, Bornas, Capas, Colores y atributos técnicos de cualquier objeto."
+    "title": "Script CLI Local para Agente IA (scripts/empaquetar_proyecto.py)",
+    "desc": "Utilidad para que el Agente IA local comprima proyectos digitalizados en un .axon.zip listo para exportar."
+  },
+  {
+    "id": "ZIP-03",
+    "phase": "FASE 2",
+    "done": false,
+    "tag": "zip",
+    "priority": "Crítica",
+    "title": "Módulo Drag & Drop en Canvas Web para Importar/Exportar .axon.zip",
+    "desc": "Integración de JSZip en React 19 para soltar el archivo ZIP en el canvas y cargar el proyecto en Zustand en < 1 segundo."
   },
   {
     "id": "CAD-12",
     "phase": "FASE 2",
     "done": false,
-    "tag": "cad",
-    "priority": "Alta",
-    "title": "Pila de Operaciones Deshacer / Rehacer (Undo / Redo Command Pattern)",
-    "desc": "Gestión transaccional de comandos de dibujo, borrado, movimiento y agrupamiento con historial navegable (Ctrl+Z / Ctrl+Y)."
-  },
-  {
-    "id": "MOD-01",
-    "phase": "FASE 3",
-    "done": false,
-    "tag": "ui",
-    "priority": "Crítica",
-    "title": "Scaffolding de Aplicación Web en React 19 + TypeScript + Vite",
-    "desc": "Estructuración del proyecto frontend moderno con tipado estricto para modelos geométricos y empaquetado ultra-rápido."
-  },
-  {
-    "id": "MOD-02",
-    "phase": "FASE 3",
-    "done": false,
-    "tag": "ui",
-    "priority": "Alta",
-    "title": "Store de Estado Reactivo de Alto Rendimiento (Zustand)",
-    "desc": "Gestión del Scene Graph, selección múltiple y coordenadas sin re-renderizados masivos, garantizando 60-120 FPS en el canvas."
-  },
-  {
-    "id": "MOD-03",
-    "phase": "FASE 3",
-    "done": false,
-    "tag": "ui",
-    "priority": "Media",
-    "title": "Desacoplar Módulos del Visor (Pan-Zoom, Layout A3 y Presentador)",
-    "desc": "Modularización limpia de la navegación de láminas, miniaturas laterales y zoom infinito vectorial."
-  },
-  {
-    "id": "MOD-04",
-    "phase": "FASE 3",
-    "done": false,
-    "tag": "ui",
-    "priority": "Media",
-    "title": "Integración del Configurador Dinámico de Colores con Presets",
-    "desc": "Componente interactivo para ajuste de los 7 canales cromáticos con soporte de modo oscuro/claro y guardado por proyecto."
-  },
-  {
-    "id": "MOD-05",
-    "phase": "FASE 3",
-    "done": false,
-    "tag": "cad",
-    "priority": "Alta",
-    "title": "Exportador DXF 1:1 Métrico Desacoplado en TypeScript",
-    "desc": "Generador de archivos AutoCAD R12 DXF modular con cálculo de capas, textos y geometrías exportables tanto en cliente como en servidor."
-  },
-  {
-    "id": "MOD-06",
-    "phase": "FASE 3",
-    "done": false,
     "tag": "iec",
-    "priority": "Media",
-    "title": "Paleta Visual de Simbología IEC con Drag & Drop al Canvas",
-    "desc": "Barra lateral organizada por categorías (Fuerza, Control, Sensores, Bornas) con arrastre directo y colocación asistida por rejilla."
-  },
-  {
-    "id": "MOD-07",
-    "phase": "FASE 3",
-    "done": false,
-    "tag": "ui",
-    "priority": "Media",
-    "title": "Editor Visual de Cajetines y Generador de Listado de Materiales (BOM)",
-    "desc": "Edición en línea de metadatos de lámina (Título, Proyecto, Diseñador, Revisión) y extracción automática de tabla de componentes a CSV."
+    "priority": "Alta",
+    "title": "Catálogo Visual Interactivo de Simbología IEC con Drag & Drop",
+    "desc": "Paleta lateral clasificada (Fuerza, Control, Sensores, Bornas) para arrastrar componentes directamente al plano A3."
   },
   {
     "id": "SRV-01",
-    "phase": "FASE 4",
+    "phase": "FASE 3",
     "done": false,
     "tag": "server",
     "priority": "Alta",
     "title": "Aprovisionamiento en Servidor Ubuntu AXON (/opt/axon/diagrama-html)",
-    "desc": "Creación de estructura de directorios, permisos de usuario del servicio y entorno de despliegue en la red corporativa."
+    "desc": "Estructura de carpetas multi-proyecto, permisos de servicio y entorno Nginx corporativo."
   },
   {
     "id": "SRV-02",
-    "phase": "FASE 4",
+    "phase": "FASE 3",
     "done": false,
     "tag": "server",
     "priority": "Crítica",
-    "title": "API REST en Node.js para Gestión Multi-Proyecto y Carpetas de Clientes",
-    "desc": "Endpoints para listar proyectos, guardar planos (.axon.json), versionar emisiones y gestionar biblioteca central de símbolos."
+    "title": "API REST en Node.js para Gestión Multi-Proyecto",
+    "desc": "Navegación de carpetas de clientes, listado de proyectos y control de versiones documentales."
   },
   {
     "id": "SRV-03",
-    "phase": "FASE 4",
+    "phase": "FASE 3",
     "done": false,
     "tag": "server",
-    "priority": "Alta",
-    "title": "Microservicio Python para Conversión y Extracción de PDFs (PyMuPDF/ezdxf)",
-    "desc": "Worker asíncrono para generar PDFs vectoriales A3 de alta resolución y procesar planos heredados recibidos de clientes."
+    "priority": "Crítica",
+    "title": "Endpoint POST /api/proyectos/importar-zip en Servidor",
+    "desc": "Recepción multipart y descompresión centralizada de paquetes .axon.zip generados por agentes locales."
   },
   {
     "id": "SRV-04",
-    "phase": "FASE 4",
+    "phase": "FASE 3",
     "done": false,
     "tag": "server",
-    "priority": "Media",
-    "title": "Configuración de Nginx como Reverse Proxy y SSL",
-    "desc": "Enrutamiento de tráfico web, compresión gzip/brotli, cabeceras de seguridad y terminación HTTPS en la intranet de AXON."
+    "priority": "Alta",
+    "title": "Microservicio Python para PDFs y DXF (PyMuPDF / ezdxf)",
+    "desc": "Extracción automatizada de páginas desde PDFs heredados y generación de DXFs 1:1 en background."
   },
   {
     "id": "SRV-05",
-    "phase": "FASE 4",
+    "phase": "FASE 3",
     "done": false,
     "tag": "server",
     "priority": "Media",
-    "title": "Supervisión de Procesos con PM2 y Demonio Systemd",
-    "desc": "Arranque automático al iniciar el servidor, reinicio ante fallos y registro centralizado de logs."
+    "title": "Configuración Nginx Reverse Proxy con SSL y HTTP/2",
+    "desc": "Terminación HTTPS, compresión gzip/brotli y proxy hacia Node.js y la SPA de React."
   },
   {
     "id": "SRV-06",
-    "phase": "FASE 4",
+    "phase": "FASE 3",
     "done": false,
     "tag": "doc",
     "priority": "Crítica",
-    "title": "Registro Inmutable de Auditoría (Audit Trail) según ALCOA+",
-    "desc": "Trazabilidad criptográfica de quién modificó cada lámina, fecha, hora y hash SHA-256 de las emisiones aprobadas."
+    "title": "Audit Trail Inmutable ALCOA+ en Base de Datos",
+    "desc": "Registro criptográfico de autor, fecha, hora y hash SHA-256 de todas las emisiones aprobadas."
+  },
+  {
+    "id": "AI-01",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "ai",
+    "priority": "Alta",
+    "title": "Microservicio FastAPI para Visión Multimodal con Gemini 2.0 Flash / Claude",
+    "desc": "Digitalización directa desde la web mediante API de LLM con salidas estructuradas en Pydantic."
+  },
+  {
+    "id": "AI-02",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "ai",
+    "priority": "Media",
+    "title": "Pipeline de Preprocesamiento de Bocetos Manuscritos con OpenCV",
+    "desc": "Binarización, realce de contraste de trazos a lápiz y corrección de perspectiva de fotos de terreno."
+  },
+  {
+    "id": "GUI-01",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "ui",
+    "priority": "Alta",
+    "title": "Dashboard Central de Proyectos AXON en GUI Web",
+    "desc": "Explorador visual con filtros por cliente, código (ej. DE-5266), estado y miniaturas de láminas."
+  },
+  {
+    "id": "GUI-02",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "ui",
+    "priority": "Media",
+    "title": "Editor Visual de Cajetines y Extractor de Listado BOM a CSV",
+    "desc": "Edición de metadatos de lámina y generación automática de tabla de compras de materiales."
+  },
+  {
+    "id": "GUI-03",
+    "phase": "FASE 4",
+    "done": false,
+    "tag": "cad",
+    "priority": "Alta",
+    "title": "Exportador Multi-Formato en 1 Clic (SVG, PDF A3 y DXF 1:1)",
+    "desc": "Generación instantánea de entregables oficiales listos para aprobación de cliente."
   },
   {
     "id": "QA-01",
@@ -311,8 +338,8 @@
     "done": false,
     "tag": "qa",
     "priority": "Alta",
-    "title": "Suite de Pruebas Unitarias Automatizadas (Vitest)",
-    "desc": "Cobertura >= 80% en motores de cálculo topológico de cables, matrices de transformación geométrica y exportación DXF."
+    "title": "Cobertura de Pruebas Unitarias Vitest >= 80%",
+    "desc": "Pruebas exhaustivas en cálculo topológico, algoritmos de corte, extensión y matrices geométricas."
   },
   {
     "id": "QA-02",
@@ -320,8 +347,8 @@
     "done": false,
     "tag": "qa",
     "priority": "Crítica",
-    "title": "Suite de Pruebas E2E en Navegador Real (Playwright)",
-    "desc": "Automatización de pruebas completas de dibujo ortogonal, corte de conductores, arrastre elástico, zoom e impresión A3."
+    "title": "Suite de Pruebas E2E en Playwright",
+    "desc": "Validación en navegador real de flujos completos de arrastre, rubber-banding, zoom e impresión A3."
   },
   {
     "id": "QA-03",
@@ -330,7 +357,7 @@
     "tag": "qa",
     "priority": "Media",
     "title": "Pipeline CI/CD en GitHub Actions",
-    "desc": "Validación continua de linting, tipos de TypeScript, ejecución de tests y despliegue automatizado a servidor ante tags de versión."
+    "desc": "Validación continua de linting, tipos TypeScript, tests automatizados y despliegue a Ubuntu Server."
   },
   {
     "id": "QA-04",
@@ -339,7 +366,7 @@
     "tag": "doc",
     "priority": "Alta",
     "title": "Protocolo de Calificación IQ / OQ según Guía GAMP 5",
-    "desc": "Documentación formal de Calificación de Instalación y Operación para validación ante clientes farmacéuticos e industriales."
+    "desc": "Documentación formal de Calificación de Instalación y Operación para auditorías farmacéuticas."
   },
   {
     "id": "QA-05",
@@ -347,7 +374,7 @@
     "done": false,
     "tag": "qa",
     "priority": "Crítica",
-    "title": "Puesta en Marcha Productiva en Red AXON y Manual de Operación",
-    "desc": "Publicación oficial del sistema en la intranet, migración de proyectos activos y capacitación a ingenieros de diseño."
+    "title": "Puesta en Marcha Productiva en Red AXON y Capacitación",
+    "desc": "Despliegue final en la intranet corporativa y adopción oficial para proyectos de ingeniería."
   }
 ]
