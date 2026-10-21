@@ -5,14 +5,27 @@ import {
   WireNet, 
   WireSegment, 
   GeometryEntity, 
-  ConnectionPort 
+  ProjectDocument,
+  SheetDocument,
+  PackageMetadata
 } from '../cad/types';
 import { splitWireSegment, extendWireSegment, snapToGrid } from '../cad/topology';
+import { exportProjectToZip, importProjectFromZip, downloadBlob } from '../cad/zipPackage';
 
 export type CadTool = 'select' | 'wire' | 'cut' | 'extend' | 'component' | 'text' | 'rect' | 'pan';
 export type CadTheme = 'dark_autocad' | 'print_white';
 
 interface CadState {
+  // Metadatos del proyecto
+  projectCode: string;
+  projectName: string;
+  client: string;
+  activeSheetId: string;
+  sketches: Record<string, string>;
+
+  // Notificaciones de usuario
+  notification: string | null;
+
   // Configuración de visualización
   tool: CadTool;
   theme: CadTheme;
@@ -32,13 +45,14 @@ interface CadState {
   wires: WireNet[];
   geometries: GeometryEntity[];
 
-  // Acciones
+  // Acciones UI
   setTool: (tool: CadTool) => void;
   setTheme: (theme: CadTheme) => void;
   setZoom: (zoom: number) => void;
   setPan: (pan: Point2D) => void;
   toggleInspector: () => void;
   setInspectorFloating: (floating: boolean) => void;
+  showNotification: (msg: string) => void;
   
   // Selección
   selectEntity: (id: string, multiple?: boolean) => void;
@@ -54,9 +68,21 @@ interface CadState {
   addWireSegment: (netCode: string, p1: Point2D, p2: Point2D, potential?: WireNet['potential']) => void;
   splitSegmentAtPoint: (segmentId: string, point: Point2D) => void;
   extendSegment: (segmentId: string, endToExtend: 'p1' | 'p2', targetPoint: Point2D) => void;
+
+  // Operaciones de Contenedor Portable .axon.zip
+  loadProjectDocument: (doc: ProjectDocument, sketches?: Record<string, string>) => void;
+  importZipFile: (file: File | Blob) => Promise<void>;
+  exportCurrentZip: () => Promise<void>;
 }
 
 export const useCadStore = create<CadState>((set, get) => ({
+  projectCode: 'DE-5266',
+  projectName: 'Control Visión Blistera 3',
+  client: 'Eurofarma Chile SpA',
+  activeSheetId: 'sheet_01',
+  sketches: {},
+  notification: null,
+
   tool: 'select',
   theme: 'dark_autocad',
   zoom: 1.0,
@@ -134,6 +160,13 @@ export const useCadStore = create<CadState>((set, get) => ({
   toggleInspector: () => set((s) => ({ isInspectorOpen: !s.isInspectorOpen })),
   setInspectorFloating: (isInspectorFloating) => set({ isInspectorFloating }),
 
+  showNotification: (msg: string) => {
+    set({ notification: msg });
+    setTimeout(() => {
+      if (get().notification === msg) set({ notification: null });
+    }, 3000);
+  },
+
   selectEntity: (id, multiple = false) => set((s) => ({
     selectedIds: multiple ? (s.selectedIds.includes(id) ? s.selectedIds.filter(x => x !== id) : [...s.selectedIds, id]) : [id]
   })),
@@ -151,12 +184,10 @@ export const useCadStore = create<CadState>((set, get) => ({
     const deltaX = finalPos.x - comp.position.x;
     const deltaY = finalPos.y - comp.position.y;
 
-    // Actualizar posición del componente
     const updatedComponents = s.components.map(c => 
       c.id === id ? { ...c, position: finalPos } : c
     );
 
-    // Rubber-Banding ortogonal: desplazar los extremos de cables conectados
     const portIds = comp.ports.map(p => p.id);
     const updatedWires = s.wires.map(net => {
       const hasConnection = net.connectedPortIds.some(pid => portIds.includes(pid));
@@ -166,7 +197,6 @@ export const useCadStore = create<CadState>((set, get) => ({
         let newP1 = { ...seg.p1 };
         let newP2 = { ...seg.p2 };
 
-        // Si el punto coincide con algún puerto movido, desplazarlo con el componente
         comp.ports.forEach(port => {
           const oldAbsPortPos = { x: comp.position.x + port.relPosition.x, y: comp.position.y + port.relPosition.y };
           if (Math.hypot(seg.p1.x - oldAbsPortPos.x, seg.p1.y - oldAbsPortPos.y) < 2) {
@@ -267,5 +297,71 @@ export const useCadStore = create<CadState>((set, get) => ({
         seg.id === segmentId ? extendWireSegment(seg, endToExtend, targetPoint) : seg
       )
     }))
-  }))
+  })),
+
+  // Cargar Documento Completo
+  loadProjectDocument: (doc, sketches = {}) => {
+    const activeSheet = doc.sheets.find(s => s.id === doc.activeSheetId) || doc.sheets[0];
+    set({
+      projectCode: doc.projectCode,
+      projectName: doc.projectName,
+      client: doc.client,
+      activeSheetId: activeSheet?.id || 'sheet_01',
+      components: activeSheet?.components || [],
+      wires: activeSheet?.wires || [],
+      geometries: activeSheet?.geometries || [],
+      sketches,
+      selectedIds: []
+    });
+    get().showNotification(`✓ Proyecto ${doc.projectCode} cargado con éxito`);
+  },
+
+  // Importar desde archivo .axon.zip
+  importZipFile: async (file) => {
+    try {
+      const { project, sketches } = await importProjectFromZip(file);
+      get().loadProjectDocument(project, sketches);
+    } catch (err: any) {
+      console.error('Error importando ZIP:', err);
+      get().showNotification(`❌ Error importando paquete: ${err.message}`);
+    }
+  },
+
+  // Exportar proyecto actual a .axon.zip
+  exportCurrentZip: async () => {
+    const state = get();
+    const currentDoc: ProjectDocument = {
+      schemaVersion: '1.0',
+      projectCode: state.projectCode,
+      projectName: state.projectName,
+      client: state.client,
+      standard: 'IEC_60617',
+      format: 'DIN_ISO_5457_A3',
+      activeSheetId: state.activeSheetId,
+      sheets: [
+        {
+          id: state.activeSheetId,
+          meta: {
+            sheetNumber: 1,
+            sheetCode: '01',
+            titleShort: 'Circuito',
+            titleLong: state.projectName,
+            discipline: 'Fuerza & Control',
+            date: new Date().toISOString().split('T')[0]
+          },
+          components: state.components,
+          wires: state.wires,
+          geometries: state.geometries
+        }
+      ]
+    };
+
+    const zipBlob = await exportProjectToZip(currentDoc, {
+      projectCode: state.projectCode,
+      createdBy: 'AXON CAD Web'
+    });
+
+    downloadBlob(zipBlob, `${state.projectCode}_AXON_CAD.axon.zip`);
+    get().showNotification(`📦 ${state.projectCode}_AXON_CAD.axon.zip exportado`);
+  }
 }));

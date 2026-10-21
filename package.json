@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "diagrama-html",
   "version": "1.0.0",
   "description": "AXON CAD Web — Editor Esquemático de Planos Eléctricos Industriales A3",
@@ -12,10 +12,11 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "jszip": "^3.10.2",
+    "lucide-react": "^0.475.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "zustand": "^5.0.3",
-    "lucide-react": "^0.475.0"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@types/node": "^22.13.4",

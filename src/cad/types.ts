@@ -105,3 +105,50 @@ export interface GroupEntity {
 }
 
 export type CanvasEntity = ComponentEntity | GeometryEntity | GroupEntity;
+
+export interface SheetMetadata {
+  sheetNumber: number;
+  sheetCode: string;
+  titleShort: string;
+  titleLong: string;
+  discipline: string;
+  date?: string;
+  designer?: string;
+  reviewer?: string;
+  revision?: string;
+}
+
+export interface SheetDocument {
+  id: string;
+  meta: SheetMetadata;
+  components: ComponentEntity[];
+  wires: WireNet[];
+  geometries: GeometryEntity[];
+  groups?: GroupEntity[];
+}
+
+export interface ProjectDocument {
+  schemaVersion: string; // ej. "1.0"
+  projectCode: string;   // ej. "DE-5266"
+  projectName: string;   // ej. "CONTROL VISION BLISTERA 3"
+  client: string;        // ej. "EUROFARMA CHILE SPA"
+  standard: 'IEC_60617' | 'DIN_ISO_5457';
+  format: 'DIN_ISO_5457_A3';
+  activeSheetId: string;
+  sheets: SheetDocument[];
+}
+
+export interface SketchReference {
+  filename: string;
+  sha256?: string;
+  uploadedAt?: string;
+}
+
+export interface PackageMetadata {
+  projectCode: string;
+  version: string;
+  createdAt: string;
+  createdBy: string;
+  gampCategory: number;
+  bocetos: SketchReference[];
+}

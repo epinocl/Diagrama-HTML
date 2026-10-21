@@ -2,6 +2,7 @@
 import { useCadStore } from '../store/useCadStore';
 import { Point2D } from '../cad/types';
 import { snapToGrid, snapToNearestPort, routeOrthoWire } from '../cad/topology';
+import { UploadCloud } from 'lucide-react';
 
 export const CadCanvas: React.FC = () => {
   const { 
@@ -20,12 +21,13 @@ export const CadCanvas: React.FC = () => {
     splitSegmentAtPoint,
     gridSize,
     snapGridEnabled,
-    snapPortEnabled
+    snapPortEnabled,
+    importZipFile
   } = useCadStore();
 
   const svgRef = useRef<SVGSVGElement>(null);
 
-  // Estados interactivos locales para dibujo y arrastre
+  // Estados interactivos locales
   const [draggingCompId, setDraggingCompId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState<Point2D>({ x: 0, y: 0 });
   const [wireStartPoint, setWireStartPoint] = useState<Point2D | null>(null);
@@ -33,7 +35,9 @@ export const CadCanvas: React.FC = () => {
   const [snappedPos, setSnappedPos] = useState<Point2D>({ x: 0, y: 0 });
   const [activePortId, setActivePortId] = useState<string | null>(null);
 
-  // Convertir coordenadas del evento de ratón a coordenadas del plano A3
+  // Estado de Drag & Drop de archivo .axon.zip
+  const [isDragOverFile, setIsDragOverFile] = useState<boolean>(false);
+
   const getCanvasCoords = (e: React.MouseEvent): Point2D => {
     if (!svgRef.current) return { x: 0, y: 0 };
     const rect = svgRef.current.getBoundingClientRect();
@@ -46,7 +50,6 @@ export const CadCanvas: React.FC = () => {
     return { x: Math.round(rawX), y: Math.round(rawY) };
   };
 
-  // Colectar todos los puertos magnéticos en coordenadas absolutas del plano
   const allPorts = components.flatMap(c => 
     c.ports.map(p => ({
       port: p,
@@ -63,7 +66,6 @@ export const CadCanvas: React.FC = () => {
 
     let finalPos = { ...rawPos };
 
-    // Snap magnético a puertos de componentes
     if (snapPortEnabled) {
       const snapResult = snapToNearestPort(rawPos, allPorts, 8);
       if (snapResult.port) {
@@ -81,7 +83,6 @@ export const CadCanvas: React.FC = () => {
 
     setSnappedPos(finalPos);
 
-    // Si estamos arrastrando un componente
     if (draggingCompId) {
       const targetPos = {
         x: finalPos.x - dragOffset.x,
@@ -92,12 +93,10 @@ export const CadCanvas: React.FC = () => {
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    // Si la herramienta es dibujar cable
     if (tool === 'wire') {
       if (!wireStartPoint) {
         setWireStartPoint(snappedPos);
       } else {
-        // Segundo clic: trazar y agregar segmento ortogonal
         const points = routeOrthoWire(wireStartPoint, snappedPos, 'horizontal_first');
         for (let i = 0; i < points.length - 1; i++) {
           addWireSegment('W-NEW', points[i], points[i + 1], 'SIGNAL');
@@ -107,7 +106,6 @@ export const CadCanvas: React.FC = () => {
       return;
     }
 
-    // Clic en el fondo deselecciona
     if (e.target === svgRef.current) {
       clearSelection();
     }
@@ -116,6 +114,34 @@ export const CadCanvas: React.FC = () => {
   const handleMouseUp = () => {
     if (draggingCompId) {
       setDraggingCompId(null);
+    }
+  };
+
+  // Manejadores de Drag & Drop para archivos .axon.zip
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isDragOverFile) setIsDragOverFile(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOverFile(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOverFile(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      if (file.name.endsWith('.zip') || file.name.endsWith('.axon.zip')) {
+        await importZipFile(file);
+      } else {
+        alert('Por favor arrastra un archivo comprimido .axon.zip o .zip válido.');
+      }
     }
   };
 
@@ -137,7 +163,38 @@ export const CadCanvas: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
     >
+      {/* Overlay Visual de Zona Drag & Drop */}
+      {isDragOverFile && (
+        <div style={{
+          position: 'absolute',
+          inset: '20px',
+          border: '3px dashed #38bdf8',
+          borderRadius: '16px',
+          backgroundColor: isDark ? 'rgba(15, 23, 42, 0.85)' : 'rgba(240, 249, 255, 0.9)',
+          backdropFilter: 'blur(8px)',
+          zIndex: 50,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#38bdf8',
+          pointerEvents: 'none',
+          animation: 'pulse 1.5s infinite'
+        }}>
+          <UploadCloud size={64} style={{ marginBottom: '16px', filter: 'drop-shadow(0 0 12px rgba(56, 189, 248, 0.5))' }} />
+          <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 800 }}>
+            Suelta tu archivo .axon.zip aquí
+          </h2>
+          <p style={{ margin: 0, fontSize: '14px', color: isDark ? '#94a3b8' : '#64748b' }}>
+            Carga instantánea de esquemas, bornas IEC y bocetos de terreno en memoria
+          </p>
+        </div>
+      )}
+
       <svg
         ref={svgRef}
         width="100%"
@@ -145,14 +202,13 @@ export const CadCanvas: React.FC = () => {
         style={{ display: 'block' }}
       >
         <defs>
-          {/* Patrón de Cuadrícula Métrica DIN A3 */}
           <pattern id="cadGrid" width={gridSize * 4} height={gridSize * 4} patternUnits="userSpaceOnUse">
             <circle cx={gridSize * 2} cy={gridSize * 2} r="0.75" fill={gridColor} />
           </pattern>
         </defs>
 
         <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
-          {/* Hoja Normalizada DIN ISO 5457 A3 (420 x 297 mm escalada) */}
+          {/* Hoja Normalizada DIN ISO 5457 A3 (420 x 297 mm) */}
           <rect
             x="0"
             y="0"
@@ -164,13 +220,10 @@ export const CadCanvas: React.FC = () => {
             style={{ filter: 'drop-shadow(0 15px 35px rgba(0,0,0,0.5))' }}
           />
 
-          {/* Cuadrícula interna */}
           <rect x="0" y="0" width="420" height="297" fill="url(#cadGrid)" />
-
-          {/* Marco y Cajetín Normalizado A3 */}
           <rect x="10" y="10" width="400" height="277" fill="none" stroke={sheetBorder} strokeWidth="1" />
           
-          {/* Cajetín DIN ISO 5457 */}
+          {/* Cajetín Normalizado A3 */}
           <g transform="translate(230, 247)">
             <rect width="180" height="40" fill={isDark ? '#0d1a30' : '#f8fafc'} stroke={sheetBorder} strokeWidth="1" />
             <line x1="0" y1="20" x2="180" y2="20" stroke={sheetBorder} strokeWidth="0.75" />
@@ -181,7 +234,7 @@ export const CadCanvas: React.FC = () => {
             <text x="96" y="32" fill={isDark ? '#10b981' : '#059669'} fontSize="7">GAMP 5 / IEC 60617</text>
           </g>
 
-          {/* Renderizado de Conductores Eléctricos */}
+          {/* Conductores Eléctricos */}
           {wires.map(net => 
             net.segments.map(seg => {
               const isSelected = selectedIds.includes(seg.id);
@@ -207,7 +260,6 @@ export const CadCanvas: React.FC = () => {
                     strokeLinecap="round"
                     style={{ cursor: tool === 'cut' ? 'cell' : 'pointer' }}
                   />
-                  {/* Halo de selección */}
                   {isSelected && (
                     <line
                       x1={seg.p1.x}
@@ -224,7 +276,7 @@ export const CadCanvas: React.FC = () => {
             })
           )}
 
-          {/* Renderizado de Componentes IEC */}
+          {/* Componentes IEC */}
           {components.map(comp => {
             const isSelected = selectedIds.includes(comp.id);
             return (
@@ -245,7 +297,6 @@ export const CadCanvas: React.FC = () => {
                 }}
                 style={{ cursor: tool === 'select' ? 'move' : 'pointer' }}
               >
-                {/* Cuerpo del Símbolo Vectorial */}
                 <rect
                   x="-20"
                   y="-24"
@@ -257,28 +308,13 @@ export const CadCanvas: React.FC = () => {
                   strokeWidth={isSelected ? 2.5 : 1.5}
                 />
 
-                {/* Tag y Designador */}
-                <text
-                  x="0"
-                  y="-4"
-                  fill={isDark ? '#ffffff' : '#0f172a'}
-                  fontSize="9"
-                  fontWeight="bold"
-                  textAnchor="middle"
-                >
+                <text x="0" y="-4" fill={isDark ? '#ffffff' : '#0f172a'} fontSize="9" fontWeight="bold" textAnchor="middle">
                   {comp.tag}
                 </text>
-                <text
-                  x="0"
-                  y="10"
-                  fill={isDark ? '#94a3b8' : '#64748b'}
-                  fontSize="6"
-                  textAnchor="middle"
-                >
+                <text x="0" y="10" fill={isDark ? '#94a3b8' : '#64748b'} fontSize="6" textAnchor="middle">
                   {comp.attributes['Modelo']?.split(' ')[0] || comp.symbolId}
                 </text>
 
-                {/* Bornas / Puertos Magnéticos */}
                 {comp.ports.map(port => {
                   const isHovered = activePortId === port.id;
                   return (
@@ -290,7 +326,7 @@ export const CadCanvas: React.FC = () => {
                         strokeWidth="1"
                       />
                       <text
-                        x={port.direction === 'top' ? 0 : 0}
+                        x={0}
                         y={port.direction === 'top' ? -5 : 9}
                         fill={isDark ? '#38bdf8' : '#0369a1'}
                         fontSize="6"
@@ -306,7 +342,7 @@ export const CadCanvas: React.FC = () => {
             );
           })}
 
-          {/* Previsualización de Trazo de Cable (Ruteo Ortogonal 90°) */}
+          {/* Previsualización Ortogonal 90° */}
           {tool === 'wire' && wireStartPoint && (
             <polyline
               points={routeOrthoWire(wireStartPoint, snappedPos, 'horizontal_first').map(p => `${p.x},${p.y}`).join(' ')}
@@ -317,7 +353,7 @@ export const CadCanvas: React.FC = () => {
             />
           )}
 
-          {/* Indicador de Cursor con Snap */}
+          {/* Snap Pointer */}
           <circle
             cx={snappedPos.x}
             cy={snappedPos.y}
