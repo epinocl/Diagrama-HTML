@@ -14,12 +14,9 @@
       .wire-0v { stroke: #0284c7; stroke-width: 2.2; fill: none; }
       .dot { fill: #0f172a; }
       .comp-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; }
-      .tag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; }
-      .subtag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; }
-      .tag:not([fill]) { fill: #0f172a; }
-      .subtag:not([fill]) { fill: #475569; }
-      .wire-tag { font-family: monospace; font-size: 11px; font-weight: bold; }
-      .wire-tag:not([fill]) { fill: #dc2626; }
+      .tag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #0f172a; }
+      .subtag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #475569; }
+      .wire-tag { font-family: monospace; font-size: 11px; font-weight: bold; fill: #dc2626; }
       .draggable-text { cursor: move; user-select: none; }
       .draggable-text:hover { fill: #0284c7; }
     </style>
@@ -69,65 +66,65 @@
   <text x="47.5" y="609.0" class="grid-label">E</text><text x="1157.5" y="609.0" class="grid-label">E</text>
   <text x="47.5" y="734.3" class="grid-label">F</text><text x="1157.5" y="734.3" class="grid-label">F</text>
 
-      <!-- ========================================================================= -->
-  <!-- CAJETÍN AMPLIADO DE INGENIERÍA AXON (X: 220..1150, Y: 705..795, Alto: 90) -->
+  <!-- ========================================================================= -->
+  <!-- CAJETÍN AMPLIADO DE INGENIERÍA AXON (X: 280..1150, Y: 705..795, Alto: 90) -->
   <!-- ========================================================================= -->
   <g id="cajetin_axon">
     <!-- Contenedor general -->
-    <rect x="220" y="705" width="930" height="90" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
+    <rect x="280" y="705" width="870" height="90" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
 
     <!-- Divisiones Verticales -->
-    <line x1="295" y1="705" x2="295" y2="795" class="cad-thin"/>
-    <line x1="445" y1="705" x2="445" y2="795" class="cad-thin"/>
-    <line x1="555" y1="705" x2="555" y2="795" class="cad-thin"/>
-    <line x1="890" y1="705" x2="890" y2="795" class="cad-thin"/>
+    <line x1="380" y1="705" x2="380" y2="795" class="cad-thin"/>
+    <line x1="450" y1="705" x2="450" y2="795" class="cad-thin"/>
+    <line x1="535" y1="705" x2="535" y2="795" class="cad-thin"/>
+    <line x1="880" y1="705" x2="880" y2="795" class="cad-thin"/>
     <line x1="1025" y1="705" x2="1025" y2="795" class="cad-thin"/>
 
     <!-- Divisiones Horizontales -->
-    <line x1="220" y1="727" x2="555" y2="727" class="cad-thin"/>
-    <line x1="220" y1="750" x2="555" y2="750" class="cad-thin"/>
-    <line x1="220" y1="772" x2="555" y2="772" class="cad-thin"/>
+    <line x1="280" y1="727" x2="535" y2="727" class="cad-thin"/>
+    <line x1="280" y1="750" x2="535" y2="750" class="cad-thin"/>
+    <line x1="280" y1="772" x2="535" y2="772" class="cad-thin"/>
 
-    <line x1="555" y1="732" x2="890" y2="732" class="cad-thin"/>
+    <line x1="535" y1="732" x2="880" y2="732" class="cad-thin"/>
     
-    <line x1="890" y1="735" x2="1025" y2="735" class="cad-thin"/>
-    <line x1="890" y1="765" x2="1025" y2="765" class="cad-thin"/>
+    <line x1="880" y1="735" x2="1025" y2="735" class="cad-thin"/>
+    <line x1="880" y1="765" x2="1025" y2="765" class="cad-thin"/>
     
     <line x1="1025" y1="755" x2="1150" y2="755" class="cad-thin"/>
 
-    <!-- 1. Bloque de Firmas y Responsables (Nombres: 150px, Fechas: 110px centradas) -->
-    <text x="226" y="720" class="title-label">DIBUJADO</text>
-    <text x="302" y="720" class="title-value">AXON ING.</text>
-    <text x="500" y="720" class="title-value" text-anchor="middle">2026-10-16</text>
+    <!-- 1. Bloque de Firmas y Responsables -->
+    <text x="285" y="720" class="title-label">DIBUJADO</text>
+    <text x="385" y="720" class="title-value">AXON ING.</text>
+    <text x="455" y="720" class="title-value">2026-10-16</text>
 
-    <text x="226" y="743" class="title-label">REVISADO</text>
-    <text x="302" y="743" class="title-value">EPINO</text>
-    <text x="500" y="743" class="title-value" text-anchor="middle">2026-10-16</text>
+    <text x="285" y="743" class="title-label">REVISADO</text>
+    <text x="385" y="743" class="title-value">EPINO</text>
+    <text x="455" y="743" class="title-value">2026-10-16</text>
 
-    <text x="226" y="765" class="title-label">APROBADO</text>
-    <text x="302" y="765" class="title-value" font-size="12">GARDEN HOUSE S.A.</text>
-    <text x="500" y="765" class="title-value" text-anchor="middle">2026-10-16</text>
+    <text x="285" y="765" class="title-label">APROBADO</text>
+    <text x="385" y="765" class="title-value">GARDEN HOUSE</text>
+    <text x="455" y="765" class="title-value">2026-10-16</text>
 
-    <text x="226" y="788" class="title-label">ESTÁNDAR</text>
-    <text x="302" y="788" class="title-value">IEC 60617</text>
-    <text x="500" y="788" class="title-value" text-anchor="middle">REV. 0</text>
+    <text x="285" y="788" class="title-label">ESTÁNDAR</text>
+    <text x="385" y="788" class="title-value">IEC 60617</text>
+    <text x="455" y="788" class="title-value">REV. 0</text>
 
-    <!-- 2. Bloque de Cliente y Título del Proyecto (Amplio: 335px de ancho) -->
-    <text x="565" y="722" class="title-label">CLIENTE:</text>
-    <text x="625" y="723" class="title-value" font-size="14" fill="#0f172a">GARDEN HOUSE S.A.</text>
+    <!-- 2. Bloque de Cliente y Título del Proyecto (Amplio y Despejado) -->
+    <text x="545" y="722" class="title-label">CLIENTE:</text>
+    <text x="610" y="723" class="title-value" font-size="14" fill="#0f172a">GARDEN HOUSE S.A.</text>
 
-    <text x="565" y="750" class="title-main" font-size="16">4710 - CONTROL SEMÁFORO DE AGUA</text>
-    <text x="565" y="776" class="title-value" font-size="12" fill="#0284c7">DIAGRAMA DE FUERZA GENERAL 220VAC / 24VDC</text>
+    <text x="545" y="750" class="title-main" font-size="17">4710 - CONTROL SEMÁFORO DE AGUA</text>
+    <text x="545" y="776" class="title-value" font-size="13" fill="#0284c7">DIAGRAMA DE FUERZA GENERAL 220VAC / 24VDC</text>
 
     <!-- 3. Bloque de Identificación Técnica -->
-    <text x="898" y="723" class="title-label">CÓDIGO:</text>
-    <text x="955" y="725" class="title-value" font-size="13" fill="#dc2626">DE-4710</text>
+    <text x="888" y="723" class="title-label">CÓDIGO:</text>
+    <text x="945" y="725" class="title-value" font-size="13" fill="#dc2626">DE-4710</text>
 
-    <text x="898" y="753" class="title-label">DISCIPLINA:</text>
-    <text x="965" y="754" class="title-value" font-size="12">Fuerza</text>
+    <text x="888" y="753" class="title-label">DISCIPLINA:</text>
+    <text x="955" y="754" class="title-value" font-size="12">Fuerza</text>
 
-    <text x="898" y="783" class="title-label">PLANO N°:</text>
-    <text x="958" y="784" class="title-value" font-size="12">4710-E-01</text>
+    <text x="888" y="783" class="title-label">PLANO N°:</text>
+    <text x="948" y="784" class="title-value" font-size="12">4710-E-01</text>
 
     <!-- 4. Bloque de Lámina y Estado -->
     <text x="1035" y="725" class="title-label">LÁMINA / HOJA</text>
@@ -140,8 +137,8 @@
 
   <!-- Título de Sección -->
   <g id="layer_titles">
-    <text x="100" y="70" class="tag draggable-text" font-size="16" fill="#0284c7">CIRCUITO DE FUERZA Y ALIMENTACIÓN GENERAL (220VAC / 24VDC)</text>
-    <text x="99" y="91" class="subtag draggable-text">PROTECCIÓN GENERAL CON DIFERENCIAL Y FUENTE SWITCHING PARA CONTROL</text>
+    <text x="100" y="80" class="tag draggable-text" font-size="16" fill="#0284c7">CIRCUITO DE FUERZA Y ALIMENTACIÓN GENERAL (220VAC / 24VDC)</text>
+    <text x="100" y="100" class="subtag draggable-text">PROTECCIÓN GENERAL CON DIFERENCIAL Y FUENTE SWITCHING PARA CONTROL</text>
   </g>
 
   <!-- ========================================================================= -->
@@ -151,11 +148,11 @@
     <!-- Entrada de Red 220VAC: L en X=300, N en X=440 -->
     <polygon points="300,120 294,135 306,135" fill="#78350f"/>
     <text x="300" y="112" class="tag draggable-text" text-anchor="middle" fill="#78350f">L</text>
-    <text x="221" y="134" class="subtag draggable-text">220VAC 50Hz</text>
+    <text x="245" y="132" class="subtag draggable-text">220VAC 50Hz</text>
 
     <polygon points="440,120 434,135 446,135" fill="#0284c7"/>
     <text x="440" y="112" class="tag draggable-text" text-anchor="middle" fill="#0284c7">N</text>
-    <text x="461" y="135" class="subtag draggable-text">NEUTRO</text>
+    <text x="465" y="132" class="subtag draggable-text">NEUTRO</text>
 
     <!-- Líneas de Alimentación Principal -->
     <line x1="300" y1="135" x2="300" y2="280" class="wire-phase"/>
@@ -178,7 +175,7 @@
     <line x1="727" y1="167" x2="753" y2="193" stroke="#0f172a" stroke-width="2"/>
     <line x1="753" y1="167" x2="727" y2="193" stroke="#0f172a" stroke-width="2"/>
     <text x="740" y="154" class="tag draggable-text" text-anchor="middle">-P0</text>
-    <text x="787" y="172" class="subtag draggable-text">BLANCA (PRESENCIA RED)</text>
+    <text x="770" y="184" class="subtag draggable-text">BLANCA (PRESENCIA RED)</text>
 
     <!-- Retorno de P0 a Neutro -->
     <line x1="758" y1="180" x2="800" y2="180" class="wire-neutral"/>
@@ -209,9 +206,9 @@
       <text x="232" y="305" class="tag" text-anchor="middle" font-size="11">I</text>
       <line x1="244" y1="300" x2="280" y2="300" stroke="#0f172a" stroke-width="1.5" stroke-dasharray="2,2"/>
       
-      <text x="187" y="275" class="tag draggable-text" font-size="15">-Q0</text>
-      <text x="60" y="299" class="subtag draggable-text">DISYUNTOR CON DIFERENCIAL</text>
-      <text x="109" y="316" class="subtag draggable-text">2P 10A / 30mA (IΔn)</text>
+      <text x="140" y="295" class="tag draggable-text" font-size="15">-Q0</text>
+      <text x="140" y="312" class="subtag draggable-text">DISYUNTOR CON DIFERENCIAL</text>
+      <text x="140" y="326" class="subtag draggable-text">2P 10A / 30mA (IΔn)</text>
     </g>
 
     <!-- Regleta de Bornas (X0) -->
@@ -268,14 +265,14 @@
 
     <!-- Flecha +24VDC y Textos perfectamente alineados -->
     <polygon points="280,655 274,640 286,640" fill="#dc2626"/>
-    <text x="250" y="655" class="tag draggable-text" font-size="15" text-anchor="middle" fill="#dc2626">+24V</text>
-    <text x="280" y="678" class="subtag draggable-text" text-anchor="middle" font-weight="bold">ALIMENTACIÓN CONTROL</text>
-    <text x="279" y="697" class="wire-tag draggable-text" text-anchor="middle">HACIA /02.8, /03.8, /04.8</text>
+    <text x="280" y="675" class="tag draggable-text" font-size="15" text-anchor="middle" fill="#dc2626">+24V</text>
+    <text x="280" y="692" class="subtag draggable-text" text-anchor="middle" font-weight="bold">ALIMENTACIÓN CONTROL</text>
+    <text x="280" y="706" class="wire-tag draggable-text" text-anchor="middle">HACIA /02.8, /03.8, /04.8</text>
 
     <!-- Flecha -0VDC y Textos perfectamente alineados -->
     <polygon points="460,655 454,640 466,640" fill="#0284c7"/>
-    <text x="435" y="653" class="tag draggable-text" font-size="15" text-anchor="middle" fill="#0284c7">-0V</text>
-    <text x="462" y="679" class="subtag draggable-text" text-anchor="middle" font-weight="bold">REFERENCIA 0VDC</text>
-    <text x="461" y="696" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">HACIA /02.8, /03.8, /04.8</text>
+    <text x="460" y="675" class="tag draggable-text" font-size="15" text-anchor="middle" fill="#0284c7">-0V</text>
+    <text x="460" y="692" class="subtag draggable-text" text-anchor="middle" font-weight="bold">REFERENCIA 0VDC</text>
+    <text x="460" y="706" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">HACIA /02.8, /03.8, /04.8</text>
   </g>
 </svg>

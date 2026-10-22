@@ -31,6 +31,23 @@ export const App: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (sheets.length === 0) {
+      fetch('/default_project.axon.zip')
+        .then(res => {
+          if (res.ok) return res.blob();
+          throw new Error('No default zip found');
+        })
+        .then(blob => importZipFile(blob))
+        .catch(() => {
+          fetch('/project.json')
+            .then(res => res.json())
+            .then(data => useCadStore.getState().loadProjectDocument(data))
+            .catch(err => console.warn('Could not auto-load default project:', err));
+        });
+    }
+  }, [sheets.length, importZipFile]);
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement) return;
       if (e.key === 'f' || e.key === 'F') {

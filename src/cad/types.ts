@@ -122,6 +122,7 @@ export interface SheetDocument {
   id: string;
   meta: SheetMetadata;
   sketchFile?: string;
+  svgContent?: string;
   components: ComponentEntity[];
   wires: WireNet[];
   geometries: GeometryEntity[];

@@ -73,6 +73,26 @@ export async function importProjectFromZip(file: File | Blob): Promise<UnpackedP
     throw new Error('Estructura de project.json inválida: faltan campos obligatorios.');
   }
 
+  // 1.1 Cargar contenido SVG de hojas si existen en el paquete
+  for (let i = 0; i < project.sheets.length; i++) {
+    const sheet = project.sheets[i];
+    const num = i + 1;
+    const numStr = num < 10 ? '0' + num : '' + num;
+    const candidates = [
+      'hojas/hoja_' + numStr + '.svg',
+      'dependencias/hojas/hoja_' + numStr + '.svg',
+      'hoja_' + numStr + '.svg'
+    ];
+    for (const c of candidates) {
+      const fileEntry = loadedZip.file(c);
+      if (fileEntry) {
+        sheet.svgContent = await fileEntry.async('text');
+        break;
+      }
+    }
+  }
+
+
   // 2. Leer metadata.json si existe
   let metadata: PackageMetadata = {
     projectCode: project.projectCode,

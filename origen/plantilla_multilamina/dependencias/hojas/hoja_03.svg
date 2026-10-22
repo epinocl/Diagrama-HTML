@@ -13,12 +13,9 @@
       .wire-0v { stroke: #0284c7; stroke-width: 2.2; fill: none; }
       .dot { fill: #0f172a; }
       .comp-box { fill: #f8fafc; stroke: #0f172a; stroke-width: 2; }
-      .tag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; }
-      .subtag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; }
-      .tag:not([fill]) { fill: #0f172a; }
-      .subtag:not([fill]) { fill: #475569; }
-      .wire-tag { font-family: monospace; font-size: 11px; font-weight: bold; }
-      .wire-tag:not([fill]) { fill: #dc2626; }
+      .tag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #0f172a; }
+      .subtag { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #475569; }
+      .wire-tag { font-family: monospace; font-size: 11px; font-weight: bold; fill: #dc2626; }
       .draggable-text { cursor: move; user-select: none; }
       .draggable-text:hover { fill: #0284c7; }
     </style>
@@ -68,65 +65,65 @@
   <text x="47.5" y="609.0" class="grid-label">E</text><text x="1157.5" y="609.0" class="grid-label">E</text>
   <text x="47.5" y="734.3" class="grid-label">F</text><text x="1157.5" y="734.3" class="grid-label">F</text>
 
-      <!-- ========================================================================= -->
-  <!-- CAJETÍN AMPLIADO DE INGENIERÍA AXON (X: 220..1150, Y: 705..795, Alto: 90) -->
+  <!-- ========================================================================= -->
+  <!-- CAJETÍN AMPLIADO DE INGENIERÍA AXON (X: 280..1150, Y: 705..795, Alto: 90) -->
   <!-- ========================================================================= -->
   <g id="cajetin_axon">
     <!-- Contenedor general -->
-    <rect x="220" y="705" width="930" height="90" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
+    <rect x="280" y="705" width="870" height="90" fill="#ffffff" stroke="#0f172a" stroke-width="1.8"/>
 
     <!-- Divisiones Verticales -->
-    <line x1="295" y1="705" x2="295" y2="795" class="cad-thin"/>
-    <line x1="445" y1="705" x2="445" y2="795" class="cad-thin"/>
-    <line x1="555" y1="705" x2="555" y2="795" class="cad-thin"/>
-    <line x1="890" y1="705" x2="890" y2="795" class="cad-thin"/>
+    <line x1="380" y1="705" x2="380" y2="795" class="cad-thin"/>
+    <line x1="450" y1="705" x2="450" y2="795" class="cad-thin"/>
+    <line x1="535" y1="705" x2="535" y2="795" class="cad-thin"/>
+    <line x1="880" y1="705" x2="880" y2="795" class="cad-thin"/>
     <line x1="1025" y1="705" x2="1025" y2="795" class="cad-thin"/>
 
     <!-- Divisiones Horizontales -->
-    <line x1="220" y1="727" x2="555" y2="727" class="cad-thin"/>
-    <line x1="220" y1="750" x2="555" y2="750" class="cad-thin"/>
-    <line x1="220" y1="772" x2="555" y2="772" class="cad-thin"/>
+    <line x1="280" y1="727" x2="535" y2="727" class="cad-thin"/>
+    <line x1="280" y1="750" x2="535" y2="750" class="cad-thin"/>
+    <line x1="280" y1="772" x2="535" y2="772" class="cad-thin"/>
 
-    <line x1="555" y1="732" x2="890" y2="732" class="cad-thin"/>
+    <line x1="535" y1="732" x2="880" y2="732" class="cad-thin"/>
     
-    <line x1="890" y1="735" x2="1025" y2="735" class="cad-thin"/>
-    <line x1="890" y1="765" x2="1025" y2="765" class="cad-thin"/>
+    <line x1="880" y1="735" x2="1025" y2="735" class="cad-thin"/>
+    <line x1="880" y1="765" x2="1025" y2="765" class="cad-thin"/>
     
     <line x1="1025" y1="755" x2="1150" y2="755" class="cad-thin"/>
 
-    <!-- 1. Bloque de Firmas y Responsables (Nombres: 150px, Fechas: 110px centradas) -->
-    <text x="226" y="720" class="title-label">DIBUJADO</text>
-    <text x="302" y="720" class="title-value">AXON ING.</text>
-    <text x="500" y="720" class="title-value" text-anchor="middle">2026-10-16</text>
+    <!-- 1. Bloque de Firmas y Responsables -->
+    <text x="285" y="720" class="title-label">DIBUJADO</text>
+    <text x="385" y="720" class="title-value">AXON ING.</text>
+    <text x="455" y="720" class="title-value">2026-10-16</text>
 
-    <text x="226" y="743" class="title-label">REVISADO</text>
-    <text x="302" y="743" class="title-value">EPINO</text>
-    <text x="500" y="743" class="title-value" text-anchor="middle">2026-10-16</text>
+    <text x="285" y="743" class="title-label">REVISADO</text>
+    <text x="385" y="743" class="title-value">EPINO</text>
+    <text x="455" y="743" class="title-value">2026-10-16</text>
 
-    <text x="226" y="765" class="title-label">APROBADO</text>
-    <text x="302" y="765" class="title-value" font-size="12">GARDEN HOUSE S.A.</text>
-    <text x="500" y="765" class="title-value" text-anchor="middle">2026-10-16</text>
+    <text x="285" y="765" class="title-label">APROBADO</text>
+    <text x="385" y="765" class="title-value">GARDEN HOUSE</text>
+    <text x="455" y="765" class="title-value">2026-10-16</text>
 
-    <text x="226" y="788" class="title-label">ESTÁNDAR</text>
-    <text x="302" y="788" class="title-value">IEC 60617</text>
-    <text x="500" y="788" class="title-value" text-anchor="middle">REV. 0</text>
+    <text x="285" y="788" class="title-label">ESTÁNDAR</text>
+    <text x="385" y="788" class="title-value">IEC 60617</text>
+    <text x="455" y="788" class="title-value">REV. 0</text>
 
-    <!-- 2. Bloque de Cliente y Título del Proyecto (Amplio: 335px de ancho) -->
-    <text x="565" y="722" class="title-label">CLIENTE:</text>
-    <text x="625" y="723" class="title-value" font-size="14" fill="#0f172a">GARDEN HOUSE S.A.</text>
+    <!-- 2. Bloque de Cliente y Título del Proyecto (Amplio y Despejado) -->
+    <text x="545" y="722" class="title-label">CLIENTE:</text>
+    <text x="610" y="723" class="title-value" font-size="14" fill="#0f172a">GARDEN HOUSE S.A.</text>
 
-    <text x="565" y="750" class="title-main" font-size="16">4710 - CONTROL SEMÁFORO DE AGUA</text>
-    <text x="565" y="776" class="title-value" font-size="12" fill="#0284c7">SALIDAS DIGITALES Y RELÉS INTERMEDIOS</text>
+    <text x="545" y="750" class="title-main" font-size="17">4710 - CONTROL SEMÁFORO DE AGUA</text>
+    <text x="545" y="776" class="title-value" font-size="13" fill="#0284c7">SALIDAS DIGITALES A RELE PLC SIEMENS LOGO!</text>
 
     <!-- 3. Bloque de Identificación Técnica -->
-    <text x="898" y="723" class="title-label">CÓDIGO:</text>
-    <text x="955" y="725" class="title-value" font-size="13" fill="#dc2626">DE-4710</text>
+    <text x="888" y="723" class="title-label">CÓDIGO:</text>
+    <text x="945" y="725" class="title-value" font-size="13" fill="#dc2626">DE-4710</text>
 
-    <text x="898" y="753" class="title-label">DISCIPLINA:</text>
-    <text x="965" y="754" class="title-value" font-size="12">Control</text>
+    <text x="888" y="753" class="title-label">DISCIPLINA:</text>
+    <text x="955" y="754" class="title-value" font-size="12">PLC & I/O</text>
 
-    <text x="898" y="783" class="title-label">PLANO N°:</text>
-    <text x="958" y="784" class="title-value" font-size="12">4710-E-03</text>
+    <text x="888" y="783" class="title-label">PLANO N°:</text>
+    <text x="948" y="784" class="title-value" font-size="12">4710-E-03</text>
 
     <!-- 4. Bloque de Lámina y Estado -->
     <text x="1035" y="725" class="title-label">LÁMINA / HOJA</text>
@@ -147,27 +144,27 @@
     <g id="cpu_logo_salidas">
       <rect x="150" y="120" width="780" height="110" rx="4" class="comp-box"/>
       <rect x="150" y="120" width="780" height="30" fill="#1e293b"/>
-      <text x="540" y="140" class="tag draggable-text" fill="#ffffff" style="fill: #ffffff !important;" font-size="13" font-weight="bold" text-anchor="middle">SALIDAS DIGITALES A RELÉ Q1..Q4 - CPU SIEMENS LOGO!</text>
+      <text x="540" y="140" class="tag draggable-text" fill="#f8fafc" font-size="13" text-anchor="middle">SALIDAS DIGITALES A RELÉ Q1..Q4 - CPU SIEMENS LOGO!</text>
 
       <!-- Q1 -->
       <rect x="195" y="165" width="24" height="25" class="comp-box"/><text x="207" y="182" class="subtag" font-size="10" text-anchor="middle">1</text>
       <rect x="255" y="165" width="24" height="25" class="comp-box"/><text x="267" y="182" class="subtag" font-size="10" text-anchor="middle">2</text>
-      <text x="268" y="209" class="tag draggable-text" font-size="12" text-anchor="middle">Q1</text>
+      <text x="237" y="210" class="tag draggable-text" font-size="12" text-anchor="middle">Q1</text>
 
       <!-- Q2 -->
       <rect x="385" y="165" width="24" height="25" class="comp-box"/><text x="397" y="182" class="subtag" font-size="10" text-anchor="middle">1</text>
       <rect x="445" y="165" width="24" height="25" class="comp-box"/><text x="457" y="182" class="subtag" font-size="10" text-anchor="middle">2</text>
-      <text x="460" y="208" class="tag draggable-text" font-size="12" text-anchor="middle">Q2</text>
+      <text x="427" y="210" class="tag draggable-text" font-size="12" text-anchor="middle">Q2</text>
 
       <!-- Q3 -->
       <rect x="575" y="165" width="24" height="25" class="comp-box"/><text x="587" y="182" class="subtag" font-size="10" text-anchor="middle">1</text>
       <rect x="635" y="165" width="24" height="25" class="comp-box"/><text x="647" y="182" class="subtag" font-size="10" text-anchor="middle">2</text>
-      <text x="648" y="210" class="tag draggable-text" font-size="12" text-anchor="middle">Q3</text>
+      <text x="617" y="210" class="tag draggable-text" font-size="12" text-anchor="middle">Q3</text>
 
       <!-- Q4 -->
       <rect x="765" y="165" width="24" height="25" class="comp-box"/><text x="777" y="182" class="subtag" font-size="10" text-anchor="middle">1</text>
       <rect x="825" y="165" width="24" height="25" class="comp-box"/><text x="837" y="182" class="subtag" font-size="10" text-anchor="middle">2</text>
-      <text x="836" y="210" class="tag draggable-text" font-size="12" text-anchor="middle">Q4</text>
+      <text x="807" y="210" class="tag draggable-text" font-size="12" text-anchor="middle">Q4</text>
     </g>
 
     <!-- Bus +24VDC Común de Contactos en Y=320 -->
@@ -195,12 +192,12 @@
       <rect x="185" y="430" width="50" height="55" rx="3" class="comp-box"/>
       <line x1="185" y1="457" x2="235" y2="457" stroke="#cbd5e1" stroke-width="1"/>
       <text x="210" y="450" class="tag draggable-text" text-anchor="middle" font-size="12">-R1</text>
-      <text x="168" y="438" class="subtag">A1</text>
-      <text x="167" y="483" class="subtag">A2</text>
+      <text x="180" y="438" class="subtag">A1</text>
+      <text x="180" y="482" class="subtag">A2</text>
       <text x="210" y="475" class="subtag draggable-text" font-size="10" fill="#0284c7" text-anchor="middle">24VDC</text>
 
-      <text x="206" y="641" class="subtag draggable-text" font-size="10" text-anchor="middle" font-weight="bold">RELE 1: CTRL SEMAFORO (VERDE / ROJO)</text>
-      <text x="220" y="661" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">CONTACTOS EN LÁMINA /04</text>
+      <text x="210" y="505" class="subtag draggable-text" font-size="10" text-anchor="middle" font-weight="bold">RELE 1: CONTROL SEMAFORO (VERDE / ROJO)</text>
+      <text x="210" y="522" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">CONTACTOS EN LÁMINA /04</text>
 
       <!-- Retorno A2 a Bus -0V en Y=600 -->
       <line x1="210" y1="485" x2="210" y2="600" class="wire-0v"/>
@@ -224,12 +221,12 @@
       <rect x="375" y="430" width="50" height="55" rx="3" class="comp-box"/>
       <line x1="375" y1="457" x2="425" y2="457" stroke="#cbd5e1" stroke-width="1"/>
       <text x="400" y="450" class="tag draggable-text" text-anchor="middle" font-size="12">-R2</text>
-      <text x="359" y="441" class="subtag">A1</text>
-      <text x="360" y="484" class="subtag">A2</text>
+      <text x="370" y="438" class="subtag">A1</text>
+      <text x="370" y="482" class="subtag">A2</text>
       <text x="400" y="475" class="subtag draggable-text" font-size="10" fill="#0284c7" text-anchor="middle">24VDC</text>
 
-      <text x="419" y="640" class="subtag draggable-text" font-size="10" text-anchor="middle" font-weight="bold">RELE 2: CTRL LUZ AUXILIAR 1 (P5)</text>
-      <text x="402" y="665" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">CONTACTOS EN LÁMINA /04</text>
+      <text x="400" y="505" class="subtag draggable-text" font-size="10" text-anchor="middle" font-weight="bold">RELE 2: CONTROL LUZ AUXILIAR 1 (P5)</text>
+      <text x="400" y="522" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">CONTACTOS EN LÁMINA /04</text>
 
       <!-- Retorno A2 a Bus -0V en Y=600 -->
       <line x1="400" y1="485" x2="400" y2="600" class="wire-0v"/>
@@ -253,12 +250,12 @@
       <rect x="565" y="430" width="50" height="55" rx="3" class="comp-box"/>
       <line x1="565" y1="457" x2="615" y2="457" stroke="#cbd5e1" stroke-width="1"/>
       <text x="590" y="450" class="tag draggable-text" text-anchor="middle" font-size="12">-R3</text>
-      <text x="549" y="441" class="subtag">A1</text>
-      <text x="548" y="483" class="subtag">A2</text>
+      <text x="560" y="438" class="subtag">A1</text>
+      <text x="560" y="482" class="subtag">A2</text>
       <text x="590" y="475" class="subtag draggable-text" font-size="10" fill="#0284c7" text-anchor="middle">24VDC</text>
 
-      <text x="606" y="641" class="subtag draggable-text" font-size="10" text-anchor="middle" font-weight="bold">RELE 3: CTRL LUZ AUXILIAR 2 (P6)</text>
-      <text x="602" y="670" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">CONTACTOS EN LÁMINA /04</text>
+      <text x="590" y="505" class="subtag draggable-text" font-size="10" text-anchor="middle" font-weight="bold">RELE 3: CONTROL LUZ AUXILIAR 2 (P6)</text>
+      <text x="590" y="522" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">CONTACTOS EN LÁMINA /04</text>
 
       <!-- Retorno A2 a Bus -0V en Y=600 -->
       <line x1="590" y1="485" x2="590" y2="600" class="wire-0v"/>
@@ -282,12 +279,12 @@
       <rect x="755" y="430" width="50" height="55" rx="3" class="comp-box"/>
       <line x1="755" y1="457" x2="805" y2="457" stroke="#cbd5e1" stroke-width="1"/>
       <text x="780" y="450" class="tag draggable-text" text-anchor="middle" font-size="12">-R4</text>
-      <text x="738" y="442" class="subtag">A1</text>
-      <text x="739" y="480" class="subtag">A2</text>
+      <text x="750" y="438" class="subtag">A1</text>
+      <text x="750" y="482" class="subtag">A2</text>
       <text x="780" y="475" class="subtag draggable-text" font-size="10" fill="#0284c7" text-anchor="middle">24VDC</text>
 
-      <text x="803" y="640" class="subtag draggable-text" font-size="10" text-anchor="middle" font-weight="bold">RELE 4: CTRL LUZ AUXILIAR 3 (P7)</text>
-      <text x="792" y="670" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">CONTACTOS EN LÁMINA /04</text>
+      <text x="780" y="505" class="subtag draggable-text" font-size="10" text-anchor="middle" font-weight="bold">RELE 4: CONTROL LUZ AUXILIAR 3 (P7)</text>
+      <text x="780" y="522" class="wire-tag draggable-text" text-anchor="middle" fill="#0284c7">CONTACTOS EN LÁMINA /04</text>
 
       <!-- Retorno A2 a Bus -0V en Y=600 -->
       <line x1="780" y1="485" x2="780" y2="600" class="wire-0v"/>

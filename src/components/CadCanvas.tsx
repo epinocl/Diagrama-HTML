@@ -299,7 +299,25 @@ export const CadCanvas: React.FC = () => {
             </g>
           )}
           
-          {/* Cajetín Normalizado A3 */}
+          {/* Esquema Electrico Vectorial Completo (Generado por el Agente / Estandar CAD AXON) */}
+          {activeSheet?.svgContent && (
+            <svg
+              x="0"
+              y="0"
+              width="420"
+              height="297"
+              viewBox="0 0 1191 842"
+              style={{ overflow: 'visible', pointerEvents: 'none' }}
+              dangerouslySetInnerHTML={{
+                __html: activeSheet.svgContent
+                  .replace(/<svg[^>]*>/i, '')
+                  .replace(/<\/svg>/i, '')
+              }}
+            />
+          )}
+
+          {/* Cajetín Normalizado A3 Fallback */}
+          {!activeSheet?.svgContent && (
           <g transform="translate(230, 247)">
             <rect width="180" height="40" fill={isDark ? '#0d1a30' : '#f8fafc'} stroke={sheetBorder} strokeWidth="1" />
             <line x1="0" y1="20" x2="180" y2="20" stroke={sheetBorder} strokeWidth="0.75" />
@@ -309,6 +327,7 @@ export const CadCanvas: React.FC = () => {
             <text x="116" y="13" fill={isDark ? '#38bdf8' : '#0284c7'} fontSize="7" fontWeight="bold">{client.length > 20 ? client.slice(0, 19) + '…' : client}</text>
             <text x="116" y="32" fill={isDark ? '#10b981' : '#059669'} fontSize="7">{activeSheet?.meta.discipline || 'IEC 60617'} · Lám. {activeSheet?.meta.sheetCode || (activeSheetIndex + 1)}</text>
           </g>
+          )}
 
           {/* Conductores Eléctricos */}
           {wires.map(net => 
