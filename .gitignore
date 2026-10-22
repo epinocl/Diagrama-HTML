@@ -76,3 +76,8 @@ temp/
 *.bak
 *.swp
 *~
+
+# Carpeta de pruebas locales, bosquejos y paquetes de prueba (ignorado de GitHub)
+pruebas/
+pruebas_locales/
+temp_proyecto_*/
