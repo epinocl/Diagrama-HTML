@@ -1,4 +1,4 @@
-﻿import React, { useRef, useState } from 'react';
+﻿import React, { useRef, useState, useEffect } from 'react';
 import { useCadStore } from '../store/useCadStore';
 import { Point2D } from '../cad/types';
 import { snapToGrid, snapToNearestPort, routeOrthoWire } from '../cad/topology';
@@ -23,6 +23,11 @@ export const CadCanvas: React.FC = () => {
     snapGridEnabled,
     snapPortEnabled,
     importZipFile,
+    setZoom,
+    fitToScreen,
+    projectCode,
+    projectName,
+    client,
     sheets,
     activeSheetIndex,
     activeSheetId,
@@ -35,7 +40,25 @@ export const CadCanvas: React.FC = () => {
   const sketchFileName = activeSheet?.sketchFile?.replace("bocetos/", "");
   const activeSketchUrl = (sketchFileName && sketches[sketchFileName]) || (sketches[Object.keys(sketches)[activeSheetIndex]]) || Object.values(sketches)[0];
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    const doFit = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        if (rect.width > 200 && rect.height > 200) {
+          fitToScreen(rect.width, rect.height);
+        }
+      }
+    };
+    doFit();
+    window.addEventListener('resize', doFit);
+    return () => window.removeEventListener('resize', doFit);
+  }, [activeSheetId, projectCode]);
+
+  const [isPanning, setIsPanning] = useState<boolean>(false);
+  const [panStart, setPanStart] = useState<Point2D>({ x: 0, y: 0 });
 
   // Estados interactivos locales
   const [draggingCompId, setDraggingCompId] = useState<string | null>(null);
@@ -47,6 +70,20 @@ export const CadCanvas: React.FC = () => {
 
   // Estado de Drag & Drop de archivo .axon.zip
   const [isDragOverFile, setIsDragOverFile] = useState<boolean>(false);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const zoomFactor = e.deltaY < 0 ? 1.12 : 0.88;
+    const newZoom = Math.min(Math.max(zoom * zoomFactor, 0.3), 6.0);
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const newPanX = mouseX - (mouseX - pan.x) * (newZoom / zoom);
+    const newPanY = mouseY - (mouseY - pan.y) * (newZoom / zoom);
+    setZoom(parseFloat(newZoom.toFixed(2)));
+    setPan({ x: Math.round(newPanX), y: Math.round(newPanY) });
+  };
 
   const getCanvasCoords = (e: React.MouseEvent): Point2D => {
     if (!svgRef.current) return { x: 0, y: 0 };
@@ -71,6 +108,13 @@ export const CadCanvas: React.FC = () => {
   );
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (isPanning) {
+      setPan({
+        x: Math.round(e.clientX - panStart.x),
+        y: Math.round(e.clientY - panStart.y)
+      });
+      return;
+    }
     const rawPos = getCanvasCoords(e);
     setMousePos(rawPos);
 
@@ -103,6 +147,12 @@ export const CadCanvas: React.FC = () => {
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button === 1 || e.button === 2 || e.altKey) {
+      e.preventDefault();
+      setIsPanning(true);
+      setPanStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+      return;
+    }
     if (tool === 'wire') {
       if (!wireStartPoint) {
         setWireStartPoint(snappedPos);
@@ -122,9 +172,8 @@ export const CadCanvas: React.FC = () => {
   };
 
   const handleMouseUp = () => {
-    if (draggingCompId) {
-      setDraggingCompId(null);
-    }
+    if (isPanning) setIsPanning(false);
+    if (draggingCompId) setDraggingCompId(null);
   };
 
   // Manejadores de Drag & Drop para archivos .axon.zip
@@ -162,6 +211,9 @@ export const CadCanvas: React.FC = () => {
 
   return (
     <main 
+      ref={containerRef}
+      onWheel={handleWheel}
+      onContextMenu={(e) => e.preventDefault()}
       style={{
         flex: 1,
         position: 'relative',
@@ -235,7 +287,7 @@ export const CadCanvas: React.FC = () => {
           
           {/* Capa de Cotejo: Boceto o PDF */}
           {showSketchUnderlay && activeSketchUrl && (
-            <g id="sketchUnderlayLayer" opacity={sketchOpacity} style={{ pointerEvents: "none" }}>
+            <g id="sketchUnderlayLayer" opacity={sketchOpacity} style={{ pointerEvents: "none", filter: isDark ? "invert(0.9) contrast(1.25)" : "none" }}>
               <image
                 href={activeSketchUrl}
                 x="10"
@@ -251,11 +303,11 @@ export const CadCanvas: React.FC = () => {
           <g transform="translate(230, 247)">
             <rect width="180" height="40" fill={isDark ? '#0d1a30' : '#f8fafc'} stroke={sheetBorder} strokeWidth="1" />
             <line x1="0" y1="20" x2="180" y2="20" stroke={sheetBorder} strokeWidth="0.75" />
-            <line x1="90" y1="0" x2="90" y2="40" stroke={sheetBorder} strokeWidth="0.75" />
-            <text x="6" y="13" fill={isDark ? '#94a3b8' : '#64748b'} fontSize="7" fontWeight="bold">PROYECTO: DE-5266</text>
-            <text x="6" y="32" fill={isDark ? '#ffffff' : '#0f172a'} fontSize="8" fontWeight="bold">CONTROL VISIÓN BLISTERA 3</text>
-            <text x="96" y="13" fill={isDark ? '#38bdf8' : '#0284c7'} fontSize="7" fontWeight="bold">AXON INGENIERÍA</text>
-            <text x="96" y="32" fill={isDark ? '#10b981' : '#059669'} fontSize="7">GAMP 5 / IEC 60617</text>
+            <line x1="110" y1="0" x2="110" y2="40" stroke={sheetBorder} strokeWidth="0.75" />
+            <text x="6" y="13" fill={isDark ? '#94a3b8' : '#64748b'} fontSize="7" fontWeight="bold">PROYECTO: {projectCode}</text>
+            <text x="6" y="32" fill={isDark ? '#ffffff' : '#0f172a'} fontSize="8" fontWeight="bold">{projectName.length > 25 ? projectName.slice(0, 24) + '…' : projectName}</text>
+            <text x="116" y="13" fill={isDark ? '#38bdf8' : '#0284c7'} fontSize="7" fontWeight="bold">{client.length > 20 ? client.slice(0, 19) + '…' : client}</text>
+            <text x="116" y="32" fill={isDark ? '#10b981' : '#059669'} fontSize="7">{activeSheet?.meta.discipline || 'IEC 60617'} · Lám. {activeSheet?.meta.sheetCode || (activeSheetIndex + 1)}</text>
           </g>
 
           {/* Conductores Eléctricos */}

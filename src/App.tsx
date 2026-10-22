@@ -1,10 +1,10 @@
-﻿import React, { useRef } from 'react';
+﻿import React, { useRef, useEffect } from 'react';
 import { Toolbar } from './components/Toolbar';
 import { CadCanvas } from './components/CadCanvas';
 import { PropertyInspector } from './components/PropertyInspector';
 import { SymbolPalette } from './components/SymbolPalette';
 import { useCadStore } from './store/useCadStore';
-import { ZoomIn, ZoomOut, RotateCcw, ShieldCheck, FolderUp, Download, CheckCircle2 } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw, Maximize2, ShieldCheck, FolderUp, Download, CheckCircle2 } from 'lucide-react';
 
 export const App: React.FC = () => {
   const { 
@@ -17,6 +17,7 @@ export const App: React.FC = () => {
     projectName,
     importZipFile,
     exportCurrentZip,
+    fitToScreen,
     notification,
     sheets,
     activeSheetIndex,
@@ -28,6 +29,17 @@ export const App: React.FC = () => {
   } = useCadStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement) return;
+      if (e.key === 'f' || e.key === 'F') {
+        fitToScreen(window.innerWidth - 340, window.innerHeight - 80);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [fitToScreen]);
 
   const isDark = theme === 'dark_autocad';
   const headerBg = isDark ? '#0b1324' : '#ffffff';
@@ -206,6 +218,25 @@ export const App: React.FC = () => {
             }}
           >
             <RotateCcw size={14} />
+          </button>
+          <button
+            title='Ajustar Plano a la Pantalla - Atajo F'
+            onClick={() => fitToScreen(window.innerWidth - 340, window.innerHeight - 80)}
+            style={{
+              background: 'rgba(56, 189, 248, 0.12)',
+              border: '1px solid rgba(56, 189, 248, 0.3)',
+              color: '#38bdf8',
+              borderRadius: '6px',
+              padding: '4px 8px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              fontSize: '11px',
+              fontWeight: 600
+            }}
+          >
+            <Maximize2 size={13} /> Ajustar (F)
           </button>
         </div>
       </header>

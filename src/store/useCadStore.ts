@@ -57,6 +57,7 @@ interface CadState {
   setTheme: (theme: CadTheme) => void;
   setZoom: (zoom: number) => void;
   setPan: (pan: Point2D) => void;
+  fitToScreen: (containerWidth: number, containerHeight: number) => void;
   toggleInspector: () => void;
   setInspectorFloating: (floating: boolean) => void;
   toggleSketchUnderlay: () => void;
@@ -174,6 +175,16 @@ export const useCadStore = create<CadState>((set, get) => ({
   setTheme: (theme) => set({ theme }),
   setZoom: (zoom) => set({ zoom: Math.min(Math.max(zoom, 0.2), 5.0) }),
   setPan: (pan) => set({ pan }),
+  fitToScreen: (containerWidth, containerHeight) => {
+    const margin = 30;
+    const availW = Math.max(containerWidth - margin * 2, 200);
+    const availH = Math.max(containerHeight - margin * 2, 200);
+    const scale = Math.min(availW / 420, availH / 297);
+    const newZoom = parseFloat(Math.max(0.4, Math.min(scale, 4.5)).toFixed(2));
+    const newPanX = Math.round((containerWidth - 420 * newZoom) / 2);
+    const newPanY = Math.round((containerHeight - 297 * newZoom) / 2);
+    set({ zoom: newZoom, pan: { x: newPanX, y: newPanY } });
+  },
   toggleInspector: () => set((s) => ({ isInspectorOpen: !s.isInspectorOpen })),
   setInspectorFloating: (isInspectorFloating) => set({ isInspectorFloating }),
   toggleSketchUnderlay: () => set((s) => ({ showSketchUnderlay: !s.showSketchUnderlay })),
