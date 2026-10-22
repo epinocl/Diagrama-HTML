@@ -5,7 +5,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    host: true
+    host: true,
+    watch: {
+      ignored: ['**/pruebas/**', '**/*.zip', '**/temp_*/**', '**/bocetos/**']
+    }
   },
   preview: {
     port: 5173,
